@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FMLRTVirtualModelInstance id="0" virtualModelURI="http://www.openflexo.org/projects/2024/1/SecurityRulesFederation_1704641601734.prj/SecurityModelsFederation.fml" modelVersion="1.0" title="instance" version="0.1" flexoConceptURI="http://www.openflexo.org/projects/2024/1/SecurityRulesFederation_1704641601734.prj/SecurityModelsFederation.fml" userID="CHA" flexoID="1">
+  <FlexoConceptInstance id="1" flexoConceptURI="http://www.openflexo.org/projects/2024/1/SecurityRulesFederation_1704641601734.prj/SecurityModelsFederation.fml#PoolParticipantLink" userID="CHA" flexoID="5">
+    <ConceptActorReference id="2" conceptURI="file:/D:/ModelsResources/Models/BPMNModelsNew/BookingHoliday.bpmn#Participant_7" roleName="pool" userID="CHA" flexoID="6" />
+    <ConceptActorReference id="3" conceptURI="file:/D:/ModelsResources/Models/SOAMLModel/MetaSOAMLTest.xmi#//@participant.2" roleName="participant" userID="CHA" flexoID="7" />
+  </FlexoConceptInstance>
+  <FlexoConceptInstance id="4" flexoConceptURI="http://www.openflexo.org/projects/2024/1/SecurityRulesFederation_1704641601734.prj/SecurityModelsFederation.fml#PoolParticipantLink" userID="CHA" flexoID="8">
+    <ConceptActorReference id="5" conceptURI="file:/D:/ModelsResources/Models/BPMNModelsNew/BookingHoliday.bpmn#Participant_6" roleName="pool" userID="CHA" flexoID="9" />
+    <ConceptActorReference id="6" conceptURI="file:/D:/ModelsResources/Models/SOAMLModel/MetaSOAMLTest.xmi#//@participant.0" roleName="participant" userID="CHA" flexoID="10" />
+  </FlexoConceptInstance>
+  <FlexoConceptInstance id="7" flexoConceptURI="http://www.openflexo.org/projects/2024/1/SecurityRulesFederation_1704641601734.prj/SecurityModelsFederation.fml#PoolParticipantLink" userID="CHA" flexoID="11" />
+  <FlexoOntologyModelSlotInstance id="8" modelURI="file:/D:/ModelsResources/Models/SOAMLModel/MetaSOAMLTest.xmi" modelSlotName="soamlModelAceess" roleName="soamlModelAceess" userID="CHA" flexoID="2" />
+  <FlexoOntologyModelSlotInstance id="9" modelURI="file:/D:/ModelsResources/Models/WSDLModel/WSDLModel.xmi" modelSlotName="wsdlModelAcess" roleName="wsdlModelAcess" userID="CHA" flexoID="3" />
+  <FlexoOntologyModelSlotInstance id="10" modelURI="file:/D:/ModelsResources/Models/BPMNModelsNew/BookingHoliday.bpmn" modelSlotName="bpmnModelAccess" roleName="bpmnModelAccess" userID="CHA" flexoID="4" />
+</FMLRTVirtualModelInstance>

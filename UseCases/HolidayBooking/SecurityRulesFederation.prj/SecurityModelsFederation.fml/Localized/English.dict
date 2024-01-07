@@ -1,0 +1,5 @@
+bpmnModelResource=BpmnModelResource
+checkNames=CheckNames
+checkSecurityAnnotations=CheckSecurityAnnotations
+soamlModelResource=SoamlModelResource
+wsdlModelResource=WsdlModelResource

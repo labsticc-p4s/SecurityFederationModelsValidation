@@ -1,0 +1,6 @@
+#Metadata for directory D:\ModelsResources\Metamodel\metaModelNew\WSDLmetaModel
+#Thu Dec 28 02:33:10 CET 2023
+WSDLmeta.ecore.name=Wsdlmetamodel
+WSDLmeta.ecore.uri=http\://www.example.org/metamodelProject/Metamodel/WSDLmetaModel
+WSDLmeta.ecore.version=2.0
+WSDLmeta.ecore.prefix=WSDLMetaModel

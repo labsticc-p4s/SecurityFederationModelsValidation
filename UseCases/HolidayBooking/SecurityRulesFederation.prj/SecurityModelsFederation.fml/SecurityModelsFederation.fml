@@ -1,4 +1,4 @@
-git use org.openflexo.technologyadapter.emf.EMFModelSlot as EMF;
+use org.openflexo.technologyadapter.emf.EMFModelSlot as EMF;
 use org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot as FMLRT;
 
 import org.openflexo.technologyadapter.emf.model.EMFModel;

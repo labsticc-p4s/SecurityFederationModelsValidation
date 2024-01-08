@@ -1,5 +1,11 @@
 bpmnModelResource=bpmnModelResource
+callFunction=callFunction
 checkNames=checkNames
+checkParticipant=checkParticipant
 checkSecurityAnnotations=checkSecurityAnnotations
+contract=contract
+name1=name1
+name2=name2
+pools=pools
 soamlModelResource=soamlModelResource
 wsdlModelResource=wsdlModelResource

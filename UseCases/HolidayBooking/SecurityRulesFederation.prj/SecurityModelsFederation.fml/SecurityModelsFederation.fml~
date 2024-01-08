@@ -32,6 +32,9 @@ public model SecurityModelsFederation {
       }
 
 	delete() {
+		soamlModelAceess = null;
+		wsdlModelAcess = null;
+		bpmnModelAccess = null;
 	}
 
 	public concept PoolParticipantLink {
@@ -39,6 +42,9 @@ public model SecurityModelsFederation {
 		EMFObjectIndividual pool with EMFObjectRole(container=bpmnModelAccess);
 		
 		delete() {
+			participant = null;
+			pool = null;
+			
 		}
 
 		create::_create(required String name) {
@@ -70,41 +76,106 @@ public model SecurityModelsFederation {
 		}
 
 		public void checkSecurityAnnotations() {
-		boolean check = false;
-		List<? extends Object> associations = select EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) from bpmnModelAccess;
-		for (EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) asso : associations) {
-	if (asso.targetRef.id == pool.name) {
-		List<? extends Object> annotations = select EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) from bpmnModelAccess;
-		for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) annotation : annotations) {
-			if (annotation.id == asso.sourceRef.id) {
-				for (EMFObjectIndividualType(eClass=SOAML_PARTICIPANT_ROLE) item : select EMFObjectIndividualType(eClass=SOAML_PARTICIPANT_ROLE) from soamlModelAceess) {
-					if (item.name == participant.name + "Role") {
-						List<? extends Object> privacy = item.getValues("privacy");
-						List<? extends Object> access = item.getValues("accesscontrol");
-						
-						if (privacy != null && annotation.text.contains("privacy")) {
-							check = true;
-						} 
-
-						if ( access != null && annotation.text.contains("accesscontrol")) {
-							check = true;
-						} 
+			boolean check = false;
+			List<? extends Object> associations = select EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) from bpmnModelAccess;
+			for (EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) asso : associations) {
+				if (asso.targetRef.id == pool.name) {
+					List<? extends Object> annotations = select EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) from bpmnModelAccess;
+					for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) annotation : annotations) {
+						if (annotation.id == asso.sourceRef.id) {
+							for (EMFObjectIndividualType(eClass=SOAML_PARTICIPANT_ROLE) item : select EMFObjectIndividualType(eClass=SOAML_PARTICIPANT_ROLE) from soamlModelAceess) {
+								if (item.name == participant.name + "Role") {
+									List<? extends Object> privacy = item.getValues("privacy");
+									List<? extends Object> access = item.getValues("accesscontrol");
+									
+									if (privacy != null && annotation.text.contains("privacy")) {
+										check = true;
+									} 
+			
+									if ( access != null && annotation.text.contains("accesscontrol")) {
+										check = true;
+									} 
 else {
-							check = false;
+										check = false;
+									}
+								}
+							}
 						}
 					}
 				}
 			}
-		}
-	}
-}
-	if (check) {
-		log "Security annotation verification succeeded";
-	} 
+			if (check) {
+				log "Security annotation verification succeeded";
+			} 
 else {
-		log "Security annotation verification failed";
-	}
+				log "Security annotation verification failed";
+			}
+		}
+
+	public checkParticipant() {
+
+			log "test";
+	return true;
 	}
 
 	}
+
+	public concept PoolToPoolLink {
+		EMFObjectIndividual pool1 with EMFObjectRole(container=soamlModelAceess);
+		EMFObjectIndividual pool2 with EMFObjectRole(container=bpmnModelAccess);
+		
+		create::_create(required String name1,required String name2) {
+
+			for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) item : select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess) {	
+				List<? extends Object> variable = item.getValues("name");
+
+				if (variable.get(0).toString == parameters.name1) {
+					pool1 = item;
+				}
+
+                   	if (variable.get(0).toString == parameters.name2) {
+					pool2 = item;
+				}
+			}	
+		}
+		
+		delete() {
+			pool1 = null;
+			pool2 = null;
+		}
+	 
+	}
+
+	public concept ContractToPoolsLink {
+		EMFObjectIndividualType(eClass=SOAML_CONTRACT) serviceContract with EMFObjectRole(container=soamlModelAceess,type=SOAML_CONTRACT);
+		PoolToPoolLink pools with ConceptInstance(virtualModelInstance=container);
+	PoolParticipantLink accessPoolParticipant with ConceptInstance(virtualModelInstance=container);
+		
+		create::_create(String contract, PoolToPoolLink pools) {	
+		 	for (EMFObjectIndividualType(eClass=SOAML_CONTRACT) item : select  EMFObjectIndividualType(eClass=SOAML_CONTRACT) from soamlModelAceess) {
+			 	if (item.name == parameters.contract) {
+	                    serviceContract = item;
+	                }
+		 	}
+			pools = parameters.pools;
+
+		}
+
+		delete() {
+			serviceContract = null;
+			pools = null;
+		}
+
+	public void callFunction() {	
+		
+		 
+		
+		}
+       
+		
+	
+	}
+
+
+
 }

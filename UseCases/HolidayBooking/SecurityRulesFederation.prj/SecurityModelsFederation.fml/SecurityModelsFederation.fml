@@ -1,4 +1,4 @@
-use org.openflexo.technologyadapter.emf.EMFModelSlot as EMF;
+git use org.openflexo.technologyadapter.emf.EMFModelSlot as EMF;
 use org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot as FMLRT;
 
 import org.openflexo.technologyadapter.emf.model.EMFModel;
@@ -32,6 +32,9 @@ public model SecurityModelsFederation {
       }
 
 	delete() {
+		soamlModelAceess = null;
+		wsdlModelAcess = null;
+		bpmnModelAccess = null;
 	}
 
 	public concept PoolParticipantLink {
@@ -39,6 +42,9 @@ public model SecurityModelsFederation {
 		EMFObjectIndividual pool with EMFObjectRole(container=bpmnModelAccess);
 		
 		delete() {
+			participant = null;
+			pool = null;
+			
 		}
 
 		create::_create(required String name) {
@@ -107,4 +113,56 @@ else {
 		}
 
 	}
+
+	public concept PoolToPoolLink {
+		EMFObjectIndividual pool1 with EMFObjectRole(container=soamlModelAceess);
+		EMFObjectIndividual pool2 with EMFObjectRole(container=bpmnModelAccess);
+		
+		create::_create(required String name1,required String name2) {
+
+			for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) item : select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess) {	
+				List<? extends Object> variable = item.getValues("name");
+
+				if (variable.get(0).toString == parameters.name1) {
+					pool1 = item;
+				}
+
+                   	if (variable.get(0).toString == parameters.name2) {
+					pool2 = item;
+				}
+			}	
+		}
+		
+		delete() {
+			pool1 = null;
+			pool2 = null;
+		}
+	 
+	}
+
+	public concept ContractToPoolsLink {
+		EMFObjectIndividualType(eClass=SOAML_CONTRACT) serviceContract with EMFObjectRole(container=soamlModelAceess,type=SOAML_CONTRACT);
+		PoolToPoolLink pools with ConceptInstance(virtualModelInstance=container);
+		
+		create::_create(String contract, PoolToPoolLink pools) {	
+		 	for (EMFObjectIndividualType(eClass=SOAML_CONTRACT) item : select  EMFObjectIndividualType(eClass=SOAML_CONTRACT) from soamlModelAceess) {
+			 	if (item.name == parameters.contract) {
+	                    serviceContract = item;
+	                }
+		 	}
+			pools = parameters.pools;
+
+		}
+
+		delete() {
+			serviceContract = null;
+			pools = null;
+		}
+       
+		
+	
+	}
+
+
+
 }

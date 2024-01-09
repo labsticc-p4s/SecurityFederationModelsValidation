@@ -70,20 +70,7 @@ public model SecurityModelsFederation {
 	     	log "service" + item1.serviceContract.name.toString;
 	     	if (item1.serviceContract.name.toString == parameters.nameContract ) {
 	     		listPools.add(item1.pools);
-               
-
-
-
-
-
-
-
-
-
-
-
-
-}
+			}
 		}
 	}
 

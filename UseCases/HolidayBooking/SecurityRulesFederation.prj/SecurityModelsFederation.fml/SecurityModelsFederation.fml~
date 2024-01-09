@@ -245,7 +245,7 @@ public model SecurityModelsFederation {
 							     		//log proces.flowElements.get(j).toString;
 							     		for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) annotation : annotations) {
 							     			if (annotation.id == asso.sourceRef.id && annotation.text.contains("integrity") && annotation.text.contains("nonrepudiation")) {
-							     				log " MODEL SECURE";
+							     				//log " MODEL SECURE";
 							     				check = true;
 							     			} 
 							     			else {

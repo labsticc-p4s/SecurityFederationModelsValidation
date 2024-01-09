@@ -11,6 +11,8 @@ import ["http://www.example.org/metamodelProject/Metamodel/WSDLmetaModel"] as WS
 import ["http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"] as BPMN21;
 
 import [BPMN21:"Participant"] as BPMN_PARTICIPANT;
+import [BPMN21:"Process"] as BPMN_PROCESS;
+import [BPMN21:"DataObject"] as BPMN_DATAOBJECT;
 import [BPMN21:"TextAnnotation"] as BPMN_TEXT_ANNOTATION;
 import [BPMN21:"Association"] as BPMN_ASSOCIATION;
 
@@ -67,8 +69,15 @@ public model SecurityModelsFederation {
 	     for (ContractToPoolsLink item1 : select ContractToPoolsLink from this) {
 	     	log "service" + item1.serviceContract.name.toString;
 	     	if (item1.serviceContract.name.toString == parameters.nameContract ) {
-	     		listPools.add(item1.pools);
+	     		//listPools.add(item1.pools);
                
+
+
+
+
+
+
+
 
 
 
@@ -209,19 +218,47 @@ public model SecurityModelsFederation {
 			pools = null;
 		}
 
-	 	/*public checkDataSecurityAnnotation (required PoolToPoolLink pools) {
+	 	public checkDataSecurityAnnotation (required PoolToPoolLink pools) {
 			boolean check = false;
 			List<? extends Object> listParticipant = select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess;
+			List<? extends Object> listProcess = select EMFObjectIndividualType(eClass=BPMN_PROCESS) from bpmnModelAccess;
+			List<? extends Object> listDataObject = select EMFObjectIndividualType(eClass=BPMN_DATAOBJECT) from bpmnModelAccess;
+			List<? extends Object> associations = select EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) from bpmnModelAccess;
+			List<? extends Object> annotations = select EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) from bpmnModelAccess;
 			log listParticipant.toString;
-			for(EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) parti : listParticipant){
-				if(parti.id==pools.pool1.name || parti.id==pools.pool2.name ){
-					log pools.pool2.name;
-				}
-				
-			}
-       	
-		}*/
-
-	
-	}
+			log listProcess.toString;
+			log listDataObject.toString;
+			log associations.toString;
+			log annotations.toString;
+			int i = 0;
+			for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) parti : listParticipant) {
+				if (parti.id.toString == pools.pool1.name.toString) {
+					for (EMFObjectIndividualType(eClass=BPMN_PROCESS) proces : listProcess) {
+						if (proces.id.toString == parti.processRef.id.toString) {
+							log "list" + proces.flowElements.toString;
+							int n = proces.flowElements.size();
+							log n.toString;
+							
+							for (EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) asso : associations) {
+								//log "ass" + asso.targetRef.id.toString; 
+								for (int j=0 ; j < n ; j++) {
+							     	if (asso.targetRef.id == proces.flowElements.get(j).id ) {
+							     		//log proces.flowElements.get(j).toString;
+							     		for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) annotation : annotations) {
+							     			if (annotation.id == asso.sourceRef.id && annotation.text.contains("integrity") && annotation.text.contains("nonrepudiation")) {
+							     				log " MODEL SECURE";
+							     			}
+							     		}
+							     		
+							     			
+							     	}
+								} 	
+							}
+						}
+					}
+                	}  
+           	 }     
+		}
+   }
+		
 }

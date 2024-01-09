@@ -24,6 +24,9 @@ public model SecurityModelsFederation {
 	EMFModel soamlModelAceess with EMFModelSlot(metaModel=SOAML_META_MODEL,isRequired=true);
 	EMFModel wsdlModelAcess with EMFModelSlot(metaModel=WSDLMETAMODEL,isRequired=true);
 	EMFModel bpmnModelAccess with EMFModelSlot(metaModel=BPMN21,isRequired=true);
+	EMFObjectIndividual[0,*] individuals with EMFObjectRole(container=this);
+	PoolToPoolLink[0,*] listPools with ConceptInstance(virtualModelInstance=this);
+	
 
 	 public create::createAccessObject(required Resource<EMFModel> bpmnModelResource, required Resource<EMFModel> wsdlModelResource, required Resource<EMFModel> soamlModelResource) {
       	soamlModelAceess = parameters.soamlModelResource.resourceData;
@@ -35,6 +38,51 @@ public model SecurityModelsFederation {
 		soamlModelAceess = null;
 		wsdlModelAcess = null;
 		bpmnModelAccess = null;
+	}
+
+
+	public verify (required String nameP) {
+			
+	     List<PoolParticipantLink> variable2 = select PoolParticipantLink from this;
+	     //log " variable " + variable2.size.toString ;
+	     
+	     for (PoolParticipantLink item : select PoolParticipantLink from this) {
+	     	log " variable " + item.participant.name.toString;
+	     	if (item.participant.name.toString == parameters.nameP) {
+	     		individuals.add(item.pool);
+	              log " test" + item.participant.name;
+               }
+	     }	     
+	}
+	public verifElements(required String nameParticipant, required String nameContract) {
+
+		 for (PoolParticipantLink item : select PoolParticipantLink from this) {
+	     	log " variable " + item.participant.name.toString;
+	     	if (item.participant.name.toString == parameters.nameParticipant) {
+	     		individuals.add(item.pool);
+	              log " test" + item.participant.name;
+               }
+	     }
+
+	     for (ContractToPoolsLink item1 : select ContractToPoolsLink from this) {
+	     	log "service" + item1.serviceContract.name.toString;
+	     	if (item1.serviceContract.name.toString == parameters.nameContract ) {
+	     		listPools.add(item1.pools);
+               
+
+
+
+
+
+
+}
+		}
+	}
+
+	public consult() {
+		for (EMFObjectIndividual item : individuals) {
+			log item.toString;
+		}
 	}
 
 	public concept PoolParticipantLink {
@@ -95,7 +143,7 @@ public model SecurityModelsFederation {
 									if ( access != null && annotation.text.contains("accesscontrol")) {
 										check = true;
 									} 
-else {
+									else {
 										check = false;
 									}
 								}
@@ -107,10 +155,12 @@ else {
 			if (check) {
 				log "Security annotation verification succeeded";
 			} 
-else {
+			else {
 				log "Security annotation verification failed";
 			}
 		}
+
+
 
 	}
 
@@ -158,11 +208,20 @@ else {
 			serviceContract = null;
 			pools = null;
 		}
-       
-		
+
+	 	/*public checkDataSecurityAnnotation (required PoolToPoolLink pools) {
+			boolean check = false;
+			List<? extends Object> listParticipant = select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess;
+			log listParticipant.toString;
+			for(EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) parti : listParticipant){
+				if(parti.id==pools.pool1.name || parti.id==pools.pool2.name ){
+					log pools.pool2.name;
+				}
+				
+			}
+       	
+		}*/
+
 	
 	}
-
-
-
 }

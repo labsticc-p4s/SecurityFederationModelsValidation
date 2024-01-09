@@ -69,9 +69,8 @@ public model SecurityModelsFederation {
 	     for (ContractToPoolsLink item1 : select ContractToPoolsLink from this) {
 	     	log "service" + item1.serviceContract.name.toString;
 	     	if (item1.serviceContract.name.toString == parameters.nameContract ) {
-	     		//listPools.add(item1.pools);
+	     		listPools.add(item1.pools);
                
-
 
 
 
@@ -232,7 +231,7 @@ public model SecurityModelsFederation {
 			log annotations.toString;
 			int i = 0;
 			for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) parti : listParticipant) {
-				if (parti.id.toString == pools.pool1.name.toString) {
+				if (parti.id.toString == pools.pool1.name.toString || parti.id.toString == pools.pool2.name.toString) {
 					for (EMFObjectIndividualType(eClass=BPMN_PROCESS) proces : listProcess) {
 						if (proces.id.toString == parti.processRef.id.toString) {
 							log "list" + proces.flowElements.toString;
@@ -240,14 +239,18 @@ public model SecurityModelsFederation {
 							log n.toString;
 							
 							for (EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) asso : associations) {
-								log "ass" + asso.targetRef.id.toString; 
+								//log "ass" + asso.targetRef.id.toString; 
 								for (int j=0 ; j < n ; j++) {
 							     	if (asso.targetRef.id == proces.flowElements.get(j).id ) {
 							     		//log proces.flowElements.get(j).toString;
 							     		for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) annotation : annotations) {
 							     			if (annotation.id == asso.sourceRef.id && annotation.text.contains("integrity") && annotation.text.contains("nonrepudiation")) {
 							     				log " MODEL SECURE";
-							     			}
+							     				check = true;
+							     			} 
+							     			else {
+										   		check = false;
+												}
 							     		}
 							     		
 							     			
@@ -257,7 +260,16 @@ public model SecurityModelsFederation {
 						}
 					}
                 	}  
-           	 }     
+           	 }
+
+		if (check) {
+				log " Security Data verification succeeded";
+			} 
+			else {
+				log "Security Data verification failed";
+			}
+
+           	     
 		}
    }
 		

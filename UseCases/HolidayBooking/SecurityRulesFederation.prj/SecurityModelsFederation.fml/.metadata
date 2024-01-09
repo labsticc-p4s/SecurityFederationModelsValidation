@@ -1,5 +1,5 @@
 #Metadata for directory D:\HeterogenousSecureModelsFederation\UseCases\HolidayBooking\SecurityRulesFederation.prj\SecurityModelsFederation.fml
-#Tue Jan 09 18:13:06 CET 2024
+#Wed Jan 10 00:43:25 CET 2024
 SecurityModelsFederation.fml.uri=http\://www.openflexo.org/projects/2024/1/SecurityRulesFederation_1704641601734.prj/SecurityModelsFederation.fml
 SecurityModelsFederation.fml.version=0.1
 SecurityModelsFederation.fml.requiredModelSlotList=org.openflexo.technologyadapter.emf.EMFModelSlot,org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot

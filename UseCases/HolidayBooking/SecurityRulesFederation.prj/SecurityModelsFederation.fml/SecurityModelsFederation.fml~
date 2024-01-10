@@ -88,7 +88,7 @@ public model SecurityModelsFederation {
 		}
 	}
 
-	public consult() {
+	public consultList() {
 		for (EMFObjectIndividual item : listPools1) {
 			log item.toString;
 		}

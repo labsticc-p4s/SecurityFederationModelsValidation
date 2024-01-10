@@ -94,7 +94,7 @@ public model SecurityModelsFederation {
 		}
 	}
 
-	public checkConsistentElementslinked() {
+	public checkConsistentlinkedElements() {
 		
 		boolean check = false;
 		//listPools1 = this.contract_pool.checkPoolsExistence();

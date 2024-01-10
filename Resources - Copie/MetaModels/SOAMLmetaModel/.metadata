@@ -1,0 +1,6 @@
+#Metadata for directory D:\HeterogenousSecureModelsFederation\Resources\MetaModels\SOAMLmetaModel
+#Mon Jan 08 16:25:14 CET 2024
+SOAMLmeta.ecore.prefix=SOAMLMetaModel
+SOAMLmeta.ecore.version=2.0
+SOAMLmeta.ecore.name=SoamlMetaModel
+SOAMLmeta.ecore.uri=http\://www.example.org/metamodelProject/Metamodel/SOAMLmetaModel

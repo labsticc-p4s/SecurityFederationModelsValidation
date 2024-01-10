@@ -1,3 +1,5 @@
+namespace "http://www.openflexo.org/projects/2024/1/SecurityRulesFederation_1704641601734.prj" as SECURITYRULESFEDERATION_1704641601734PRJ;
+
 use org.openflexo.technologyadapter.emf.EMFModelSlot as EMF;
 use org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot as FMLRT;
 
@@ -20,6 +22,9 @@ import [BPMN21:"Association"] as BPMN_ASSOCIATION;
 import [SOAML_META_MODEL:"Participant"] as SOAML_PARTICIPANT;
 import [SOAML_META_MODEL:"Service_Contract"] as SOAML_CONTRACT;
 import [SOAML_META_MODEL:"ParticipantRole"] as SOAML_PARTICIPANT_ROLE;
+import [SOAML_META_MODEL:"Interface"] as SOAML_INTERFACE;
+import [WSDLMETAMODEL:"Interface"] as WSDL_INTERFACE;
+import [SECURITYRULESFEDERATION_1704641601734PRJ + "/SecurityModelsFederation.fml"] as SecurityModelsFederation;
 
 @URI("http://www.openflexo.org/projects/2024/1/SecurityRulesFederation_1704641601734.prj/SecurityModelsFederation.fml")
 @Author("chahr")
@@ -71,8 +76,13 @@ public model SecurityModelsFederation {
 	     for (ContractToPoolsLink item1 : select ContractToPoolsLink from this) {
 	     	log "service" + item1.serviceContract.name.toString;
 	     	if (item1.serviceContract.name.toString == parameters.nameContract ) {
-	     		listPools.add(item1.pools);
-			}
+	     		//listPools.add(item1.pools);
+			
+
+
+
+
+}
 		}
 
 		
@@ -305,6 +315,30 @@ public model SecurityModelsFederation {
           return listPools1;
 		
 	}
+   }
+
+  	 public concept InterfaceToWsdlInterface {
+	EMFObjectIndividual interface1 with EMFObjectRole(container=wsdlModelAcess);
+	EMFObjectIndividual interface2 with EMFObjectRole(container=soamlModelAceess);
+
+	create::_create(required String name1, required String name2) {
+		for (EMFObjectIndividualType(eClass=SOAML_INTERFACE) item : select EMFObjectIndividualType(eClass=SOAML_INTERFACE) from soamlModelAceess) {
+			if (item.name == parameters.name2) {
+				interface2 = item;
+			}
+		}
+		for (EMFObjectIndividualType(eClass=WSDL_INTERFACE) item : select EMFObjectIndividualType(eClass=WSDL_INTERFACE) from wsdlModelAcess) {
+				if (item.Name == parameters.name1) {
+		interface1 = item;
+	}
+		}
+	}
+
+	delete() {
+		delete interface1;
+		delete interface2;
+	}
+   	
    }
 		
 }

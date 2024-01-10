@@ -1,6 +1,7 @@
 bpmnModelResource=BpmnModelResource
 callFunction=CallFunction
 checkConsistentElementslinked=CheckConsistentElementslinked
+checkConsistentlinkedElements=CheckConsistentlinkedElements
 checkDataSecurityAnnotation=CheckDataSecurityAnnotation
 checkNames=CheckNames
 checkParticipant=CheckParticipant

@@ -5,6 +5,7 @@ import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 import java.lang.String;
 import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
+import java.util.List;
 
 import ["http://www.example.org/metamodelProject/Metamodel/SOAMLmetaModel"] as SOAML_META_MODEL;
 import ["http://www.example.org/metamodelProject/Metamodel/WSDLmetaModel"] as WSDLMETAMODEL;
@@ -28,7 +29,8 @@ public model SecurityModelsFederation {
 	EMFModel bpmnModelAccess with EMFModelSlot(metaModel=BPMN21,isRequired=true);
 	EMFObjectIndividual[0,*] individuals with EMFObjectRole(container=this);
 	PoolToPoolLink[0,*] listPools with ConceptInstance(virtualModelInstance=this);
-	
+	EMFObjectIndividual[0,*] listPools1 with EMFObjectRole(container=this);
+	EMFObjectIndividual contract_pool with EMFObjectRole(container=this);
 
 	 public create::createAccessObject(required Resource<EMFModel> bpmnModelResource, required Resource<EMFModel> wsdlModelResource, required Resource<EMFModel> soamlModelResource) {
       	soamlModelAceess = parameters.soamlModelResource.resourceData;
@@ -56,7 +58,7 @@ public model SecurityModelsFederation {
                }
 	     }	     
 	}
-	public verifElements(required String nameParticipant, required String nameContract) {
+	public getParticipantElements(required String nameParticipant, required String nameContract) {
 
 		 for (PoolParticipantLink item : select PoolParticipantLink from this) {
 	     	log " variable " + item.participant.name.toString;
@@ -72,12 +74,40 @@ public model SecurityModelsFederation {
 	     		listPools.add(item1.pools);
 			}
 		}
+
+		
 	}
 
-	public consult() {
-		for (EMFObjectIndividual item : individuals) {
+	public fillListPools() {
+
+		for (PoolToPoolLink item2 : listPools ) {
+			log item2.toString;
+	     	listPools1.add(item2.pool1);
+	     	listPools1.add(item2.pool2);
+			
+		}
+	}
+
+	public consultList() {
+		for (EMFObjectIndividual item : listPools1) {
 			log item.toString;
 		}
+	}
+
+	public checkConsistentElementslinked() {
+		
+		boolean check = false;
+		//listPools1 = this.contract_pool.checkPoolsExistence();
+		if (listPools1.size() == 0) {
+			check = true;
+		}
+
+		if (check) {
+				log "Consistent element verification  succeeded";
+			} 
+			else {
+				log "Consistent element verification failed";
+			}	
 	}
 
 	public concept PoolParticipantLink {
@@ -226,13 +256,10 @@ public model SecurityModelsFederation {
 							log n.toString;
 							
 							for (EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) asso : associations) {
-								//log "ass" + asso.targetRef.id.toString; 
 								for (int j=0 ; j < n ; j++) {
 							     	if (asso.targetRef.id == proces.flowElements.get(j).id ) {
-							     		//log proces.flowElements.get(j).toString;
 							     		for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) annotation : annotations) {
 							     			if (annotation.id == asso.sourceRef.id && annotation.text.contains("integrity") && annotation.text.contains("nonrepudiation")) {
-							     				//log " MODEL SECURE";
 							     				check = true;
 							     			} 
 							     			else {
@@ -258,6 +285,26 @@ public model SecurityModelsFederation {
 
            	     
 		}
+
+
+	public List<EMFObjectIndividual> checkPoolsExistence() {
+		//listPools1 = container.listPools;
+		//log listPools.toString;
+		for (EMFObjectIndividual item : listPools1) {
+			log item.toString;
+			
+			if (item.name == pools.pool1.name) {
+				listPools1.remove(item);
+			}
+
+			if (item.name == pools.pool2.name) {
+				listPools1.remove(item);
+			}
+		}
+		
+          return listPools1;
+		
+	}
    }
 		
 }

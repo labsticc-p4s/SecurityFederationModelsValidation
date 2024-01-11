@@ -1,9 +1,9 @@
 #Metadata for directory D:\HeterogenousSecureModelsFederation\UseCases\HolidayBooking\SecurityRulesFederation.prj\SecurityModelsFederation.fml
-#Thu Jan 11 00:09:22 CET 2024
+#Thu Jan 11 01:56:20 CET 2024
 SecurityModelsFederation.fml.uri=http\://www.openflexo.org/projects/2024/1/SecurityRulesFederation_1704641601734.prj/SecurityModelsFederation.fml
 SecurityModelsFederation.fml.version=0.1
-SecurityModelsFederation.fml.name=SecurityModelsFederation
 SecurityModelsFederation.fml.requiredModelSlotList=org.openflexo.technologyadapter.emf.EMFModelSlot,org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot
+SecurityModelsFederation.fml.name=SecurityModelsFederation
 SecurityModelsFederation.fml.virtualModelClassName=org.openflexo.foundation.fml.VirtualModel
+SecurityModelsFederation.fml.dependenciesList=http\://www.example.org/metamodelProject/Metamodel/SOAMLmetaModel,http\://www.example.org/metamodelProject/Metamodel/WSDLmetaModel,http\://www.omg.org/spec/BPMN/20100524/MODEL-XMI,http\://www.openflexo.org/projects/2024/1/SecurityRulesFederation_1704641601734.prj/SecurityModelsFederation.fml
 SecurityModelsFederation.fml.flexoConceptsList=PoolParticipantLink,PoolToPoolLink,ContractToPoolsLink,InterfaceToWsdlInterface
-SecurityModelsFederation.fml.dependenciesList=http\://www.example.org/metamodelProject/Metamodel/SOAMLmetaModel,http\://www.example.org/metamodelProject/Metamodel/WSDLmetaModel,http\://www.omg.org/spec/BPMN/20100524/MODEL-XMI

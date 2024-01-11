@@ -23,6 +23,7 @@ import [SOAML_META_MODEL:"Participant"] as SOAML_PARTICIPANT;
 import [SOAML_META_MODEL:"Service_Contract"] as SOAML_CONTRACT;
 import [SOAML_META_MODEL:"ParticipantRole"] as SOAML_PARTICIPANT_ROLE;
 import [SOAML_META_MODEL:"Interface"] as SOAML_INTERFACE;
+import [SOAML_META_MODEL:"Capability"] as SOAML_CAPABILITY;
 import [WSDLMETAMODEL:"Interface"] as WSDL_INTERFACE;
 import [SECURITYRULESFEDERATION_1704641601734PRJ + "/SecurityModelsFederation.fml"] as SecurityModelsFederation;
 
@@ -78,6 +79,25 @@ public model SecurityModelsFederation {
 	     	if (item1.serviceContract.name.toString == parameters.nameContract ) {
 	     		//listPools.add(item1.pools);
 			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -328,7 +348,7 @@ public model SecurityModelsFederation {
 			}
 		}
 		for (EMFObjectIndividualType(eClass=WSDL_INTERFACE) item : select EMFObjectIndividualType(eClass=WSDL_INTERFACE) from wsdlModelAcess) {
-				if (item.Name == parameters.name1) {
+				if (item.name == parameters.name1) {
 		interface1 = item;
 	}
 		}
@@ -338,6 +358,25 @@ public model SecurityModelsFederation {
 		delete interface1;
 		delete interface2;
 	}
+
+	public void verifyInterfaceOperation() {
+		long count = 0;
+		List<? extends Object> operations = interface2.getValues("Expose");
+		for (EMFObjectIndividualType(eClass=SOAML_CAPABILITY) item : select EMFObjectIndividualType(eClass=SOAML_CAPABILITY) from soamlModelAceess) {
+			for (Object item2 : operations) {
+				if (item2.toString.substring(11) == item.name) {
+					count = count + 1;
+				}
+			}
+		}
+		if (interface2.getValues("Expose").size == count) {
+			log "valid";
+		}
+		else {
+			log "invalid";
+		}
+	}
+
    	
    }
 		

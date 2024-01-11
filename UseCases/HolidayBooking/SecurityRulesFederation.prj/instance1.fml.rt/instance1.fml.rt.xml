@@ -24,10 +24,14 @@
     <ConceptActorReference id="17" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/SOAMLModel/MetaSOAML.xmi#//@interface.4" roleName="interface2" userID="CHA" flexoID="91" />
     <ConceptActorReference id="18" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/WSDLModel/WSDLModel.xmi#//@description.0/@interface.0" roleName="interface1" userID="CHA" flexoID="92" />
   </FlexoConceptInstance>
-  <FlexoOntologyModelSlotInstance id="19" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/SOAMLModel/MetaSOAML.xmi" modelSlotName="soamlModelAceess" roleName="soamlModelAceess" userID="CHA" flexoID="2" />
-  <FlexoOntologyModelSlotInstance id="20" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/WSDLModel/WSDLModel.xmi" modelSlotName="wsdlModelAcess" roleName="wsdlModelAcess" userID="CHA" flexoID="3" />
-  <FlexoOntologyModelSlotInstance id="21" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/BookingHoliday.bpmn" modelSlotName="bpmnModelAccess" roleName="bpmnModelAccess" userID="CHA" flexoID="4" />
-  <ConceptActorReference id="22" roleName="individuals" userID="CHA" flexoID="79" />
-  <ModelObjectActorReference id="23" objectReference="http://www.openflexo.org/projects/2024/1/SecurityRulesFederation_1704641601734.prj/instance1.fml.rt#CHA_19" roleName="listPools" userID="CHA" flexoID="83" />
-  <ModelObjectActorReference id="24" objectReference="http://www.openflexo.org/projects/2024/1/SecurityRulesFederation_1704641601734.prj/instance1.fml.rt#CHA_65" roleName="listPools" userID="CHA" flexoID="84" />
+  <FlexoConceptInstance id="19" flexoConceptURI="http://www.openflexo.org/projects/2024/1/SecurityRulesFederation_1704641601734.prj/SecurityModelsFederation.fml#InterfaceToWsdlInterface" userID="CHA" flexoID="93">
+    <ConceptActorReference id="20" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/SOAMLModel/MetaSOAML.xmi#//@interface.4" roleName="interface2" userID="CHA" flexoID="94" />
+    <ConceptActorReference id="21" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/WSDLModel/WSDLModel.xmi#//@description.0/@interface.0" roleName="interface1" userID="CHA" flexoID="95" />
+  </FlexoConceptInstance>
+  <FlexoOntologyModelSlotInstance id="22" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/SOAMLModel/MetaSOAML.xmi" modelSlotName="soamlModelAceess" roleName="soamlModelAceess" userID="CHA" flexoID="2" />
+  <FlexoOntologyModelSlotInstance id="23" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/WSDLModel/WSDLModel.xmi" modelSlotName="wsdlModelAcess" roleName="wsdlModelAcess" userID="CHA" flexoID="3" />
+  <FlexoOntologyModelSlotInstance id="24" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/BookingHoliday.bpmn" modelSlotName="bpmnModelAccess" roleName="bpmnModelAccess" userID="CHA" flexoID="4" />
+  <ConceptActorReference id="25" roleName="individuals" userID="CHA" flexoID="79" />
+  <ModelObjectActorReference id="26" objectReference="http://www.openflexo.org/projects/2024/1/SecurityRulesFederation_1704641601734.prj/instance1.fml.rt#CHA_19" roleName="listPools" userID="CHA" flexoID="83" />
+  <ModelObjectActorReference id="27" objectReference="http://www.openflexo.org/projects/2024/1/SecurityRulesFederation_1704641601734.prj/instance1.fml.rt#CHA_65" roleName="listPools" userID="CHA" flexoID="84" />
 </FMLRTVirtualModelInstance>

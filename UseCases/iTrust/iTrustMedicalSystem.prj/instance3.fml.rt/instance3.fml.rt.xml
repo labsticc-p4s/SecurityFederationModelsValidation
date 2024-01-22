@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FMLRTVirtualModelInstance id="0" virtualModelURI="http://www.openflexo.org/projects/2024/1/ITrustMedicalSystem_1705498447306.prj/ITrustSecurityFederation.fml" modelVersion="1.0" title="instance3" version="0.1" flexoConceptURI="http://www.openflexo.org/projects/2024/1/ITrustMedicalSystem_1705498447306.prj/ITrustSecurityFederation.fml" userID="CHA" flexoID="1">
+  <FlexoConceptInstance id="1" flexoConceptURI="http://www.openflexo.org/projects/2024/1/ITrustMedicalSystem_1705498447306.prj/ITrustSecurityFederation.fml#CommunicationMessageFlowLink" userID="CHA" flexoID="4" />
+  <FlexoOntologyModelSlotInstance id="2" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn" modelSlotName="bpmnModelAccess" roleName="bpmnModelAccess" userID="CHA" flexoID="2" />
+  <FlexoOntologyModelSlotInstance id="3" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/ITrustDeployementModel.xmi" modelSlotName="deploymentModelAccess" roleName="deploymentModelAccess" userID="CHA" flexoID="3" />
+</FMLRTVirtualModelInstance>

@@ -1,0 +1,7 @@
+bpmnModelResource=BpmnModelResource
+deploymentModelResource=DeploymentModelResource
+invalid_parameter=Invalid parameter
+nameComm=NameComm
+nameMessageFlow=NameMessageFlow
+verify=Verify
+verifyRule=VerifyRule

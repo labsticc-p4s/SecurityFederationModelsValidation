@@ -1,0 +1,149 @@
+namespace "http://www.openflexo.org/projects/2024/1/ITrustMedicalSystem_1705498447306.prj" as ITRUSTMEDICALSYSTEM_1705498447306PRJ;
+
+use org.openflexo.technologyadapter.emf.EMFModelSlot as EMF;
+use org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot as FMLRT;
+
+import org.openflexo.technologyadapter.emf.model.EMFModel;
+import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
+import java.lang.String;
+import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
+import java.util.List;
+
+import ["http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"] as BPMN21;
+import ["http://www.example.org/demployementEcoreMetaModel"] as DEMPLOYEMENT_METAMODEL;
+
+import [BPMN21:"Participant"] as BPMN_PARTICIPANT;
+import [DEMPLOYEMENT_METAMODEL:"Artifact"] as DEPLOYMENT_ARTIFACT;
+import [DEMPLOYEMENT_METAMODEL:"Association"] as DEPLOYMENT_ASSOCIATION;
+import [DEMPLOYEMENT_METAMODEL:"Deploy"] as DEPLOYMENT_DEPLOY;
+import [BPMN21:"MessageFlow"] as BPMN_MESSAGE_FLOW;
+import [DEMPLOYEMENT_METAMODEL:"CommunicationPath"] as DEPLOYMENT_COMMUNICATION_PATH;
+import [ITRUSTMEDICALSYSTEM_1705498447306PRJ + "/ITrustSecurityFederation.fml"] as ITrustSecurityFederation;
+
+@URI("http://www.openflexo.org/projects/2024/1/ITrustMedicalSystem_1705498447306.prj/ITrustSecurityFederation.fml")
+@Author("chahr")
+public model ITrustSecurityFederation {
+	EMFModel bpmnModelAccess with EMFModelSlot(metaModel=BPMN21,isRequired=true);
+	EMFModel deploymentModelAccess with EMFModelSlot(metaModel=DEMPLOYEMENT_METAMODEL);
+	PoolArtifactLink[0,*] instances with ConceptInstance(virtualModelInstance=this);
+
+	 public create::createAccessObject(required Resource<EMFModel> bpmnModelResource, required Resource<EMFModel> deploymentModelResource) {
+      	bpmnModelAccess = parameters.bpmnModelResource.resourceData;
+      	deploymentModelAccess = parameters.deploymentModelResource.resourceData;
+      }
+
+      public verifyRule(required String name) {	
+		
+      	
+      			List<PoolArtifactLink> objs = select PoolArtifactLink from this;
+	for (PoolArtifactLink item : objs) {
+		if (parameters.name == item.artifact.name) {
+			item.verify();
+		}
+	}
+      	
+      }
+
+      delete() {
+		deploymentModelAccess = null;
+		bpmnModelAccess = null;
+	}
+
+	
+
+	public concept PoolArtifactLink {
+		EMFObjectIndividual pool with EMFObjectRole(container=bpmnModelAccess);
+		EMFObjectIndividual artifact with EMFObjectRole(container=bpmnModelAccess);
+
+		create::_create(required String name) {	
+			for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) item : select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess) {	
+				if (item.name == parameters.name) {
+					pool = item;
+				}
+			}
+
+			for (EMFObjectIndividualType(eClass=DEPLOYMENT_DEPLOY) item : select EMFObjectIndividualType(eClass=DEPLOYMENT_DEPLOY) from deploymentModelAccess) {
+	if (item.artifact.nameArtifact == parameters.name) {
+		artifact = item;
+	}
+}
+
+			
+		}
+
+		public verify() {
+			String nodeName = "";
+			String assoArtifact = "";
+			
+			for (EMFObjectIndividualType(eClass=DEPLOYMENT_DEPLOY) deps_item : select EMFObjectIndividualType(eClass=DEPLOYMENT_DEPLOY) from deploymentModelAccess) {
+				if (deps_item.artifact.nameArtifact == artifact.name) {
+					String nodeName = deps_item.device.nameDevice.toString;
+				}
+			}
+		
+			for (EMFObjectIndividualType(eClass=DEPLOYMENT_DEPLOY) item :  select EMFObjectIndividualType(eClass=DEPLOYMENT_DEPLOY) from deploymentModelAccess) {	
+				List<? extends Object> variable = item.getValues("artifact");				
+				
+				for (Object aa : variable) {
+					if (aa.toString.substring(9) != artifact.name && variable.toString.contains(artifact.name)) {
+						assoArtifact = aa.toString.substring(9);
+					} 
+else {
+						assoArtifact = "";
+					}
+				}
+
+				if (!assoArtifact.isEmpty) {
+					for (EMFObjectIndividualType(eClass=DEPLOYMENT_DEPLOY) deps_item : select EMFObjectIndividualType(eClass=DEPLOYMENT_DEPLOY) from deploymentModelAccess) {
+						if (deps_item.artifact.nameArtifact == assoArtifact) {
+							
+							String testNode = "";
+							if (deps_item.node.nameNode.isEmpty) {
+								testNode = deps_item.device.nameDevice;
+							} 
+else {
+								testNode = deps_item.node.nameNode;
+							}
+
+							if (testNode == nodeName) {
+								log "Security check passed";
+							} 
+else {
+								log "Security check failed";
+							}
+						}
+					}
+				}
+			}
+
+		
+		}
+
+		delete() {
+			pool = null;
+			artifact = null;
+		}
+	}
+
+
+	public concept CommunicationMessageFlowLink {
+	EMFObjectIndividual communicationPath with EMFObjectRole(container=deploymentModelAccess);
+	EMFObjectIndividual messageFlow with EMFObjectRole(container=bpmnModelAccess);
+
+	public create::_create(required String nameComm, required String nameMessageFlow) {
+		for (EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) commun_item : select EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) from deploymentModelAccess) {	log "name path comm : " + commun_item.namePathComm;
+}
+	    for (EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW) message_item : select EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW) from bpmnModelAccess) {	log "name : " + message_item.name;
+}
+	    }
+
+	delete() {
+		delete communicationPath;
+		delete messageFlow;
+	}
+		
+		
+	}
+
+	
+}

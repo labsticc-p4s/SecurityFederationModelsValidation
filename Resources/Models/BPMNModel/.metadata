@@ -1,3 +1,5 @@
 #Metadata for directory D:\HeterogenousSecureModelsFederation\Resources\Models\BPMNModel
-#Thu Jan 11 01:56:20 CET 2024
+#Thu Jan 18 17:52:27 GMT+01:00 2024
+AddNewPresecription1.bpmn.rootNamespace=http\://www.omg.org/spec/BPMN/20100524/MODEL
 BookingHoliday.bpmn.rootNamespace=http\://www.omg.org/spec/BPMN/20100524/MODEL
+AddNewPrescription.bpmn.rootNamespace=http\://www.omg.org/spec/BPMN/20100524/MODEL

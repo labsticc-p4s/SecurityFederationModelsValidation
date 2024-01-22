@@ -26,19 +26,19 @@ import [SOAML_META_MODEL:"Interface"] as SOAML_INTERFACE;
 import [SOAML_META_MODEL:"Capability"] as SOAML_CAPABILITY;
 import [WSDLMETAMODEL:"Interface"] as WSDL_INTERFACE;
 import [SECURITYRULESFEDERATION_1704641601734PRJ + "/SecurityModelsFederation.fml"] as SecurityModelsFederation;
-
+import [WSDLMETAMODEL:"Operation"] as WSDL_OPERATION;
 @URI("http://www.openflexo.org/projects/2024/1/SecurityRulesFederation_1704641601734.prj/SecurityModelsFederation.fml")
 @Author("chahr")
 public model SecurityModelsFederation {
-	EMFModel soamlModelAceess with EMFModelSlot(metaModel=SOAML_META_MODEL,isRequired=true);
-	EMFModel wsdlModelAcess with EMFModelSlot(metaModel=WSDLMETAMODEL,isRequired=true);
-	EMFModel bpmnModelAccess with EMFModelSlot(metaModel=BPMN21,isRequired=true);
+	EMFModel soamlModelAceess with EMFModelSlot(metaModel=null,isRequired=true);
+	EMFModel wsdlModelAcess with EMFModelSlot(metaModel=null,isRequired=true);
+	EMFModel bpmnModelAccess with EMFModelSlot(metaModel=null,isRequired=true);
 	EMFObjectIndividual[0,*] individuals with EMFObjectRole(container=this);
 	PoolToPoolLink[0,*] listPools with ConceptInstance(virtualModelInstance=this);
 	EMFObjectIndividual[0,*] listPools1 with EMFObjectRole(container=this);
 	EMFObjectIndividual contract_pool with EMFObjectRole(container=this);
 
-	 public create::createAccessObject(required Resource<EMFModel> bpmnModelResource, required Resource<EMFModel> wsdlModelResource, required Resource<EMFModel> soamlModelResource) {
+	 public create::createAccessObject(required Resource<null> bpmnModelResource, required Resource<null> wsdlModelResource, required Resource<null> soamlModelResource) {
       	soamlModelAceess = parameters.soamlModelResource.resourceData;
       	wsdlModelAcess = parameters.wsdlModelResource.resourceData;
       	bpmnModelAccess = parameters.bpmnModelResource.resourceData;
@@ -79,6 +79,16 @@ public model SecurityModelsFederation {
 	     	if (item1.serviceContract.name.toString == parameters.nameContract ) {
 	     		//listPools.add(item1.pools);
 			
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -150,7 +160,7 @@ public model SecurityModelsFederation {
 		}
 
 		create::_create(required String name) {
-			for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) item : select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess) {	
+			for (EMFObjectIndividualType(eClass=WSDL_OPERATION) item : select EMFObjectIndividualType(eClass=WSDL_OPERATION) from bpmnModelAccess) {	
 				List<? extends Object> variable = item.getValues("name");
 
 				if (variable.get(0).toString == parameters.name) {
@@ -159,7 +169,7 @@ public model SecurityModelsFederation {
 			}
 
 			
-			for (EMFObjectIndividualType(eClass=SOAML_PARTICIPANT) partItem :  select EMFObjectIndividualType(eClass=SOAML_PARTICIPANT) from soamlModelAceess) {
+			for (EMFObjectIndividualType(eClass=WSDL_OPERATION) partItem :  select EMFObjectIndividualType(eClass=WSDL_OPERATION) from soamlModelAceess) {
 				if (partItem.name == parameters.name) {
 					participant = partItem;
 				}
@@ -179,13 +189,13 @@ public model SecurityModelsFederation {
 
 		public void checkSecurityAnnotations() {
 			boolean check = false;
-			List<? extends Object> associations = select EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) from bpmnModelAccess;
-			for (EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) asso : associations) {
+			List<? extends Object> associations = select EMFObjectIndividualType(eClass=WSDL_OPERATION) from bpmnModelAccess;
+			for (EMFObjectIndividualType(eClass=WSDL_OPERATION) asso : associations) {
 				if (asso.targetRef.id == pool.name) {
-					List<? extends Object> annotations = select EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) from bpmnModelAccess;
-					for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) annotation : annotations) {
+					List<? extends Object> annotations = select EMFObjectIndividualType(eClass=WSDL_OPERATION) from bpmnModelAccess;
+					for (EMFObjectIndividualType(eClass=WSDL_OPERATION) annotation : annotations) {
 						if (annotation.id == asso.sourceRef.id) {
-							for (EMFObjectIndividualType(eClass=SOAML_PARTICIPANT_ROLE) item : select EMFObjectIndividualType(eClass=SOAML_PARTICIPANT_ROLE) from soamlModelAceess) {
+							for (EMFObjectIndividualType(eClass=WSDL_OPERATION) item : select EMFObjectIndividualType(eClass=WSDL_OPERATION) from soamlModelAceess) {
 								if (item.name == participant.name + "Role") {
 									List<? extends Object> privacy = item.getValues("privacy");
 									List<? extends Object> access = item.getValues("accesscontrol");
@@ -224,7 +234,7 @@ public model SecurityModelsFederation {
 		
 		create::_create(required String name1,required String name2) {
 
-			for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) item : select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess) {	
+			for (EMFObjectIndividualType(eClass=WSDL_OPERATION) item : select EMFObjectIndividualType(eClass=WSDL_OPERATION) from bpmnModelAccess) {	
 				List<? extends Object> variable = item.getValues("name");
 
 				if (variable.get(0).toString == parameters.name1) {
@@ -245,11 +255,11 @@ public model SecurityModelsFederation {
 	}
 
 	public concept ContractToPoolsLink {
-		EMFObjectIndividualType(eClass=SOAML_CONTRACT) serviceContract with EMFObjectRole(container=soamlModelAceess,type=SOAML_CONTRACT);
+		EMFObjectIndividual serviceContract with EMFObjectRole(container=soamlModelAceess,type=null);
 		PoolToPoolLink pools with ConceptInstance(virtualModelInstance=container);
 		
 		create::_create(String contract, PoolToPoolLink pools) {	
-		 	for (EMFObjectIndividualType(eClass=SOAML_CONTRACT) item : select  EMFObjectIndividualType(eClass=SOAML_CONTRACT) from soamlModelAceess) {
+		 	for (EMFObjectIndividualType(eClass=WSDL_OPERATION) item : select  EMFObjectIndividualType(eClass=WSDL_OPERATION) from soamlModelAceess) {
 			 	if (item.name == parameters.contract) {
 	                    serviceContract = item;
 	                }
@@ -265,29 +275,29 @@ public model SecurityModelsFederation {
 
 	 	public checkDataSecurityAnnotation (required PoolToPoolLink pools) {
 			boolean check = false;
-			List<? extends Object> listParticipant = select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess;
-			List<? extends Object> listProcess = select EMFObjectIndividualType(eClass=BPMN_PROCESS) from bpmnModelAccess;
-			List<? extends Object> listDataObject = select EMFObjectIndividualType(eClass=BPMN_DATAOBJECT) from bpmnModelAccess;
-			List<? extends Object> associations = select EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) from bpmnModelAccess;
-			List<? extends Object> annotations = select EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) from bpmnModelAccess;
+			List<? extends Object> listParticipant = select EMFObjectIndividualType(eClass=WSDL_OPERATION) from bpmnModelAccess;
+			List<? extends Object> listProcess = select EMFObjectIndividualType(eClass=WSDL_OPERATION) from bpmnModelAccess;
+			List<? extends Object> listDataObject = select EMFObjectIndividualType(eClass=WSDL_OPERATION) from bpmnModelAccess;
+			List<? extends Object> associations = select EMFObjectIndividualType(eClass=WSDL_OPERATION) from bpmnModelAccess;
+			List<? extends Object> annotations = select EMFObjectIndividualType(eClass=WSDL_OPERATION) from bpmnModelAccess;
 			log listParticipant.toString;
 			log listProcess.toString;
 			log listDataObject.toString;
 			log associations.toString;
 			log annotations.toString;
 			int i = 0;
-			for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) parti : listParticipant) {
+			for (EMFObjectIndividualType(eClass=WSDL_OPERATION) parti : listParticipant) {
 				if (parti.id.toString == pools.pool1.name.toString || parti.id.toString == pools.pool2.name.toString) {
-					for (EMFObjectIndividualType(eClass=BPMN_PROCESS) proces : listProcess) {
+					for (EMFObjectIndividualType(eClass=WSDL_OPERATION) proces : listProcess) {
 						if (proces.id.toString == parti.processRef.id.toString) {
 							log "list" + proces.flowElements.toString;
 							int n = proces.flowElements.size();
 							log n.toString;
 							
-							for (EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) asso : associations) {
+							for (EMFObjectIndividualType(eClass=WSDL_OPERATION) asso : associations) {
 								for (int j=0 ; j < n ; j++) {
 							     	if (asso.targetRef.id == proces.flowElements.get(j).id ) {
-							     		for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) annotation : annotations) {
+							     		for (EMFObjectIndividualType(eClass=WSDL_OPERATION) annotation : annotations) {
 							     			if (annotation.id == asso.sourceRef.id && annotation.text.contains("integrity") && annotation.text.contains("nonrepudiation")) {
 							     				check = true;
 							     			} 
@@ -341,12 +351,12 @@ public model SecurityModelsFederation {
 	EMFObjectIndividual interface2 with EMFObjectRole(container=soamlModelAceess);
 
 	create::_create(required String name1, required String name2) {
-		for (EMFObjectIndividualType(eClass=SOAML_INTERFACE) item : select EMFObjectIndividualType(eClass=SOAML_INTERFACE) from soamlModelAceess) {
+		for (EMFObjectIndividualType(eClass=WSDL_OPERATION) item : select EMFObjectIndividualType(eClass=WSDL_OPERATION) from soamlModelAceess) {
 			if (item.name == parameters.name2) {
 				interface2 = item;
 			}
 		}
-		for (EMFObjectIndividualType(eClass=WSDL_INTERFACE) item : select EMFObjectIndividualType(eClass=WSDL_INTERFACE) from wsdlModelAcess) {
+		for (EMFObjectIndividualType(eClass=WSDL_OPERATION) item : select EMFObjectIndividualType(eClass=WSDL_OPERATION) from wsdlModelAcess) {
 				if (item.name == parameters.name1) {
 		interface1 = item;
 	}
@@ -358,48 +368,10 @@ public model SecurityModelsFederation {
 		delete interface2;
 	}
 
-	public void test5() {
-		int count = 0;
-		List<? extends Object> variable = interface2.getValues("Expose");
-		
-		//String name = variable.get(0).toString.substring(11);
-		String name = variable.toString;
-		
-		for (EMFObjectIndividualType(eClass=SOAML_CAPABILITY) item : select EMFObjectIndividualType(eClass=SOAML_CAPABILITY) from soamlModelAceess) {
-	if (item.name == name) {
-		count = count + 1;
-	}
-}
-
-	}
-
-	public void test6() {
-		int count = 0;
-		List<? extends Object> variable = interface2.getValues("Expose");
-		for (EMFObjectIndividualType(eClass=SOAML_CAPABILITY) item : select EMFObjectIndividualType(eClass=SOAML_CAPABILITY) from soamlModelAceess;) {
-	for (Object item2 : variable;) {
-		log item2.toString.substring(11);
-		if (item2.toString.substring(11) == item.name) {
-			count = count + 1;
-		}
-	}
-}
-	}
-
-	public void test8() {
-		long count = 0;
-		if (interface2.getValues("Expose").size == count) {
-	log "valid";
-}
-else {
-	log "invalid";
-}
-	}
-
-	public void test9() {
+	public void verifyInterfaceOperation() {
 		long count = 0;
 		List<? extends Object> operations = interface2.getValues("Expose");
-		for (EMFObjectIndividualType(eClass=SOAML_CAPABILITY) item : select EMFObjectIndividualType(eClass=SOAML_CAPABILITY) from soamlModelAceess) {
+		for (EMFObjectIndividualType(eClass=WSDL_OPERATION) item : select EMFObjectIndividualType(eClass=WSDL_OPERATION) from soamlModelAceess) {
 			for (Object item2 : operations) {
 				if (item2.toString.substring(11) == item.name) {
 					count = count + 1;
@@ -412,6 +384,13 @@ else {
 		else {
 			log "invalid";
 		}
+	}
+
+	public void rule1(String name) {	
+		for (EMFObjectIndividualType(eClass=WSDL_OPERATION) item : select EMFObjectIndividualType(eClass=WSDL_OPERATION) from wsdlModelAcess) {
+			log item.name.toString;
+		}
+		
 	}
 
    	

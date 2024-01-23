@@ -1,0 +1,5 @@
+bpmnModelResource=bpmnModelResource
+deploymentModelResource=deploymentModelResource
+nameCommPath=nameCommPath
+nameMessage=nameMessage
+verifySecureCommunication=verifySecureCommunication

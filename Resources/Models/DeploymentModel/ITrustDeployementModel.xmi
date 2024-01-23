@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<demployementEcoreMetaModel:DeployementModel
+<deployementEcoreMetaModel:DeployementModel
     xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:demployementEcoreMetaModel="http://www.example.org/demployementEcoreMetaModel"
-    xsi:schemaLocation="http://www.example.org/demployementEcoreMetaModel deployementEcoreMetaModel2.ecore"
+    xmlns:deployementEcoreMetaModel="http://www.example.org/deployementEcoreMetaModel"
+    xsi:schemaLocation="http://www.example.org/deployementEcoreMetaModel deployementEcoreMetaModel.ecore"
     nameModel="iTrustModelDeployement">
   <node nameNode="Hospital">
     <node nameNode="WebServer"/>
@@ -69,13 +69,13 @@
       artifact="//@artifact.4"
       nameDeploy="deployeAuthenticationWebServer"/>
   <securityproperties
-      xsi:type="demployementEcoreMetaModel:Integrity"/>
+      xsi:type="deployementEcoreMetaModel:Integrity"/>
   <securityproperties
-      xsi:type="demployementEcoreMetaModel:Secrecy"/>
+      xsi:type="deployementEcoreMetaModel:Secrecy"/>
   <securityproperties
-      xsi:type="demployementEcoreMetaModel:Internet"/>
+      xsi:type="deployementEcoreMetaModel:Internet"/>
   <securityproperties
-      xsi:type="demployementEcoreMetaModel:Call"/>
+      xsi:type="deployementEcoreMetaModel:Call"/>
   <securityproperties
-      xsi:type="demployementEcoreMetaModel:Encrypted"/>
-</demployementEcoreMetaModel:DeployementModel>
+      xsi:type="deployementEcoreMetaModel:Encrypted"/>
+</deployementEcoreMetaModel:DeployementModel>

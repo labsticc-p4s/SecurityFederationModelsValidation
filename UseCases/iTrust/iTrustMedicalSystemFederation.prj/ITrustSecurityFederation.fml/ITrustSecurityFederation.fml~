@@ -1,0 +1,113 @@
+namespace "http://www.openflexo.org/projects/2024/1/ITrustMedicalSystem_1705498447306.prj" as ITRUSTMEDICALSYSTEM_1705498447306PRJ;
+
+use org.openflexo.technologyadapter.emf.EMFModelSlot as EMF;
+use org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot as FMLRT;
+
+import org.openflexo.technologyadapter.emf.model.EMFModel;
+import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
+import java.lang.String;
+import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
+import java.util.List;
+
+import ["http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"] as BPMN21;
+import ["http://www.example.org/deployementEcoreMetaModel"] as DEPLOYEMENT_ECORE_META_MODEL;
+
+import [BPMN21:"Participant"] as BPMN_PARTICIPANT;
+import [DEPLOYEMENT_ECORE_META_MODEL:"Artifact"] as DEPLOYMENT_ARTIFACT;
+import [BPMN21:"MessageFlow"] as BPMN_MESSAGE_FLOW;
+import [BPMN21:"TextAnnotation"] as BPMN_TEXT_ANNOTATION;
+import [BPMN21:"Association"] as BPMN_ASSOCIATION;
+
+import [DEPLOYEMENT_ECORE_META_MODEL:"CommunicationPath"] as DEPLOYMENT_COMMUNICATION_PATH;
+
+@URI("http://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/ITrustSecurityFederation.fml")
+@Author("chahr")
+public model ITrustSecurityFederation {
+	EMFModel bpmnModelAccess with EMFModelSlot(metaModel=BPMN21,isRequired=true);
+	EMFModel deploymentModelAccess with EMFModelSlot(metaModel=DEPLOYEMENT_ECORE_META_MODEL,isRequired=true);
+
+
+	 public create::createAccessObject(required Resource<EMFModel> bpmnModelResource, required Resource<EMFModel> deploymentModelResource) {
+      	bpmnModelAccess = parameters.bpmnModelResource.resourceData;
+          deploymentModelAccess = parameters.deploymentModelResource.resourceData;
+      }
+
+
+     public concept PoolArtifactLink {
+     	EMFObjectIndividual pool with EMFObjectRole(container=bpmnModelAccess);
+     	EMFObjectIndividual artifact with EMFObjectRole(container=deploymentModelAccess);
+
+     	create::_create(required String name) {	
+					for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) itemPool : select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess) {
+		if (itemPool.name == parameters.name) {
+			pool = itemPool;
+		}
+	
+	     for (EMFObjectIndividualType(eClass=DEPLOYMENT_ARTIFACT) itemArtifact : select EMFObjectIndividualType(eClass=DEPLOYMENT_ARTIFACT) from deploymentModelAccess) {
+	         	log itemArtifact.nameArtifact.toString;
+	         	if (itemArtifact.nameArtifact == parameters.name) {
+	         		artifact =itemArtifact;
+	         		
+	         	}
+	         
+		}
+		}
+        }
+	
+	                
+	         
+
+	delete() {
+		delete pool;
+		delete artifact;
+	}
+     	
+     }
+
+
+     public concept MessageFlowCommunicationPathLink {
+		EMFObjectIndividual messageFlow with EMFObjectRole(container=bpmnModelAccess);
+     	EMFObjectIndividual communicationPath with EMFObjectRole(container=deploymentModelAccess);
+
+     	create::_create(required String nameMessage,required String nameCommPath) {	
+     		
+     		for (EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW) itemMessage : select EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW) from bpmnModelAccess) {
+				if (itemMessage.name == parameters.nameMessage) {
+					messageFlow = itemMessage;
+				}
+			}
+	        for (EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) itemCommPath : select EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) from deploymentModelAccess) {
+	        		if (itemCommPath.name == parameters.nameCommPath) {
+	        			log itemCommPath.name.toString;
+					communicationPath =itemCommPath;
+				}
+	       }
+	                 		         
+	     }
+  		public verifySecureCommunication() {
+  			boolean check = false;
+  			log communicationPath.toString;
+  			List<? extends Object> encrypted = communicationPath.getValues("encrypted");
+  			List<? extends Object> annotations = select EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) from bpmnModelAccess; 
+  			List<? extends Object> associations = select EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) from bpmnModelAccess;
+  			for (EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) asso : associations ) {
+  				if (asso.targetRef.id == messageFlow.toString.substring(12)) {
+  					for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) annota : annotations) {
+  					      if (asso.sourceRef.id == annota.id) {
+  						    if (encrypted != null && (annota.text.contains("NonRepudMF") || annota.text.contains("ConfidentialityMF") || annota.text.contains("IntegrityMF")) ) {
+								log "test " + annota.text;
+}
+						}
+  						}	
+  						}
+  					}
+     	
+  		}
+     
+
+	delete() {
+		delete messageFlow;
+		delete communicationPath;
+	}
+}
+}

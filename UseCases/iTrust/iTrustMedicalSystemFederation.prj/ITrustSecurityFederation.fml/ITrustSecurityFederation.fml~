@@ -116,10 +116,10 @@ public model ITrustSecurityFederation {
 								if (asso.sourceRef.id == parti.processRef.flowElements.get(j).id && annotation.id == asso.targetRef.id ) {
 						
 							    		if (annotation.text.contains("IntegrityDo") && annotation.text.contains("ConfidentialityDo")) {
-							     		log "x";
+							     		log"Contains private Data";
 							    		 } 
 							    		 else {
-										log "x1";   		
+										log"No private data";   		
 									}
 						}
 					}
@@ -145,37 +145,36 @@ public model ITrustSecurityFederation {
 					messageFlow = itemMessage;
 				}
 			}
-	        for (EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) itemCommPath : select EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) from deploymentModelAccess) {
+	       	 for (EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) itemCommPath : select EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) from deploymentModelAccess) {
 	        		if (itemCommPath.name == parameters.nameCommPath) {
 	        			log itemCommPath.name.toString;
 					communicationPath =itemCommPath;
 				}
-	       }
+	      	 }
 	                 		         
 	     }
-  		public boolean verifySecureCommunication() {
-  			boolean check = false;
-  			log communicationPath.toString;
-  			List<? extends Object> encrypted = communicationPath.getValues("encrypted");
-  			List<? extends Object> annotations = select EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) from bpmnModelAccess; 
-  			List<? extends Object> associations = select EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) from bpmnModelAccess;
-  			for (EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) asso : associations ) {
-  				if (asso.targetRef.id == messageFlow.toString.substring(12)) {
-  					for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) annota : annotations) {
-  					      if (asso.sourceRef.id == annota.id) {
-  						    if (encrypted != null && (annota.text.contains("NonRepudMF") || annota.text.contains("ConfidentialityMF") || annota.text.contains("IntegrityMF")) ) {
-								log "test " + annota.text;
-								check =true;
-							}
-							else {
-								check = false;
-						     	}
+  	public boolean verifySecureCommunication() {
+  		boolean check = false;
+  		log communicationPath.toString;
+  		List<? extends Object> encrypted = communicationPath.getValues("encrypted");
+  		List<? extends Object> annotations = select EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) from bpmnModelAccess; 
+  		List<? extends Object> associations = select EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) from bpmnModelAccess;
+  		for (EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) asso : associations ) {
+  			if (asso.targetRef.id == messageFlow.toString.substring(12)) {
+  				for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) annota : annotations) {
+  					if (asso.sourceRef.id == annota.id) {
+  						if (encrypted != null && (annota.text.contains("NonRepudMF") || annota.text.contains("ConfidentialityMF") || annota.text.contains("IntegrityMF")) ) {
+							check =true;
 						}
+						else {
+							check = false;
+						     }
+					}
 							
-  					}	
-  				}
+  				}	
   			}
-     	        return check;
+  		}
+     	return check;
   	  }
      
 

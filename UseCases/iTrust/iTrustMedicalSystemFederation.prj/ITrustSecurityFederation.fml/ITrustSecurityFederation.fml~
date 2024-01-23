@@ -40,13 +40,10 @@ public model ITrustSecurityFederation {
  
       	List<MessageFlowCommunicationPathLink> objs = select MessageFlowCommunicationPathLink from this;
       	for (MessageFlowCommunicationPathLink instanceMesageComm :objs ) {
-      		  log instanceMesageComm.toString;
-      			
-      			if (instanceMesageComm.verifySecureCommunication() == true) {
-      				log "instanceMesageComm"; 
-      			}
-      		
-      	}
+      		if (instanceMesageComm.verifySecureCommunication() == true) {
+      			log "The Security rules is not violated"; 
+      		}
+		}
       	
       }
 
@@ -56,24 +53,21 @@ public model ITrustSecurityFederation {
      	EMFObjectIndividual artifact with EMFObjectRole(container=deploymentModelAccess);
 
      	create::_create(required String name) {	
-					for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) itemPool : select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess) {
-		if (itemPool.name == parameters.name) {
-			pool = itemPool;
+		for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) itemPool : select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess) {
+			if (itemPool.name == parameters.name) {
+				pool = itemPool;
+			}
 		}
 	
 	     for (EMFObjectIndividualType(eClass=DEPLOYMENT_ARTIFACT) itemArtifact : select EMFObjectIndividualType(eClass=DEPLOYMENT_ARTIFACT) from deploymentModelAccess) {
 	         	log itemArtifact.nameArtifact.toString;
 	         	if (itemArtifact.nameArtifact == parameters.name) {
-	         		artifact =itemArtifact;
-	         		
-	         	}
-	         
+	         		artifact =itemArtifact;	
+	  	 	}
 		}
-		}
+		
         }
-	
-	                
-	         
+         
 
 	delete() {
 		delete pool;
@@ -117,20 +111,20 @@ public model ITrustSecurityFederation {
 								check =true;
 							}
 							else {
-							check = false;
-						}
+								check = false;
+						     	}
 						}
 							
-  						}	
-  						}
-  					}
+  					}	
+  				}
+  			}
      	        return check;
-  		}
+  	}
      
 
 	delete() {
 		delete messageFlow;
 		delete communicationPath;
 	}
-}
+	}
 }

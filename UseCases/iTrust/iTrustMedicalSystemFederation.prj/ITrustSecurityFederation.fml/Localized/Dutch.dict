@@ -1,6 +1,8 @@
 bpmnModelResource=bpmnModelResource
 deploymentModelResource=deploymentModelResource
+iTrustSecurityRule1=iTrustSecurityRule1
 nameCommPath=nameCommPath
 nameMessage=nameMessage
 verifyAllMessageCommPath=verifyAllMessageCommPath
+verifyRule=verifyRule
 verifySecureCommunication=verifySecureCommunication

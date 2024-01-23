@@ -17,7 +17,9 @@ import [DEPLOYEMENT_ECORE_META_MODEL:"Artifact"] as DEPLOYMENT_ARTIFACT;
 import [BPMN21:"MessageFlow"] as BPMN_MESSAGE_FLOW;
 import [BPMN21:"TextAnnotation"] as BPMN_TEXT_ANNOTATION;
 import [BPMN21:"Association"] as BPMN_ASSOCIATION;
-
+import [BPMN21:"Process"] as BPMN_PROCESS;
+import [BPMN21:"DataObject"] as BPMN_DATAOBJECT;
+import [DEPLOYEMENT_ECORE_META_MODEL:"Deploy"] as DEPLOYMENT_DEPLOY;
 import [DEPLOYEMENT_ECORE_META_MODEL:"CommunicationPath"] as DEPLOYMENT_COMMUNICATION_PATH;
 
 @URI("http://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/ITrustSecurityFederation.fml")
@@ -26,7 +28,7 @@ public model ITrustSecurityFederation {
 	EMFModel bpmnModelAccess with EMFModelSlot(metaModel=BPMN21,isRequired=true);
 	EMFModel deploymentModelAccess with EMFModelSlot(metaModel=DEPLOYEMENT_ECORE_META_MODEL,isRequired=true);
 	MessageFlowCommunicationPathLink[0,*] listInstancesMessageComm with ConceptInstance(virtualModelInstance=this);
-
+     EMFObjectIndividual listNodeDevice with EMFObjectRole(container=this);
 
 	 public create::createAccessObject(required Resource<EMFModel> bpmnModelResource, required Resource<EMFModel> deploymentModelResource) {
       	bpmnModelAccess = parameters.bpmnModelResource.resourceData;
@@ -46,6 +48,15 @@ public model ITrustSecurityFederation {
 		}
       	
       }
+
+       public verifyRule(required String name) {	
+		List<PoolArtifactLink> objs = select PoolArtifactLink from this;
+		for (PoolArtifactLink item : objs) {
+			if (parameters.name == item.artifact.name) {
+				item.iTrustSecurityRule1();
+			}
+		}
+    }
 
 
      public concept PoolArtifactLink {
@@ -72,6 +83,52 @@ public model ITrustSecurityFederation {
 	delete() {
 		delete pool;
 		delete artifact;
+	}
+
+
+	public iTrustSecurityRule1() {
+		listNodeDevice = null;
+		List<? extends Object> listParticipant = select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess;
+		List<? extends Object> listProcess = select EMFObjectIndividualType(eClass=BPMN_PROCESS) from bpmnModelAccess;
+		List<? extends Object> associations = select EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) from bpmnModelAccess;
+		List<? extends Object> annotations = select EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) from bpmnModelAccess;
+		for (EMFObjectIndividualType(eClass=DEPLOYMENT_DEPLOY) itemDeploy : select EMFObjectIndividualType(eClass=DEPLOYMENT_DEPLOY) from deploymentModelAccess) {
+			if (itemDeploy.artifact.nameArtifact == artifact.name) {
+				log artifact.name.toString;
+				if (itemDeploy.device != null ) {
+					log itemDeploy.device.toString;
+					listNodeDevice = itemDeploy.device;
+				}
+				else {
+					if (itemDeploy.node != null) {
+						listNodeDevice = itemDeploy.node;
+					}
+				}		
+			}	
+		}
+
+		for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) parti : listParticipant) {
+			if (parti.id.toString == pool.name.toString) {
+				int n = parti.processRef.flowElements.size();
+				for (EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) asso : associations) {
+                         	for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) annotation : annotations) {
+                         		 for (int j=0 ; j < n ; j++) {
+								if (asso.sourceRef.id == parti.processRef.flowElements.get(j).id && annotation.id == asso.targetRef.id ) {
+						
+							    		if (annotation.text.contains("IntegrityDo") && annotation.text.contains("ConfidentialityDo")) {
+							     		log "x";
+							    		 } 
+							    		 else {
+										log "x1";   		
+									}
+						}
+					}
+				}
+				}
+			}
+		}
+		
+		
 	}
      	
      }
@@ -119,7 +176,7 @@ public model ITrustSecurityFederation {
   				}
   			}
      	        return check;
-  	}
+  	  }
      
 
 	delete() {

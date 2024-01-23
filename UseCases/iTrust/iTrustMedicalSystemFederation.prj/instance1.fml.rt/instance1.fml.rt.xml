@@ -14,4 +14,5 @@
   </FlexoConceptInstance>
   <FlexoOntologyModelSlotInstance id="10" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn" modelSlotName="bpmnModelAccess" roleName="bpmnModelAccess" userID="CHA" flexoID="2" />
   <FlexoOntologyModelSlotInstance id="11" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/ITrustDeployementModel.xmi" modelSlotName="deploymentModelAccess" roleName="deploymentModelAccess" userID="CHA" flexoID="3" />
+  <ConceptActorReference id="12" roleName="listNodeDevice" userID="CHA" flexoID="51" />
 </FMLRTVirtualModelInstance>

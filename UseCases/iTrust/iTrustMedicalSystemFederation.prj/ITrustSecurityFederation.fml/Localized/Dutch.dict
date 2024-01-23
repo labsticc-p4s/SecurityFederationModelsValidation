@@ -2,4 +2,5 @@ bpmnModelResource=bpmnModelResource
 deploymentModelResource=deploymentModelResource
 nameCommPath=nameCommPath
 nameMessage=nameMessage
+verifyAllMessageCommPath=verifyAllMessageCommPath
 verifySecureCommunication=verifySecureCommunication

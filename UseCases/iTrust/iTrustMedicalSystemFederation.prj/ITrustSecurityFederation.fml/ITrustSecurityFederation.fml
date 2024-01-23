@@ -25,11 +25,29 @@ import [DEPLOYEMENT_ECORE_META_MODEL:"CommunicationPath"] as DEPLOYMENT_COMMUNIC
 public model ITrustSecurityFederation {
 	EMFModel bpmnModelAccess with EMFModelSlot(metaModel=BPMN21,isRequired=true);
 	EMFModel deploymentModelAccess with EMFModelSlot(metaModel=DEPLOYEMENT_ECORE_META_MODEL,isRequired=true);
+	MessageFlowCommunicationPathLink[0,*] listInstancesMessageComm with ConceptInstance(virtualModelInstance=this);
 
 
 	 public create::createAccessObject(required Resource<EMFModel> bpmnModelResource, required Resource<EMFModel> deploymentModelResource) {
       	bpmnModelAccess = parameters.bpmnModelResource.resourceData;
           deploymentModelAccess = parameters.deploymentModelResource.resourceData;
+      }
+
+
+
+
+      public verifyAllMessageCommPath() {
+ 
+      	List<MessageFlowCommunicationPathLink> objs = select MessageFlowCommunicationPathLink from this;
+      	for (MessageFlowCommunicationPathLink instanceMesageComm :objs ) {
+      		  log instanceMesageComm.toString;
+      			
+      			if (instanceMesageComm.verifySecureCommunication() == true) {
+      				log "The Security rules is not violated"; 
+      			}
+      		
+      	}
+      	
       }
 
 
@@ -84,7 +102,7 @@ public model ITrustSecurityFederation {
 	       }
 	                 		         
 	     }
-  		public verifySecureCommunication() {
+  		public boolean verifySecureCommunication() {
   			boolean check = false;
   			log communicationPath.toString;
   			List<? extends Object> encrypted = communicationPath.getValues("encrypted");
@@ -97,15 +115,16 @@ public model ITrustSecurityFederation {
   						    if (encrypted != null && (annota.text.contains("NonRepudMF") || annota.text.contains("ConfidentialityMF") || annota.text.contains("IntegrityMF")) ) {
 								log "test " + annota.text;
 								check =true;
-}
-						}
-else {
+							}
+							else {
 							check = false;
 						}
+						}
+							
   						}	
   						}
   					}
-     	
+     	        return check;
   		}
      
 

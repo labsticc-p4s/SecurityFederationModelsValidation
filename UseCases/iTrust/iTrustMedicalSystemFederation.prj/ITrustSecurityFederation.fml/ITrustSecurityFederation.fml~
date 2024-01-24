@@ -58,10 +58,20 @@ public model ITrustSecurityFederation {
 		}
     }
 
+	  public fillListInstanceMessageFlowComm() {
+	  	List<MessageFlowCommunicationPathLink> objs = select MessageFlowCommunicationPathLink from this;
+		for (MessageFlowCommunicationPathLink item : objs) {
+			//listInstancesMessageComm.add(item);			
+		
+
+}    	
+	 }
+
 
      public concept PoolArtifactLink {
      	EMFObjectIndividual pool with EMFObjectRole(container=bpmnModelAccess);
      	EMFObjectIndividual artifact with EMFObjectRole(container=deploymentModelAccess);
+     	MessageFlowCommunicationPathLink[0,*] listInstancesMessageComm with ConceptInstance(virtualModelInstance=container);
 
      	create::_create(required String name) {	
 		for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) itemPool : select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess) {
@@ -94,9 +104,7 @@ public model ITrustSecurityFederation {
 		List<? extends Object> annotations = select EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) from bpmnModelAccess;
 		for (EMFObjectIndividualType(eClass=DEPLOYMENT_DEPLOY) itemDeploy : select EMFObjectIndividualType(eClass=DEPLOYMENT_DEPLOY) from deploymentModelAccess) {
 			if (itemDeploy.artifact.nameArtifact == artifact.name) {
-				log artifact.name.toString;
 				if (itemDeploy.device != null ) {
-					log itemDeploy.device.toString;
 					listNodeDevice = itemDeploy.device;
 				}
 				else {
@@ -107,29 +115,71 @@ public model ITrustSecurityFederation {
 			}	
 		}
 
+		for (MessageFlowCommunicationPathLink item : listInstancesMessageComm) {
+				log listInstancesMessageComm.get(0).messageFlow.name.toString;
+			     log listInstancesMessageComm.get(0).communicationPath.name.toString;
+		}
+
 		for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) parti : listParticipant) {
 			if (parti.id.toString == pool.name.toString) {
 				int n = parti.processRef.flowElements.size();
 				for (EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) asso : associations) {
-                         	for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) annotation : annotations) {
-                         		 for (int j=0 ; j < n ; j++) {
-								if (asso.sourceRef.id == parti.processRef.flowElements.get(j).id && annotation.id == asso.targetRef.id ) {
-						
-							    		if (annotation.text.contains("IntegrityDo") && annotation.text.contains("ConfidentialityDo")) {
-							     		log"Contains private Data";
-							    		 } 
-							    		 else {
-										log"No private data";   		
-									}
+                    	for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) annotation : annotations) {
+                         	 for (int j=0 ; j < n ; j++) {
+						 	if (asso.sourceRef.id == parti.processRef.flowElements.get(j).id && annotation.id == asso.targetRef.id ) {
+								if (annotation.text.contains("IntegrityDo") && annotation.text.contains("ConfidentialityDo")) {
+							     	log"Contains private Data";
+							    	 } 
+							    	else {
+									log"No private data";   		
+								}
+							}
 						}
 					}
 				}
-				}
 			}
 		}
+
 		
 		
 	}
+
+	public verifyExistenceInstance() {
+		List<? extends Object> listParticipant = select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess;
+		List<? extends Object> listProcess = select EMFObjectIndividualType(eClass=BPMN_PROCESS) from bpmnModelAccess;
+		List<? extends Object> listMessageFlow = select EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW)  from bpmnModelAccess;
+		List<? extends Object> listCommuPath = select EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH)  from deploymentModelAccess;
+		
+		for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) parti : listParticipant) {
+			if (parti.id.toString == pool.name.toString) {
+				int n = parti.processRef.flowElements.size();
+				for (EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW) dataflow :listMessageFlow) {
+					//log listInstancesMessageComm.get(0).messageFlow.name.toString;
+				     //log listInstancesMessageComm.get(0).communicationPath.name.toString;
+				     //log "xx" +dataflow.id.toString;
+				     for (int j=0 ; j < n ; j++) {
+						if (dataflow.sourceRef.toString == parti.processRef.flowElements.get(j).toString) {
+							if (dataflow.id == listInstancesMessageComm.get(0).messageFlow.name) {
+								log listNodeDevice.toString;
+								for (EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) commPath :listCommuPath ) {
+									if (commPath.name == listInstancesMessageComm.get(0).communicationPath.name ) {
+										log listNodeDevice.name;
+										log commPath.device.toString;
+									}
+									
+								}
+								
+							}
+							
+						}
+	
+					}
+	
+				}
+			}
+		}
+	}
+	
      	
      }
 

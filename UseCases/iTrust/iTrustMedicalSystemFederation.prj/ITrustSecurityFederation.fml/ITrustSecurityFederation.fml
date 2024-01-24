@@ -58,10 +58,20 @@ public model ITrustSecurityFederation {
 		}
     }
 
+	  public fillListInstanceMessageFlowComm() {
+	  	List<MessageFlowCommunicationPathLink> objs = select MessageFlowCommunicationPathLink from this;
+		for (MessageFlowCommunicationPathLink item : objs) {
+			//listInstancesMessageComm.add(item);			
+		
+
+}    	
+	 }
+
 
      public concept PoolArtifactLink {
      	EMFObjectIndividual pool with EMFObjectRole(container=bpmnModelAccess);
      	EMFObjectIndividual artifact with EMFObjectRole(container=deploymentModelAccess);
+     	MessageFlowCommunicationPathLink[0,*] listInstancesMessageComm with ConceptInstance(virtualModelInstance=container);
 
      	create::_create(required String name) {	
 		for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) itemPool : select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess) {
@@ -105,6 +115,11 @@ public model ITrustSecurityFederation {
 			}	
 		}
 
+		for (MessageFlowCommunicationPathLink item : listInstancesMessageComm) {
+				log listInstancesMessageComm.get(0).messageFlow.name.toString;
+			     log listInstancesMessageComm.get(0).communicationPath.name.toString;
+		}
+
 		for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) parti : listParticipant) {
 			if (parti.id.toString == pool.name.toString) {
 				int n = parti.processRef.flowElements.size();
@@ -112,8 +127,15 @@ public model ITrustSecurityFederation {
                     	for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) annotation : annotations) {
                          	 for (int j=0 ; j < n ; j++) {
 						 	if (asso.sourceRef.id == parti.processRef.flowElements.get(j).id && annotation.id == asso.targetRef.id ) {
-								if (annotation.text.contains("IntegrityDo") && annotation.text.contains("ConfidentialityDo")) {
+								if (annotation.text.contains("IntegrityDo") && annotation.text.contains("ConfidentialityDo") ) {
 							     	log"Contains private Data";
+							     	boolean checkInstance = this.verifyExistenceInstance();
+							     	if (checkInstance) {
+							     		log"intance existe";
+							     	}
+else {
+										log"intance non existe";   		
+								     }
 							    	 } 
 							    	else {
 									log"No private data";   		
@@ -124,9 +146,47 @@ public model ITrustSecurityFederation {
 				}
 			}
 		}
+
 		
 		
 	}
+
+	public boolean verifyExistenceInstance() {     
+		List<? extends Object> listParticipant = select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess;
+		List<? extends Object> listProcess = select EMFObjectIndividualType(eClass=BPMN_PROCESS) from bpmnModelAccess;
+		List<? extends Object> listMessageFlow = select EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW)  from bpmnModelAccess;
+		List<? extends Object> listCommuPath = select EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH)  from deploymentModelAccess;
+		boolean existInstance = false;
+		for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) parti : listParticipant) {
+			if (parti.id.toString == pool.name.toString) {
+				int n = parti.processRef.flowElements.size();
+				for (EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW) dataflow :listMessageFlow) {
+				     for (int j=0 ; j < n ; j++) {
+						if (dataflow.sourceRef.toString == parti.processRef.flowElements.get(j).toString) {
+							if (dataflow.id == listInstancesMessageComm.get(0).messageFlow.name) {
+								log listNodeDevice.toString;
+								for (EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) commPath :listCommuPath ) {
+									if (commPath.name == listInstancesMessageComm.get(0).communicationPath.name && commPath.device.name.toString == listNodeDevice.name) {
+										existInstance = true;
+									}
+else {
+										existInstance = false;
+									}
+									
+								}
+								
+							}
+							
+						}
+	
+					}
+	
+				}
+			}
+		}
+	 return existInstance;
+	}
+	
      	
      }
 

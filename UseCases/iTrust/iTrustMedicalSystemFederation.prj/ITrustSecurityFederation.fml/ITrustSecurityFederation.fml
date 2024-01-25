@@ -132,10 +132,10 @@ public model ITrustSecurityFederation {
 							          checkInstance = this.verifyExistenceConsistentInstance();
 							          
 							     	if (checkInstance) {
-							     		log"intance existe and security rules not violated";
+							     		log"intance exist and security rules not violated";
 							     	}
 									else {
-										log"intance non existe";   		
+										log"intance no exist";   		
 								     }
 							    	 } 
 							    	else {

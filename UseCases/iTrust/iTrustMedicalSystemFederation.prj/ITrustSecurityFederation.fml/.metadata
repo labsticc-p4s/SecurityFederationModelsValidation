@@ -1,9 +1,9 @@
 #Metadata for directory D:\HeterogenousSecureModelsFederation\UseCases\iTrust\iTrustMedicalSystemFederation.prj\ITrustSecurityFederation.fml
-#Wed Jan 24 17:46:22 GMT+01:00 2024
-ITrustSecurityFederation.fml.name=ITrustSecurityFederation
+#Thu Jan 25 11:33:06 GMT+01:00 2024
 ITrustSecurityFederation.fml.uri=http\://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/ITrustSecurityFederation.fml
-ITrustSecurityFederation.fml.version=0.1
+ITrustSecurityFederation.fml.name=ITrustSecurityFederation
 ITrustSecurityFederation.fml.flexoConceptsList=PoolArtifactLink,MessageFlowCommunicationPathLink
+ITrustSecurityFederation.fml.version=0.1
 ITrustSecurityFederation.fml.requiredModelSlotList=org.openflexo.technologyadapter.emf.EMFModelSlot,org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot
 ITrustSecurityFederation.fml.virtualModelClassName=org.openflexo.foundation.fml.VirtualModel
 ITrustSecurityFederation.fml.dependenciesList=http\://www.omg.org/spec/BPMN/20100524/MODEL-XMI,http\://www.example.org/deployementEcoreMetaModel

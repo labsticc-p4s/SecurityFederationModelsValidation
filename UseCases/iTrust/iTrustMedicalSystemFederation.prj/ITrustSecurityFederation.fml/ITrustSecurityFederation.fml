@@ -64,6 +64,10 @@ public model ITrustSecurityFederation {
 			//listInstancesMessageComm.add(item);			
 		
 
+
+
+
+
 }    	
 	 }
 
@@ -79,13 +83,14 @@ public model ITrustSecurityFederation {
 				pool = itemPool;
 			}
 		}
-	
-	     for (EMFObjectIndividualType(eClass=DEPLOYMENT_ARTIFACT) itemArtifact : select EMFObjectIndividualType(eClass=DEPLOYMENT_ARTIFACT) from deploymentModelAccess) {
+
+		 for (EMFObjectIndividualType(eClass=DEPLOYMENT_ARTIFACT) itemArtifact : select EMFObjectIndividualType(eClass=DEPLOYMENT_ARTIFACT) from deploymentModelAccess) {
 	         	log itemArtifact.nameArtifact.toString;
 	         	if (itemArtifact.nameArtifact == parameters.name) {
 	         		artifact =itemArtifact;	
 	  	 	}
 		}
+	
 		
         }
          
@@ -123,13 +128,11 @@ public model ITrustSecurityFederation {
                          	 for (int j=0 ; j < n ; j++) {
 						 	if (asso.sourceRef.id == parti.processRef.flowElements.get(j).id && annotation.id == asso.targetRef.id ) {
 								if (annotation.text.contains("IntegrityDo") && annotation.text.contains("ConfidentialityDo") ) {
-							     	log"Contains private Data";
-							     	boolean checkInstance = this.verifyExistenceInstance();
+							          boolean checkInstance = this.verifyExistenceInstance();
 							     	if (checkInstance) {
-							     		log"intance existe";
-							     		//boolean resultatSecurityRule2 = listInstancesMessageComm.verifySecureCommunication();
+							     		log"intance existe and security rule not violated";
 							     	}
-else {
+									else {
 										log"intance non existe";   		
 								     }
 							    	 } 
@@ -153,26 +156,27 @@ else {
 		List<? extends Object> listMessageFlow = select EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW)  from bpmnModelAccess;
 		List<? extends Object> listCommuPath = select EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH)  from deploymentModelAccess;
 		boolean existInstance = false;
+		listInstancesMessageComm = container.listInstancesMessageComm;
 		for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) parti : listParticipant) {
 			if (parti.id.toString == pool.name.toString) {
 				int n = parti.processRef.flowElements.size();
-				int m = listInstancesMessageComm.size();
-				for (EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW) dataflow :listMessageFlow) {
+				int m = container.listInstancesMessageComm.size();
+				for (EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW) dataflow :listMessageFlow)  {
 				     for (int j=0 ; j < n ; j++) {
-					     for (int i=0 ; i < m ; i++) {	
 							if (dataflow.sourceRef.toString == parti.processRef.flowElements.get(j).toString) {
-								if (dataflow.id == listInstancesMessageComm.get(i).messageFlow.name) {
-									for (EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) commPath :listCommuPath ) {
-										if (commPath.name == listInstancesMessageComm.get(i).communicationPath.name && commPath.device.name.toString == listNodeDevice.name) {
-											existInstance = true;
-											//boolean resu = listInstancesMessageComm.get(i).verifySecureCommunication();
-											
-										}
-else {
-											existInstance = false;
-										}
+								for (int i=0 ; i < m ; i++) {	
+									if (dataflow.id == listInstancesMessageComm.get(i).messageFlow.name) {
+										for (EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) commPath :listCommuPath ) {
+											if (commPath.name == listInstancesMessageComm.get(i).communicationPath.name && commPath.device.name.toString == listNodeDevice.name) {
+												existInstance = true;
+												//boolean resu = listInstancesMessageComm.get(i).verifySecureCommunication();
+												
+											}
+											else {
+												existInstance = false;
+											}
+										}	
 									}	
-								}	
 							}
 						}
 				     }

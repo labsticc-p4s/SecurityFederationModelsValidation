@@ -128,11 +128,9 @@ public model ITrustSecurityFederation {
                          	 for (int j=0 ; j < n ; j++) {
 						 	if (asso.sourceRef.id == parti.processRef.flowElements.get(j).id && annotation.id == asso.targetRef.id ) {
 								if (annotation.text.contains("IntegrityDo") && annotation.text.contains("ConfidentialityDo") ) {
-							     	log"Contains private Data";
 							          boolean checkInstance = this.verifyExistenceInstance();
-							          log checkInstance.toString;
 							     	if (checkInstance) {
-							     		log"intance existe";
+							     		log"intance existe and security rule not violated";
 							     	}
 									else {
 										log"intance non existe";   		

@@ -85,7 +85,6 @@ public model ITrustSecurityFederation {
 		}
 
 		 for (EMFObjectIndividualType(eClass=DEPLOYMENT_ARTIFACT) itemArtifact : select EMFObjectIndividualType(eClass=DEPLOYMENT_ARTIFACT) from deploymentModelAccess) {
-	         	log itemArtifact.nameArtifact.toString;
 	         	if (itemArtifact.nameArtifact == parameters.name) {
 	         		artifact =itemArtifact;	
 	  	 	}

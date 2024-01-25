@@ -129,7 +129,7 @@ public model ITrustSecurityFederation {
 						 	if (asso.sourceRef.id == parti.processRef.flowElements.get(j).id && annotation.id == asso.targetRef.id ) {
 								if (annotation.text.contains("IntegrityDo") && annotation.text.contains("ConfidentialityDo") ) {
 									/*--- Verify whether the instance existe and the security rule1 added to the correspondences MessageFlowCommunicationPathLink is not violated ---*/
-							          checkInstance = this.verifyExistenceInstance();
+							          checkInstance = this.verifyExistenceConsistentInstance();
 							          
 							     	if (checkInstance) {
 							     		log"intance existe and security rules not violated";
@@ -152,7 +152,7 @@ public model ITrustSecurityFederation {
 		
 	}
 
-	public boolean verifyExistenceInstance() {     
+	public boolean verifyExistenceConsistentInstance() {     
 		List<? extends Object> listParticipant = select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess;
 		List<? extends Object> listProcess = select EMFObjectIndividualType(eClass=BPMN_PROCESS) from bpmnModelAccess;
 		List<? extends Object> listMessageFlow = select EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW)  from bpmnModelAccess;

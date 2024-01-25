@@ -85,7 +85,6 @@ public model ITrustSecurityFederation {
 		}
 
 		 for (EMFObjectIndividualType(eClass=DEPLOYMENT_ARTIFACT) itemArtifact : select EMFObjectIndividualType(eClass=DEPLOYMENT_ARTIFACT) from deploymentModelAccess) {
-	         	log itemArtifact.nameArtifact.toString;
 	         	if (itemArtifact.nameArtifact == parameters.name) {
 	         		artifact =itemArtifact;	
 	  	 	}
@@ -133,7 +132,7 @@ public model ITrustSecurityFederation {
 							          checkInstance = this.verifyExistenceInstance();
 							          
 							     	if (checkInstance) {
-							     		log"intance existe and security rule not violated";
+							     		log"intance existe and security rules not violated";
 							     	}
 									else {
 										log"intance non existe";   		
@@ -168,7 +167,6 @@ public model ITrustSecurityFederation {
 				for (EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW) dataflow :listMessageFlow)  {
 				     for (int j=0 ; j < n ; j++) {
 							if (dataflow.sourceRef.toString == parti.processRef.flowElements.get(j).toString) {
-								//for (int i=0 ; i < m ; i++) {
 								for (MessageFlowCommunicationPathLink item : listInstancesMessageComm) {	
 									if (dataflow.id == item.messageFlow.name) {
 										for (EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) commPath :listCommuPath ) {
@@ -209,7 +207,6 @@ public model ITrustSecurityFederation {
 			}
 	       	 for (EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) itemCommPath : select EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) from deploymentModelAccess) {
 	        		if (itemCommPath.name == parameters.nameCommPath) {
-	        			log itemCommPath.name.toString;
 					communicationPath =itemCommPath;
 				}
 	      	 }

@@ -128,6 +128,7 @@ public model ITrustSecurityFederation {
                          	 for (int j=0 ; j < n ; j++) {
 						 	if (asso.sourceRef.id == parti.processRef.flowElements.get(j).id && annotation.id == asso.targetRef.id ) {
 								if (annotation.text.contains("IntegrityDo") && annotation.text.contains("ConfidentialityDo") ) {
+									/*--- Verify whether the instance existe and the security rules added to the correspondences MessageFlowCommunicationPathLink is not violated ---*/
 							          boolean checkInstance = this.verifyExistenceInstance();
 							     	if (checkInstance) {
 							     		log"intance existe and security rule not violated";
@@ -156,6 +157,7 @@ public model ITrustSecurityFederation {
 		List<? extends Object> listMessageFlow = select EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW)  from bpmnModelAccess;
 		List<? extends Object> listCommuPath = select EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH)  from deploymentModelAccess;
 		boolean existInstance = false;
+		boolean resu = false;
 		listInstancesMessageComm = container.listInstancesMessageComm;
 		for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) parti : listParticipant) {
 			if (parti.id.toString == pool.name.toString) {
@@ -164,12 +166,14 @@ public model ITrustSecurityFederation {
 				for (EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW) dataflow :listMessageFlow)  {
 				     for (int j=0 ; j < n ; j++) {
 							if (dataflow.sourceRef.toString == parti.processRef.flowElements.get(j).toString) {
-								for (int i=0 ; i < m ; i++) {	
-									if (dataflow.id == listInstancesMessageComm.get(i).messageFlow.name) {
+								//for (int i=0 ; i < m ; i++) {
+								for (MessageFlowCommunicationPathLink item : listInstancesMessageComm) {	
+									if (dataflow.id == item.messageFlow.name) {
 										for (EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) commPath :listCommuPath ) {
-											if (commPath.name == listInstancesMessageComm.get(i).communicationPath.name && commPath.device.name.toString == listNodeDevice.name) {
+											if (commPath.name == item.communicationPath.name && commPath.device.name.toString == listNodeDevice.name) {
 												existInstance = true;
-												//boolean resu = listInstancesMessageComm.get(i).verifySecureCommunication();
+												/*--- Request the evaluation of the security rule attached to the instance of the correspondences MessageFlowCommunicationPathLink ---*/
+												 resu = item.verifySecureCommunication();
 												
 											}
 											else {

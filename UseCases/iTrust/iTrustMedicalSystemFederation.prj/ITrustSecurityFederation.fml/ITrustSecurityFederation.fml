@@ -123,12 +123,15 @@ public model ITrustSecurityFederation {
 		for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) parti : listParticipant) {
 			if (parti.id.toString == pool.name.toString) {
 				int n = parti.processRef.flowElements.size();
+				boolean checkInstance = false;
 				for (EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) asso : associations) {
                     	for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) annotation : annotations) {
                          	 for (int j=0 ; j < n ; j++) {
 						 	if (asso.sourceRef.id == parti.processRef.flowElements.get(j).id && annotation.id == asso.targetRef.id ) {
 								if (annotation.text.contains("IntegrityDo") && annotation.text.contains("ConfidentialityDo") ) {
-							          boolean checkInstance = this.verifyExistenceInstance();
+									/*--- Verify whether the instance existe and the security rule1 added to the correspondences MessageFlowCommunicationPathLink is not violated ---*/
+							          checkInstance = this.verifyExistenceInstance();
+							          
 							     	if (checkInstance) {
 							     		log"intance existe and security rule not violated";
 							     	}
@@ -156,6 +159,7 @@ public model ITrustSecurityFederation {
 		List<? extends Object> listMessageFlow = select EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW)  from bpmnModelAccess;
 		List<? extends Object> listCommuPath = select EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH)  from deploymentModelAccess;
 		boolean existInstance = false;
+		boolean resu = false;
 		listInstancesMessageComm = container.listInstancesMessageComm;
 		for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) parti : listParticipant) {
 			if (parti.id.toString == pool.name.toString) {
@@ -170,7 +174,8 @@ public model ITrustSecurityFederation {
 										for (EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) commPath :listCommuPath ) {
 											if (commPath.name == item.communicationPath.name && commPath.device.name.toString == listNodeDevice.name) {
 												existInstance = true;
-												boolean resu = item.verifySecureCommunication();
+												/*--- Request the evaluation of the security rule attached to the instance of the correspondences MessageFlowCommunicationPathLink ---*/
+												 resu = item.verifySecureCommunication();
 												
 											}
 											else {

@@ -1,0 +1,373 @@
+
+
+
+use org.openflexo.technologyadapter.emf.EMFModelSlot as EMF;
+use org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot as FMLRT;
+
+import org.openflexo.technologyadapter.emf.model.EMFModel;
+import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
+import java.lang.String;
+import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
+import java.util.List;
+
+import ["http://www.example.org/metamodelProject/Metamodel/SOAMLmetaModel"] as SOAML_META_MODEL;
+import ["http://www.example.org/metamodelProject/Metamodel/WSDLmetaModel"] as WSDLMETAMODEL;
+import ["http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"] as BPMN21;
+
+import [BPMN21:"Participant"] as BPMN_PARTICIPANT;
+import [BPMN21:"Process"] as BPMN_PROCESS;
+import [BPMN21:"DataObject"] as BPMN_DATAOBJECT;
+import [BPMN21:"TextAnnotation"] as BPMN_TEXT_ANNOTATION;
+import [BPMN21:"Association"] as BPMN_ASSOCIATION;
+import [SOAML_META_MODEL:"Participant"] as SOAML_PARTICIPANT;
+import [SOAML_META_MODEL:"Service_Contract"] as SOAML_CONTRACT;
+import [SOAML_META_MODEL:"ParticipantRole"] as SOAML_PARTICIPANT_ROLE;
+import [SOAML_META_MODEL:"Interface"] as SOAML_INTERFACE;
+import [SOAML_META_MODEL:"Capability"] as SOAML_CAPABILITY;
+import [WSDLMETAMODEL:"Interface"] as WSDL_INTERFACE;
+import [WSDLMETAMODEL:"Operation"] as WSDL_OPERATION;
+
+@URI("http://www.openflexo.org/projects/2024/1/HolidayBookingFederation_1706201858239.prj/HolidayBookingSecurityFederation.fml")
+@Author("chahr")
+public model HolidayBookingSecurityFederation {
+
+	EMFModel soamlModelAceess with EMFModelSlot(metaModel=SOAML_META_MODEL,isRequired=true);
+	EMFModel wsdlModelAcess with EMFModelSlot(metaModel=WSDLMETAMODEL,isRequired=true);
+	EMFModel bpmnModelAccess with EMFModelSlot(metaModel=BPMN21,isRequired=true);
+	EMFObjectIndividual[0,*] individuals with EMFObjectRole(container=this);
+	PoolToPoolLink[0,*] listPools with ConceptInstance(virtualModelInstance=this);
+	EMFObjectIndividual[0,*] listPools1 with EMFObjectRole(container=this);
+	EMFObjectIndividual contract_pool with EMFObjectRole(container=this);
+
+	 public create::createAccessObject(required Resource<EMFModel> bpmnModelResource, required Resource<EMFModel> wsdlModelResource, required Resource<EMFModel> soamlModelResource) {
+      	soamlModelAceess = parameters.soamlModelResource.resourceData;
+      	wsdlModelAcess = parameters.wsdlModelResource.resourceData;
+      	bpmnModelAccess = parameters.bpmnModelResource.resourceData;
+      }
+
+	delete() {
+		soamlModelAceess = null;
+		wsdlModelAcess = null;
+		bpmnModelAccess = null;
+	}
+
+public verify (required String nameP) {
+			
+	     List<PoolParticipantLink> variable2 = select PoolParticipantLink from this;
+	     //log " variable " + variable2.size.toString ;
+	     
+	     for (PoolParticipantLink item : select PoolParticipantLink from this) {
+	     	log " variable " + item.participant.name.toString;
+	     	if (item.participant.name.toString == parameters.nameP) {
+	     		individuals.add(item.pool);
+	              log " test" + item.participant.name;
+               }
+	     }	     
+	}
+
+	public getParticipantElements(required String nameParticipant, required String nameContract) {
+		for (PoolParticipantLink item : select PoolParticipantLink from this) {
+			log " variable " + item.participant.name.toString;
+			if (item.participant.name.toString == parameters.nameParticipant) {
+				individuals.add(item.pool);
+				 log " test" + item.participant.name;
+			  }
+		}
+	
+		for (ContractToPoolsLink item1 : select ContractToPoolsLink from this) {
+			log "service" + item1.serviceContract.name.toString;
+			if (item1.serviceContract.name.toString == parameters.nameContract ) {
+				//listPools.add(item1.pools);
+		   	
+
+
+
+}
+	   	}
+	}
+
+	public fillListPools() {
+
+		for (PoolToPoolLink item2 : listPools ) {
+			log item2.toString;
+	     	listPools1.add(item2.pool1);
+	     	listPools1.add(item2.pool2);
+			
+		}
+	}
+
+	public consultList() {
+		for (EMFObjectIndividual item : listPools1) {
+			log item.toString;
+		}
+	}
+
+	public checkConsistentlinkedElements() {
+		
+		boolean check = false;
+		//listPools1 = this.contract_pool.checkPoolsExistence();
+		if (listPools1.size() == 0) {
+			check = true;
+		}
+
+		if (check) {
+			log "Consistent element verification  succeeded";
+		} 
+else {
+			log "Consistent element verification failed";
+		}	
+	}
+
+	public concept PoolParticipantLink {
+		EMFObjectIndividual participant with EMFObjectRole(container=soamlModelAceess);
+		EMFObjectIndividual pool with EMFObjectRole(container=bpmnModelAccess);
+		
+		delete() {
+			participant = null;
+			pool = null;
+			
+		}
+
+		create::_create(required String name) {
+			for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) item : select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess) {	
+				List<? extends Object> variable = item.getValues("name");
+
+				if (variable.get(0).toString == parameters.name) {
+					pool = item;
+				}
+			}
+
+			
+			for (EMFObjectIndividualType(eClass=SOAML_PARTICIPANT) partItem :  select EMFObjectIndividualType(eClass=SOAML_PARTICIPANT) from soamlModelAceess) {
+				if (partItem.name == parameters.name) {
+					participant = partItem;
+				}
+			}
+
+		}
+
+		public checkNames() {
+			List<? extends Object> namesValues = pool.getValues("name");
+			if (namesValues.get(0).toString == participant.name) {
+				log "Matched names";
+			}
+			else {
+				log "Unmatched names";
+			}
+		}
+
+	public void checkSecurityAnnotations() {
+			boolean check = false;
+			List<? extends Object> associations = select EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) from bpmnModelAccess;
+			for (EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) asso : associations) {
+				if (asso.targetRef.id == pool.name) {
+					List<? extends Object> annotations = select EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) from bpmnModelAccess;
+					for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) annotation : annotations) {
+						if (annotation.id == asso.sourceRef.id) {
+							for (EMFObjectIndividualType(eClass=SOAML_PARTICIPANT_ROLE) item : select EMFObjectIndividualType(eClass=SOAML_PARTICIPANT_ROLE) from soamlModelAceess) {
+								if (item.name == participant.name + "Role") {
+									List<? extends Object> privacy = item.getValues("privacy");
+									List<? extends Object> access = item.getValues("accesscontrol");
+									
+									if (privacy != null && annotation.text.contains("privacy")) {
+										check = true;
+									} 
+			
+									if ( access != null && annotation.text.contains("accesscontrol")) {
+										check = true;
+									} 
+									else {
+										check = false;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			if (check) {
+				log "Security annotation verification succeeded";
+			} 
+			else {
+				log "Security annotation verification failed";
+			}
+		}
+
+	}
+
+public concept PoolToPoolLink {
+		EMFObjectIndividual pool1 with EMFObjectRole(container=soamlModelAceess);
+		EMFObjectIndividual pool2 with EMFObjectRole(container=bpmnModelAccess);
+		
+		create::_create(required String name1,required String name2) {
+
+			for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) item : select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess) {	
+				List<? extends Object> variable = item.getValues("name");
+
+				if (variable.get(0).toString == parameters.name1) {
+					pool1 = item;
+				}
+
+                   	if (variable.get(0).toString == parameters.name2) {
+					pool2 = item;
+				}
+			}	
+		}
+		
+		delete() {
+			pool1 = null;
+			pool2 = null;
+		}
+	 
+	}
+
+	public concept ContractToPoolsLink {
+		EMFObjectIndividualType(eClass=SOAML_CONTRACT) serviceContract with EMFObjectRole(container=soamlModelAceess,type=SOAML_CONTRACT);
+		PoolToPoolLink pools with ConceptInstance(virtualModelInstance=container);
+
+		create::_create(String contract, PoolToPoolLink pools) {		
+		 	for (EMFObjectIndividualType(eClass=SOAML_CONTRACT) item : select EMFObjectIndividualType(eClass=SOAML_CONTRACT) from soamlModelAceess) {
+				if (item.name == parameters.contract) {
+					serviceContract = item;
+				}
+			}
+			pools = parameters.pools;
+
+		}
+
+		delete() {
+			serviceContract = null;
+			pools = null;
+		}
+
+	public checkDataSecurityAnnotation (required PoolToPoolLink pools) {
+			boolean check = false;
+			List<? extends Object> listParticipant = select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess;
+			List<? extends Object> listProcess = select EMFObjectIndividualType(eClass=BPMN_PROCESS) from bpmnModelAccess;
+			List<? extends Object> listDataObject = select EMFObjectIndividualType(eClass=BPMN_DATAOBJECT) from bpmnModelAccess;
+			List<? extends Object> associations = select EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) from bpmnModelAccess;
+			List<? extends Object> annotations = select EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) from bpmnModelAccess;
+			log listParticipant.toString;
+			log listProcess.toString;
+			log listDataObject.toString;
+			log associations.toString;
+			log annotations.toString;
+			int i = 0;
+			for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) parti : listParticipant) {
+				if (parti.id.toString == pools.pool1.name.toString || parti.id.toString == pools.pool2.name.toString) {
+					for (EMFObjectIndividualType(eClass=BPMN_PROCESS) proces : listProcess) {
+						if (proces.id.toString == parti.processRef.id.toString) {
+							log "list" + proces.flowElements.toString;
+							int n = proces.flowElements.size();
+							log n.toString;
+							
+							for (EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) asso : associations) {
+								for (int j=0 ; j < n ; j++) {
+							     	if (asso.targetRef.id == proces.flowElements.get(j).id ) {
+							     		for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) annotation : annotations) {
+							     			if (annotation.id == asso.sourceRef.id && annotation.text.contains("integrity") && annotation.text.contains("nonrepudiation")) {
+							     				check = true;
+							     			} 
+							     			else {
+										   		check = false;
+												}
+							     		}
+							     		
+							     			
+							     	}
+								} 	
+							}
+						}
+					}
+                	}  
+           	 }
+
+			if (check) {
+				log " Security Data verification succeeded";
+			} 
+			else {
+				log "Security Data verification failed";
+			}    
+		}
+
+		public List<EMFObjectIndividual> checkPoolsExistence() {
+			//listPools1 = container.listPools;
+			//log listPools.toString;
+			for (EMFObjectIndividual item : listPools1) {
+				log item.toString;
+				
+				if (item.name == pools.pool1.name) {
+					listPools1.remove(item);
+				}
+	
+				if (item.name == pools.pool2.name) {
+					listPools1.remove(item);
+				}
+			}
+			
+	          return listPools1;
+			
+		}
+
+		
+	}
+
+	 public concept InterfaceToWsdlInterface {
+		EMFObjectIndividual interface2 with EMFObjectRole(container=soamlModelAceess);
+		EMFObjectIndividual interface1 with EMFObjectRole(container=wsdlModelAcess);
+
+		create::_create(required String name1, required String name2) {
+			for (EMFObjectIndividualType(eClass=SOAML_INTERFACE) item : select EMFObjectIndividualType(eClass=SOAML_INTERFACE) from soamlModelAceess) {
+				if (item.name == parameters.name2) {
+					interface2 = item;
+				}
+			}
+
+			for (EMFObjectIndividualType(eClass=WSDL_INTERFACE) item : select EMFObjectIndividualType(eClass=WSDL_INTERFACE) from wsdlModelAcess) {
+				if (item.name == parameters.name1) {
+					interface1 = item;
+				}
+			}
+		}
+
+		delete() {
+			delete interface1;
+			delete interface2;
+		}
+
+	public void verifyInterfaceOperation() {
+		long count = 0;
+		List<? extends Object> operations = interface2.getValues("Expose");
+		for (EMFObjectIndividualType(eClass=SOAML_CAPABILITY) item : select EMFObjectIndividualType(eClass=SOAML_CAPABILITY) from soamlModelAceess) {
+			for (Object item2 : operations) {
+				if (item2.toString.substring(11) == item.name) {
+					count = count + 1;
+				}
+			}
+		}
+		if (interface2.getValues("Expose").size == count) {
+				log "valid";
+			}
+			else {
+				log "invalid";
+			}
+		}
+
+		
+	 }
+
+
+	
+
+
+	
+
+		
+	
+	
+
+
+
+
+	
+}

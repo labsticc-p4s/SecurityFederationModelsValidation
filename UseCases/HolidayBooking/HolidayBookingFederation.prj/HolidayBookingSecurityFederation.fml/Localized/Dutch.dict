@@ -1,0 +1,10 @@
+bpmnModelResource=bpmnModelResource
+checkConsistentlinkedElements=checkConsistentlinkedElements
+checkNames=checkNames
+checkSecurityAnnotations=checkSecurityAnnotations
+consultList=consultList
+fillListPools=fillListPools
+getParticipantElements=getParticipantElements
+soamlModelResource=soamlModelResource
+verify=verify
+wsdlModelResource=wsdlModelResource

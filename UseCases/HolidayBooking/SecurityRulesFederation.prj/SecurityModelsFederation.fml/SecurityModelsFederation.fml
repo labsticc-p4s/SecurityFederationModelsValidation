@@ -30,15 +30,14 @@ import [WSDLMETAMODEL:"Operation"] as WSDL_OPERATION;
 @URI("http://www.openflexo.org/projects/2024/1/SecurityRulesFederation_1704641601734.prj/SecurityModelsFederation.fml")
 @Author("chahr")
 public model SecurityModelsFederation {
-	EMFModel soamlModelAceess with EMFModelSlot(metaModel=null,isRequired=true);
-	EMFModel wsdlModelAcess with EMFModelSlot(metaModel=null,isRequired=true);
-	EMFModel bpmnModelAccess with EMFModelSlot(metaModel=null,isRequired=true);
+	EMFModel soamlModelAceess with EMFModelSlot(metaModel=SOAML_META_MODEL,isRequired=true);
+	EMFModel wsdlModelAcess with EMFModelSlot(metaModel=WSDLMETAMODEL,isRequired=true);
+	EMFModel bpmnModelAccess with EMFModelSlot(metaModel=BPMN21,isRequired=true);
 	EMFObjectIndividual[0,*] individuals with EMFObjectRole(container=this);
 	PoolToPoolLink[0,*] listPools with ConceptInstance(virtualModelInstance=this);
 	EMFObjectIndividual[0,*] listPools1 with EMFObjectRole(container=this);
 	EMFObjectIndividual contract_pool with EMFObjectRole(container=this);
-
-	 public create::createAccessObject(required Resource<null> bpmnModelResource, required Resource<null> wsdlModelResource, required Resource<null> soamlModelResource) {
+	 public create::createAccessObject(required Resource<EMFModel> bpmnModelResource, required Resource<EMFModel> wsdlModelResource, required Resource<EMFModel> soamlModelResource) {
       	soamlModelAceess = parameters.soamlModelResource.resourceData;
       	wsdlModelAcess = parameters.wsdlModelResource.resourceData;
       	bpmnModelAccess = parameters.bpmnModelResource.resourceData;
@@ -78,30 +77,7 @@ public model SecurityModelsFederation {
 	     	log "service" + item1.serviceContract.name.toString;
 	     	if (item1.serviceContract.name.toString == parameters.nameContract ) {
 	     		//listPools.add(item1.pools);
-			
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		
 
 
 
@@ -159,24 +135,6 @@ public model SecurityModelsFederation {
 			
 		}
 
-		create::_create(required String name) {
-			for (EMFObjectIndividualType(eClass=WSDL_OPERATION) item : select EMFObjectIndividualType(eClass=WSDL_OPERATION) from bpmnModelAccess) {	
-				List<? extends Object> variable = item.getValues("name");
-
-				if (variable.get(0).toString == parameters.name) {
-					pool = item;
-				}
-			}
-
-			
-			for (EMFObjectIndividualType(eClass=WSDL_OPERATION) partItem :  select EMFObjectIndividualType(eClass=WSDL_OPERATION) from soamlModelAceess) {
-				if (partItem.name == parameters.name) {
-					participant = partItem;
-				}
-			}
-
-		}
-
 		public checkNames() {
 			List<? extends Object> namesValues = pool.getValues("name");
 			if (namesValues.get(0).toString == participant.name) {
@@ -187,42 +145,8 @@ public model SecurityModelsFederation {
 			}
 		}
 
-		public void checkSecurityAnnotations() {
-			boolean check = false;
-			List<? extends Object> associations = select EMFObjectIndividualType(eClass=WSDL_OPERATION) from bpmnModelAccess;
-			for (EMFObjectIndividualType(eClass=WSDL_OPERATION) asso : associations) {
-				if (asso.targetRef.id == pool.name) {
-					List<? extends Object> annotations = select EMFObjectIndividualType(eClass=WSDL_OPERATION) from bpmnModelAccess;
-					for (EMFObjectIndividualType(eClass=WSDL_OPERATION) annotation : annotations) {
-						if (annotation.id == asso.sourceRef.id) {
-							for (EMFObjectIndividualType(eClass=WSDL_OPERATION) item : select EMFObjectIndividualType(eClass=WSDL_OPERATION) from soamlModelAceess) {
-								if (item.name == participant.name + "Role") {
-									List<? extends Object> privacy = item.getValues("privacy");
-									List<? extends Object> access = item.getValues("accesscontrol");
-									
-									if (privacy != null && annotation.text.contains("privacy")) {
-										check = true;
-									} 
-			
-									if ( access != null && annotation.text.contains("accesscontrol")) {
-										check = true;
-									} 
-									else {
-										check = false;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			if (check) {
-				log "Security annotation verification succeeded";
-			} 
-			else {
-				log "Security annotation verification failed";
-			}
-		}
+	void _create() {
+	}
 
 
 
@@ -271,58 +195,6 @@ public model SecurityModelsFederation {
 		delete() {
 			serviceContract = null;
 			pools = null;
-		}
-
-	 	public checkDataSecurityAnnotation (required PoolToPoolLink pools) {
-			boolean check = false;
-			List<? extends Object> listParticipant = select EMFObjectIndividualType(eClass=WSDL_OPERATION) from bpmnModelAccess;
-			List<? extends Object> listProcess = select EMFObjectIndividualType(eClass=WSDL_OPERATION) from bpmnModelAccess;
-			List<? extends Object> listDataObject = select EMFObjectIndividualType(eClass=WSDL_OPERATION) from bpmnModelAccess;
-			List<? extends Object> associations = select EMFObjectIndividualType(eClass=WSDL_OPERATION) from bpmnModelAccess;
-			List<? extends Object> annotations = select EMFObjectIndividualType(eClass=WSDL_OPERATION) from bpmnModelAccess;
-			log listParticipant.toString;
-			log listProcess.toString;
-			log listDataObject.toString;
-			log associations.toString;
-			log annotations.toString;
-			int i = 0;
-			for (EMFObjectIndividualType(eClass=WSDL_OPERATION) parti : listParticipant) {
-				if (parti.id.toString == pools.pool1.name.toString || parti.id.toString == pools.pool2.name.toString) {
-					for (EMFObjectIndividualType(eClass=WSDL_OPERATION) proces : listProcess) {
-						if (proces.id.toString == parti.processRef.id.toString) {
-							log "list" + proces.flowElements.toString;
-							int n = proces.flowElements.size();
-							log n.toString;
-							
-							for (EMFObjectIndividualType(eClass=WSDL_OPERATION) asso : associations) {
-								for (int j=0 ; j < n ; j++) {
-							     	if (asso.targetRef.id == proces.flowElements.get(j).id ) {
-							     		for (EMFObjectIndividualType(eClass=WSDL_OPERATION) annotation : annotations) {
-							     			if (annotation.id == asso.sourceRef.id && annotation.text.contains("integrity") && annotation.text.contains("nonrepudiation")) {
-							     				check = true;
-							     			} 
-							     			else {
-										   		check = false;
-												}
-							     		}
-							     		
-							     			
-							     	}
-								} 	
-							}
-						}
-					}
-                	}  
-           	 }
-
-		if (check) {
-				log " Security Data verification succeeded";
-			} 
-			else {
-				log "Security Data verification failed";
-			}
-
-           	     
 		}
 
 

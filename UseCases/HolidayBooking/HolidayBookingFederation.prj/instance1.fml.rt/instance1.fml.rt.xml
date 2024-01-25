@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FMLRTVirtualModelInstance id="0" virtualModelURI="http://www.openflexo.org/projects/2024/1/HolidayBookingFederation_1706201858239.prj/HolidayBookingSecurityFederation.fml" modelVersion="1.0" title="instance1" version="0.1" flexoConceptURI="http://www.openflexo.org/projects/2024/1/HolidayBookingFederation_1706201858239.prj/HolidayBookingSecurityFederation.fml" userID="CHA" flexoID="1">
+  <FlexoOntologyModelSlotInstance id="1" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/SOAMLModel/MetaSOAML.xmi" modelSlotName="soamlModelAceess" roleName="soamlModelAceess" userID="CHA" flexoID="2" />
+  <FlexoOntologyModelSlotInstance id="2" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/WSDLModel/WSDLModel.xmi" modelSlotName="wsdlModelAcess" roleName="wsdlModelAcess" userID="CHA" flexoID="3" />
+  <FlexoOntologyModelSlotInstance id="3" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/BookingHoliday.bpmn" modelSlotName="bpmnModelAccess" roleName="bpmnModelAccess" userID="CHA" flexoID="4" />
+</FMLRTVirtualModelInstance>

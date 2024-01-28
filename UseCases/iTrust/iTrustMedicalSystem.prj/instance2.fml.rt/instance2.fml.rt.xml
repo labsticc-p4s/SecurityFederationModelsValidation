@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<FMLRTVirtualModelInstance id="0" virtualModelURI="http://www.openflexo.org/projects/2024/1/ITrustMedicalSystem_1705498447306.prj/ITrustSecurityFederation.fml" modelVersion="1.0" title="instance2" version="0.1" flexoConceptURI="http://www.openflexo.org/projects/2024/1/ITrustMedicalSystem_1705498447306.prj/ITrustSecurityFederation.fml" userID="CHA" flexoID="1">
-  <FlexoConceptInstance id="1" flexoConceptURI="http://www.openflexo.org/projects/2024/1/ITrustMedicalSystem_1705498447306.prj/ITrustSecurityFederation.fml#PoolArtifactLink" userID="CHA" flexoID="4">
-    <ConceptActorReference id="2" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#Participant_2" roleName="pool" userID="CHA" flexoID="5" />
-    <ConceptActorReference id="3" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/ITrustDeployementModel.xmi#//@deploy.0" roleName="artifact" userID="CHA" flexoID="6" />
-  </FlexoConceptInstance>
-  <FlexoOntologyModelSlotInstance id="4" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn" modelSlotName="bpmnModelAccess" roleName="bpmnModelAccess" userID="CHA" flexoID="2" />
-  <FlexoOntologyModelSlotInstance id="5" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/ITrustDeployementModel.xmi" modelSlotName="deploymentModelAccess" roleName="deploymentModelAccess" userID="CHA" flexoID="3" />
-</FMLRTVirtualModelInstance>

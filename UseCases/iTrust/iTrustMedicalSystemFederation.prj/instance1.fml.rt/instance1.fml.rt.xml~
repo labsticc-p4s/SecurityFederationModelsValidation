@@ -4,17 +4,43 @@
     <ConceptActorReference id="2" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#Participant_2" roleName="pool" userID="CHA" flexoID="15" />
     <ConceptActorReference id="3" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/ITrustDeployementModel.xmi#//@artifact.1" roleName="artifact" userID="CHA" flexoID="16" />
     <ModelObjectActorReference id="4" objectReference="http://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/instance1.fml.rt#CHA_24" roleName="listInstancesMessageComm" userID="CHA" flexoID="65" />
+    <ConceptActorReference id="5" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#StartEvent_1" roleName="flowElements" userID="CHA" flexoID="351" />
+    <ConceptActorReference id="6" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#UserTask_1" roleName="flowElements" userID="CHA" flexoID="352" />
+    <ConceptActorReference id="7" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#SequenceFlow_1" roleName="flowElements" userID="CHA" flexoID="353" />
+    <ConceptActorReference id="8" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#UserTask_2" roleName="flowElements" userID="CHA" flexoID="354" />
+    <ConceptActorReference id="9" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#SequenceFlow_2" roleName="flowElements" userID="CHA" flexoID="355" />
+    <ConceptActorReference id="10" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#EndEvent_1" roleName="flowElements" userID="CHA" flexoID="356" />
+    <ConceptActorReference id="11" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#Task_1" roleName="flowElements" userID="CHA" flexoID="357" />
+    <ConceptActorReference id="12" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#SequenceFlow_9" roleName="flowElements" userID="CHA" flexoID="358" />
+    <ConceptActorReference id="13" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#UserTask_3" roleName="flowElements" userID="CHA" flexoID="359" />
+    <ConceptActorReference id="14" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#SequenceFlow_12" roleName="flowElements" userID="CHA" flexoID="360" />
+    <ConceptActorReference id="15" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#DataObject_2" roleName="flowElements" userID="CHA" flexoID="361" />
+    <ConceptActorReference id="16" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#SequenceFlow_15" roleName="flowElements" userID="CHA" flexoID="362" />
+    <ConceptActorReference id="17" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/ITrustDeployementModel.xmi#//@device.0" roleName="devices1" userID="CHA" flexoID="363" />
+    <ConceptActorReference id="18" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#MessageFlow_1" roleName="messageFlows" userID="CHA" flexoID="364" />
+    <ConceptActorReference id="19" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#MessageFlow_2" roleName="messageFlows" userID="CHA" flexoID="365" />
+    <ConceptActorReference id="20" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#MessageFlow_5" roleName="messageFlows" userID="CHA" flexoID="366" />
+    <ConceptActorReference id="21" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#MessageFlow_8" roleName="messageFlows" userID="CHA" flexoID="367" />
+    <PrimitiveActorReference id="22" valueAsString="iTrust" roleName="listAssoArtifact" userID="CHA" flexoID="368" />
+    <PrimitiveActorReference id="23" valueAsString="Authentication" roleName="listAssoArtifact" userID="CHA" flexoID="369" />
+    <PrimitiveActorReference id="24" valueAsString="iTrust" roleName="listAssoArtifact" userID="CHA" flexoID="370" />
+    <PrimitiveActorReference id="25" valueAsString="Authentication" roleName="listAssoArtifact" userID="CHA" flexoID="371" />
   </FlexoConceptInstance>
-  <FlexoConceptInstance id="5" flexoConceptURI="http://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/ITrustSecurityFederation.fml#MessageFlowCommunicationPathLink" userID="CHA" flexoID="24">
-    <ConceptActorReference id="6" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#MessageFlow_8" roleName="messageFlow" userID="CHA" flexoID="25" />
-    <ConceptActorReference id="7" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/ITrustDeployementModel.xmi#//@communicationpath.1" roleName="communicationPath" userID="CHA" flexoID="26" />
+  <FlexoConceptInstance id="26" flexoConceptURI="http://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/ITrustSecurityFederation.fml#MessageFlowCommunicationPathLink" userID="CHA" flexoID="24">
+    <ConceptActorReference id="27" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#MessageFlow_8" roleName="messageFlow" userID="CHA" flexoID="25" />
+    <ConceptActorReference id="28" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/ITrustDeployementModel.xmi#//@communicationpath.1" roleName="communicationPath" userID="CHA" flexoID="26" />
   </FlexoConceptInstance>
-  <FlexoConceptInstance id="8" flexoConceptURI="http://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/ITrustSecurityFederation.fml#PoolArtifactLink" userID="CHA" flexoID="29">
-    <ConceptActorReference id="9" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#Participant_1" roleName="pool" userID="CHA" flexoID="30" />
-    <ConceptActorReference id="10" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/ITrustDeployementModel.xmi#//@artifact.3" roleName="artifact" userID="CHA" flexoID="31" />
+  <FlexoConceptInstance id="29" flexoConceptURI="http://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/ITrustSecurityFederation.fml#PoolArtifactLink" userID="CHA" flexoID="29">
+    <ConceptActorReference id="30" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#Participant_1" roleName="pool" userID="CHA" flexoID="30" />
+    <ConceptActorReference id="31" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/ITrustDeployementModel.xmi#//@artifact.3" roleName="artifact" userID="CHA" flexoID="31" />
   </FlexoConceptInstance>
-  <FlexoOntologyModelSlotInstance id="11" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn" modelSlotName="bpmnModelAccess" roleName="bpmnModelAccess" userID="CHA" flexoID="2" />
-  <FlexoOntologyModelSlotInstance id="12" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/ITrustDeployementModel.xmi" modelSlotName="deploymentModelAccess" roleName="deploymentModelAccess" userID="CHA" flexoID="3" />
-  <ModelObjectActorReference id="13" objectReference="http://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/instance1.fml.rt#CHA_24" roleName="listInstancesMessageComm" userID="CHA" flexoID="52" />
-  <ConceptActorReference id="14" roleName="listNodeDevice" userID="CHA" flexoID="76" />
+  <FlexoConceptInstance id="32" flexoConceptURI="http://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/ITrustSecurityFederation.fml#PoolArtifactLink" userID="CHA" flexoID="79">
+    <ConceptActorReference id="33" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#Participant_3" roleName="pool" userID="CHA" flexoID="80" />
+    <ConceptActorReference id="34" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/ITrustDeployementModel.xmi#//@artifact.0" roleName="artifact" userID="CHA" flexoID="81" />
+    <ConceptActorReference id="35" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/ITrustDeployementModel.xmi#//@node.0/@node.1" roleName="devices1" userID="CHA" flexoID="83" />
+  </FlexoConceptInstance>
+  <FlexoOntologyModelSlotInstance id="36" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn" modelSlotName="bpmnModelAccess" roleName="bpmnModelAccess" userID="CHA" flexoID="2" />
+  <FlexoOntologyModelSlotInstance id="37" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/ITrustDeployementModel.xmi" modelSlotName="deploymentModelAccess" roleName="deploymentModelAccess" userID="CHA" flexoID="3" />
+  <ModelObjectActorReference id="38" objectReference="http://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/instance1.fml.rt#CHA_24" roleName="listInstancesMessageComm" userID="CHA" flexoID="52" />
+  <ConceptActorReference id="39" roleName="devices" userID="CHA" flexoID="78" />
 </FMLRTVirtualModelInstance>

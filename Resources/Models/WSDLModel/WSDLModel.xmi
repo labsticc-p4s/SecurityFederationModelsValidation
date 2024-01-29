@@ -26,11 +26,11 @@
           Name="Operation1">
         <input
             element="//@element.0"
-            Name="Input1"/>
+            Name="message1"/>
       </operation>
       <fault
           element="//@element.0"
-          Name="Fault1"/>
+          Name="SOAP"/>
     </interface>
   </description>
   <type Name="String info "/>

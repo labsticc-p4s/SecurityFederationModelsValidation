@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Mym:AccessControlModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Mym="Mymeta1" xsi:schemaLocation="Mymeta1 AccessControlMetamodel.ecore">
+  <user role="//@role.1" name="Claire"/>
+  <user role="//@role.3" name="Justine"/>
+  <user role="//@role.0" name="Adel"/>
+  <user role="//@role.2" name="Max"/>
+  <role NameRole="Doctor" authorization="//@authorization.0 //@authorization.1 //@authorization.2"/>
+  <role NameRole="Admin" authorization="//@authorization.3"/>
+  <role NameRole="Patient" authorization="//@authorization.0"/>
+  <role NameRole="Specialiste" authorization="//@authorization.1 //@authorization.0"/>
+  <authorization nameAuthorization="AccessPrescription"/>
+  <authorization nameAuthorization="RecordVisitPatient"/>
+  <authorization nameAuthorization="AccessSystem"/>
+  <authorization nameAuthorization="AddPatient"/>
+  <accesstype/>
+</Mym:AccessControlModel>

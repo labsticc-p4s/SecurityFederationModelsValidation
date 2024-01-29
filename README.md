@@ -14,13 +14,14 @@ This Git repository encompasses OpenFlexo projects essential for federating mode
 
 ## Models
 
-The `Resources/Models` folder contains various models used in the project, including Deployment models (`DeploymentModel`), BPMN models (`BpmnModel`), SOAML models (`SoamlModel`), WSDL models (`WSDLModel`), and DATA Models(`DataModel`). These models are essential components for defining and visualizing the structure and behavior of the system.
+The `Resources/Models` folder contains various models used in the project, including Deployment models (`DeploymentModel`), BPMN models (`BpmnModel`), SOAML models (`SoamlModel`), WSDL models (`WSDLModel`), AccessControl models (`AccessControlModel`), and DATA Models(`DataModel`). These models are essential components for defining and visualizing the structure and behavior of the system.
 
 - **Deployment Model**: Describes the deployment architecture of the system.
 - **BPMN Model**: Represents business processes using the BPMN standard.
 - **SOAML Model**: Captures aspects related to service-oriented architecture modeling.
 - **WSDL Model**: Describes interfaces to a web sevices.
 - **Data Model**: Structures the data elements of the system.
+- **AccessControl Model**: Defines the permission of user on the system.
 
 ## Metamodels
 
@@ -29,6 +30,7 @@ The `Resources/Metamodels` folder includes metamodels that define the structure 
 - **SOAML Metamodel**: Defines the metamodel for SOAML models.
 - **WSDL Metamodel**: Describes the metamodel for Web Services Description Language (WSDL) models.
 - **Deployment Metamodel**: Describes the metamodel for Deployment models.
+- **AccessControl Metamodel**: Describes the metamodel for AccessControl models.
 
 ## Use Cases
 

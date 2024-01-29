@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_j-5xsLYOEe6JM9aBK8QXKg">
-  <packagedElement xmi:type="uml:Class" xmi:id="_PDjjsLYPEe6JM9aBK8QXKg" name="User">
-    <nestedClassifier xmi:type="uml:Class" xmi:id="_TeNxILYPEe6JM9aBK8QXKg" name="Doctor"/>
-    <nestedClassifier xmi:type="uml:Class" xmi:id="_V16oULYPEe6JM9aBK8QXKg" name="Patient"/>
-    <nestedClassifier xmi:type="uml:Class" xmi:id="_aSrukLYPEe6JM9aBK8QXKg" name="Admin"/>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_gR2bsLYPEe6JM9aBK8QXKg" name="Prescription"/>
-</uml:Model>

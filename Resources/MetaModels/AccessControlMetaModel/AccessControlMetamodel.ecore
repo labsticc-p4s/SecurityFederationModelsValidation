@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="AccessControlMetamodel" nsURI="Mymeta1" nsPrefix="Mym">
+  <eClassifiers xsi:type="ecore:EClass" name="User">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="role" lowerBound="1" upperBound="-1"
+        eType="#//Role"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="user" upperBound="-1" eType="#//User"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Role">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="NameRole" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="authorization" upperBound="-1"
+        eType="#//Authorization"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Authorization">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nameAuthorization" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="get" eType="#//get"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="request" eType="#//Modify"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="put" eType="#//Put"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="delete" eType="#//Delete"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Delete" eSuperTypes="#//AccessType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Put" eSuperTypes="#//AccessType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Modify" eSuperTypes="#//AccessType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="get" eSuperTypes="#//AccessType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AccessControlModel">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="user" upperBound="-1" eType="#//User"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="role" upperBound="-1" eType="#//Role"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="authorization" upperBound="-1"
+        eType="#//Authorization" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nameModel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="accesstype" upperBound="-1"
+        eType="#//AccessType" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AccessType"/>
+</ecore:EPackage>

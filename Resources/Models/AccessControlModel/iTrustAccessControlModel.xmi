@@ -4,10 +4,10 @@
   <user role="//@role.3" name="Justine"/>
   <user role="//@role.0" name="Adel"/>
   <user role="//@role.2" name="Max"/>
-  <role NameRole="Doctor" authorization="//@authorization.0 //@authorization.1 //@authorization.2"/>
-  <role NameRole="Admin" authorization="//@authorization.3"/>
-  <role NameRole="Patient" authorization="//@authorization.0"/>
-  <role NameRole="Specialiste" authorization="//@authorization.1 //@authorization.0"/>
+  <role nameRole="Doctor" authorization="//@authorization.0 //@authorization.1 //@authorization.2"/>
+  <role nameRole="Admin" authorization="//@authorization.3"/>
+  <role nameRole="Patient" authorization="//@authorization.0"/>
+  <role nameRole="Specialiste" authorization="//@authorization.1 //@authorization.0"/>
   <authorization nameAuthorization="AccessPrescription"/>
   <authorization nameAuthorization="RecordVisitPatient"/>
   <authorization nameAuthorization="AccessSystem"/>

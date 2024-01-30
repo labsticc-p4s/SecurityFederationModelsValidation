@@ -1,0 +1,120 @@
+use org.openflexo.technologyadapter.emf.EMFModelSlot as EMF;
+use org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot as FMLRT;
+
+import org.openflexo.technologyadapter.emf.model.EMFModel;
+import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
+import java.lang.String;
+import java.util.List;
+
+import ["http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"] as BPMN21;
+import ["http://www.eclipse.org/uml2/5.0.0/UML"] as UML2;
+import ["http://www.eclipse.org/uml2/5.0.0/UML"] as UML22;
+
+import [UML2:"CommunicationPath"] as DEPLOYMENT_COMMUNICATION_PATH;
+import [UML2:"Association"] as UML_ASSOCIATION;
+import [UML2:"Property"] as UML_PROPERTY;
+
+
+@URI("http://www.openflexo.org/projects/2024/1/MessagingServiceSystemFederation_1706541339008.prj/MessagingSecurityFederation.fml")
+@Author("chahr")
+public model MessagingSecurityFederation {
+	EMFModel bpmnModelAccess with EMFModelSlot(metaModel=BPMN21,isRequired=true);
+	EMFModel dataModelAccess with EMFModelSlot(metaModel=UML2,isRequired=true);
+	EMFModel deployementModelAccess with EMFModelSlot(metaModel=UML2,isRequired=true);
+
+	public create::createAccessObject(required Resource<EMFModel> bpmnModelResource, required Resource<EMFModel> dataModelResource, required Resource<EMFModel> deployementModelResource) {
+      	bpmnModelAccess = parameters.bpmnModelResource.resourceData;
+          dataModelAccess = parameters.dataModelResource.resourceData;
+          deployementModelAccess = parameters.deployementModelResource.resourceData;
+      }
+
+	delete() {
+	}
+
+
+      public concept Correspondences {
+      	  
+
+		public concept CommuPathAssociationCorrespondence extends Correspondences {
+
+			EMFObjectIndividual association with EMFObjectRole(container=dataModelAccess);
+	     	EMFObjectIndividual communicationPath with EMFObjectRole(container=deployementModelAccess);
+	          String[0,*] annotations;
+	          String[0,*] annotationsCommPath;
+	          
+	     	create(required String nameAssociation,required String nameComPath ) {
+	
+	     		for (EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) itemPath : select EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) from deployementModelAccess) {
+					if (itemPath.name == parameters.nameComPath) {
+						communicationPath = itemPath;	
+					}
+				}
+	
+	 			for (EMFObjectIndividualType(eClass= UML_ASSOCIATION) itemAssociation : select EMFObjectIndividualType(eClass= UML_ASSOCIATION) from dataModelAccess) {
+	 				if (itemAssociation.name == parameters.nameAssociation) {
+	 					association = itemAssociation; 
+	 				}
+	 			}
+
+     		}
+
+
+     		public messagingSecurityRule1() {
+
+			boolean checkAnnotation = false;
+     		this.annotations = this.getAnnotationsAssociation(association);
+     		this.annotationsCommPath = this.getAnnotationsCommunicationPath(communicationPath);
+               checkAnnotation = this.verifySecurityAnnotations(annotations,annotationsCommPath);
+               
+	          if (checkAnnotation) {
+	          	log "Security rule1 is not violated";
+	          }
+else {
+	          	log "Security rule1 is  violated";
+	          }
+     		}
+
+     		delete() {
+				delete association;
+				delete communicationPath;
+			}
+
+			// --- Get the  annotation for the selected Association ---//
+			public  List<String> getAnnotationsAssociation(EMFObjectIndividual association) {
+				
+				annotations = null;
+				for (EMFObjectIndividualType(eClass= UML_ASSOCIATION) itemAssociation : select EMFObjectIndividualType(eClass= UML_ASSOCIATION) from dataModelAccess) {
+					if (itemAssociation == parameters.association) {
+						for (Object itemAsso : itemAssociation.getValues("ownedElement")) {
+							annotations.add(itemAsso.toString.substring(9).toString);	
+						}	
+					}
+				}
+				return annotations;
+			}
+
+			// --- Get the  annotation for the selected CommunicationPath ---//
+			public List<String> getAnnotationsCommunicationPath(EMFObjectIndividual commPath) {
+				for (EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) itemPath : select EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) from deployementModelAccess) {
+					if (itemPath == parameters.commPath) {
+						for (Object itemCommPath : itemPath.getValues("ownedElement")) {
+							annotationsCommPath.add(itemCommPath.toString.substring(9).toString);	
+						}	
+					}
+				}
+				return annotationsCommPath;
+			}
+
+			
+               // --- verify if the Association contains security annotation integrity the CommunicationPath must have security annotation encrypted ---//
+			public boolean verifySecurityAnnotations(List<String> annotaionAsss, List<String> annotationComm) {
+				if (parameters.annotaionAsss.contains("integrity") && parameters.annotationComm.contains("encrypted")) {
+					return true;
+				}
+				return false;
+			}
+     	}
+      }
+
+	
+}

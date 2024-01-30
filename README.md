@@ -39,7 +39,7 @@ The `UseCases` folder encompasses the implementation of security rules using the
 ### iTrust
 iTrust is an open-source medical system introduced in 2005 at the University of North Carolina. iTrust has requirements related to privacy, confidentiality,
 and integrity. 
-- **Virtual Model**: *iTrustSecurityFederation*
+- **Virtual Model**: *ITrustSecurityFederation*
   - Description: This virtual model implements specific security rule federation logic for iTrust. This virtual Model federate : the BPMN model (AddNewPrescription1), the Deployement model (iTrustDeploymentModel)  
   - **Concepts**:
     - *PoolArtifactCorrespondence* : This Concept represent the correspondence between the Pool element in the BPMN model and the Artifact element in the deployement model. 
@@ -48,7 +48,7 @@ and integrity.
     - *iTrustSecurityRule1* : This rule is attached to the correspondence PoolArtifactCorrespondence. Defines the security constraints that the correspondences must to verify. 
     - *iTrustSecurityRule2* : This rule is attached to the correspondence PoolArtifactCorrespondence. Defines the security constraints that the correspondences must to verify.
 
-- **Virtual Models and Flexo Concept Instances**: *instances1*
+- **Virtual Models and Flexo Concept Instances**: *instanceITrustSystem*
   - Description: Components used for executing and testing the security rule implementation as behaviors in the context of iTrust.
 
 ### HolidayBooking
@@ -65,6 +65,18 @@ hotels for its clients.
 
 - **Virtual Models and Flexo Concept Instances**: *Instance1*
   - Description: Components utilized for executing and validating the security rule implementation within the context of HolidayBooking.
+
+### MessagingService
+PICO (Presence and Instant Communication) a very simplified representation of ICQ or America Online Instant Messenger. 
+- **Virtual Model**: *MessagingSecurityFederation*
+  - Description: This virtual model implements specific security rule federation logic for Messaging service. This virtual Model federate : the BPMN model (MessagingServiceModel), the Deployement model (DeploymentMessangingService), and the Data model(DataMessangingService).  
+  - **Concepts**:
+    - *AssociationCommunicationPathCorrespondence* : This Concept represent the correspondence between the Association element in the Data model and the CommunicationPath element in the deployement model
+  - **Behaviours**:
+    - *messagingSecurityRule1* : This rule is attached to the correspondence AssociationCommunicationPathCorrespondence. Defines the security constraints that the correspondences must to verify. 
+
+- **Virtual Models and Flexo Concept Instances**: *instancesMessagingService1*
+  - Description: Components used for executing and testing the security rule implementation as behaviors in the context of iTrust.
 
 ## Prerequisites
 

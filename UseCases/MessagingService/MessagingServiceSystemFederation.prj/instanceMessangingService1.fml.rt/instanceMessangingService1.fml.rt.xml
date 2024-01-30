@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FMLRTVirtualModelInstance id="0" virtualModelURI="http://www.openflexo.org/projects/2024/1/MessagingServiceSystemFederation_1706541339008.prj/MessagingSecurityFederation.fml" modelVersion="1.0" title="instanceMessangingService1" version="0.1" flexoConceptURI="http://www.openflexo.org/projects/2024/1/MessagingServiceSystemFederation_1706541339008.prj/MessagingSecurityFederation.fml" userID="CHA" flexoID="1">
+  <FlexoConceptInstance id="1" flexoConceptURI="http://www.openflexo.org/projects/2024/1/MessagingServiceSystemFederation_1706541339008.prj/MessagingSecurityFederation.fml#Correspondences" userID="CHA" flexoID="5">
+    <EmbeddedFlexoConceptInstance id="2" flexoConceptURI="http://www.openflexo.org/projects/2024/1/MessagingServiceSystemFederation_1706541339008.prj/MessagingSecurityFederation.fml#Correspondences#CommuPathAssociationCorrespondence" userID="CHA" flexoID="6">
+      <ConceptActorReference id="3" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/DeploymentMessangingService.uml#_nnRdsL6tEe6GGffmtGz0Ag" roleName="communicationPath" userID="CHA" flexoID="7" />
+      <ConceptActorReference id="4" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DataModel/DataMessangingService.uml#_TtE5wL6lEe6GGffmtGz0Ag" roleName="association" userID="CHA" flexoID="8" />
+      <PrimitiveActorReference id="5" valueAsString="integrity" roleName="annotations" userID="CHA" flexoID="16" />
+      <PrimitiveActorReference id="6" valueAsString="Internet" roleName="annotationsCommPath" userID="CHA" flexoID="17" />
+      <PrimitiveActorReference id="7" valueAsString="integrity" roleName="annotations" userID="CHA" flexoID="18" />
+      <PrimitiveActorReference id="8" valueAsString="Internet" roleName="annotationsCommPath" userID="CHA" flexoID="19" />
+    </EmbeddedFlexoConceptInstance>
+  </FlexoConceptInstance>
+  <FlexoConceptInstance idref="2" />
+  <FlexoOntologyModelSlotInstance id="9" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/messagingServiceModel.bpmn" modelSlotName="bpmnModelAccess" roleName="bpmnModelAccess" userID="CHA" flexoID="2" />
+  <FlexoOntologyModelSlotInstance id="10" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DataModel/DataMessangingService.uml" modelSlotName="dataModelAccess" roleName="dataModelAccess" userID="CHA" flexoID="3" />
+  <FlexoOntologyModelSlotInstance id="11" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/DeploymentMessangingService.uml" modelSlotName="deployementModelAccess" roleName="deployementModelAccess" userID="CHA" flexoID="4" />
+</FMLRTVirtualModelInstance>

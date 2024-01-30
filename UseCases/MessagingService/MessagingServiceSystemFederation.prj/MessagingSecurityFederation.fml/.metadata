@@ -1,0 +1,9 @@
+#Metadata for directory D:\HeterogenousSecureModelsFederation\UseCases\MessagingService\MessagingServiceSystemFederation.prj\MessagingSecurityFederation.fml
+#Tue Jan 30 02:09:33 GMT+01:00 2024
+MessagingSecurityFederation.fml.name=MessagingSecurityFederation
+MessagingSecurityFederation.fml.version=0.1
+MessagingSecurityFederation.fml.dependenciesList=http\://www.omg.org/spec/BPMN/20100524/MODEL-XMI,http\://www.eclipse.org/uml2/5.0.0/UML,http\://www.eclipse.org/uml2/5.0.0/UML
+MessagingSecurityFederation.fml.uri=http\://www.openflexo.org/projects/2024/1/MessagingServiceSystemFederation_1706541339008.prj/MessagingSecurityFederation.fml
+MessagingSecurityFederation.fml.flexoConceptsList=Correspondences,Correspondences\#CommuPathAssociationCorrespondence
+MessagingSecurityFederation.fml.requiredModelSlotList=org.openflexo.technologyadapter.emf.EMFModelSlot,org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot
+MessagingSecurityFederation.fml.virtualModelClassName=org.openflexo.foundation.fml.VirtualModel

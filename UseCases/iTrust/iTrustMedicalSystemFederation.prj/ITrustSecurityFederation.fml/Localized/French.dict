@@ -16,6 +16,7 @@ nameMessage=nameMessage
 verify=verify
 verify1=verify1
 verifyAllMessageCommPath=verifyAllMessageCommPath
+verifyChange=verifyChange
 verifyDeploy=verifyDeploy
 verifyExistenceArtifactAssociated=verifyExistenceArtifactAssociated
 verifyExistenceConsistentInstance=verifyExistenceConsistentInstance

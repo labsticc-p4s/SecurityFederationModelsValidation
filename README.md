@@ -76,7 +76,7 @@ PICO (Presence and Instant Communication) a very simplified representation of IC
     - *messagingSecurityRule1* : This rule is attached to the correspondence AssociationCommunicationPathCorrespondence. Defines the security constraints that the correspondences must to verify. 
 
 - **Virtual Models and Flexo Concept Instances**: *instancesMessagingService1*
-  - Description: Components used for executing and testing the security rule implementation as behaviors in the context of iTrust.
+  - Description: Components used for executing and testing the security rule implementation as behaviors in the context of Messaging Service.
 
 ## Prerequisites
 

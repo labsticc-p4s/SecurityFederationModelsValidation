@@ -93,7 +93,21 @@ public model FlightPlanSecurityFederation {
 	     		}
 	     	}
 
-	       public flightPlanSecurityRule1() {"Security rule1 is  violated";
+	       public flightPlanSecurityRule1() {
+	     		
+				boolean checkAnnotation = false;
+				
+				container.annotationsCommPath = container.getAnnotationsCommunicationPath(communicationPath);
+				container.annotationsMessageFlow = container.getAnnotationsMessageFlow(messageFlow);
+				checkAnnotation = container.verifySecurityAnnotation(annotationsCommPath,annotationsMessageFlow);
+
+				if (checkAnnotation) {
+					 log "Security rule1 is not violated";
+					 }
+			   else {
+					 log "Security rule1 is  violated";
+			    }
+			}
 		
 			
 		}

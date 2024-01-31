@@ -78,6 +78,19 @@ PICO (Presence and Instant Communication) a very simplified representation of IC
 - **Virtual Models and Flexo Concept Instances**: *instancesMessagingService1*
   - Description: Components used for executing and testing the security rule implementation as behaviors in the context of Messaging Service.
 
+### FlightPlanNegociation
+Flight Plan Negociation is an air traffic management system.
+- **Virtual Model**: *FlightPlanSecurityFederation*
+  - Description: This virtual model implements specific security rule federation logic for Flight Plan Negociation. This virtual Model federate : the BPMN model (flightPlanNegociation), the Deployement model (flightPlaneNegociation), and the Data model (DataFlightPlanNegociation)  
+  - **Concepts**:
+    - *MessageFlowCommunicationPathCorrespondences* : This Concept represent the correspondence between the MessageFlow element in the BPMN model and the CommunicationPath element in the deployement model
+  - **Behaviours**:
+    - *flightPlanSecurityRule1* : This rule is attached to the correspondence MessageFlowCommunicationPathCorrespondences. Defines the security constraints that the correspondences must to verify. 
+
+- **Virtual Models and Flexo Concept Instances**: *instancesFlightPlan*
+  - Description: Components used for executing and testing the security rule implementation as behaviors in the context of Flight Plan Negociation.
+
+
 ## Prerequisites
 
 Before starting to use the project, ensure that you have the following prerequisites:

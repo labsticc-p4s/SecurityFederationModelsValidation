@@ -93,7 +93,7 @@ public model FlightPlanSecurityFederation {
 	     		}
 	     	}
 
-	     	public flightPlanSecurityRule1() {"Security rule1 is  violated";
+	       public flightPlanSecurityRule1() {"Security rule1 is  violated";
 		
 			
 		}

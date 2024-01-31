@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FMLRTVirtualModelInstance id="0" virtualModelURI="http://www.openflexo.org/projects/2024/1/FlightPlanNegociationFederation_1706652651621.prj/FlightPlanSecurityFederation.fml" modelVersion="1.0" title="instanceFlightPlan" version="0.1" flexoConceptURI="http://www.openflexo.org/projects/2024/1/FlightPlanNegociationFederation_1706652651621.prj/FlightPlanSecurityFederation.fml" userID="CHA" flexoID="1">
+  <FlexoConceptInstance id="1" flexoConceptURI="http://www.openflexo.org/projects/2024/1/FlightPlanNegociationFederation_1706652651621.prj/FlightPlanSecurityFederation.fml#Correspondences" userID="CHA" flexoID="5">
+    <EmbeddedFlexoConceptInstance id="2" flexoConceptURI="http://www.openflexo.org/projects/2024/1/FlightPlanNegociationFederation_1706652651621.prj/FlightPlanSecurityFederation.fml#Correspondences#MessageFlowCommunicationPathCorrespondences" userID="CHA" flexoID="6">
+      <ConceptActorReference id="3" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/DeploymentFlightPlanNegociation.uml#_DQqagL99Ee6GGffmtGz0Ag" roleName="communicationPath" userID="CHA" flexoID="7" />
+      <ConceptActorReference id="4" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/flightPlanNegociation.bpmn#MessageFlow_1" roleName="messageFlow" userID="CHA" flexoID="8" />
+    </EmbeddedFlexoConceptInstance>
+  </FlexoConceptInstance>
+  <FlexoConceptInstance idref="2" />
+  <FlexoOntologyModelSlotInstance id="5" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/flightPlanNegociation.bpmn" modelSlotName="bpmnModelAccess" roleName="bpmnModelAccess" userID="CHA" flexoID="2" />
+  <FlexoOntologyModelSlotInstance id="6" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DataModel/DataFlightPlanNegociation.uml" modelSlotName="dataModelAccess" roleName="dataModelAccess" userID="CHA" flexoID="3" />
+  <FlexoOntologyModelSlotInstance id="7" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/DeploymentFlightPlanNegociation.uml" modelSlotName="deployementModelAccess" roleName="deployementModelAccess" userID="CHA" flexoID="4" />
+</FMLRTVirtualModelInstance>

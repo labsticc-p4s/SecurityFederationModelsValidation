@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_BHdWgL92Ee6GGffmtGz0Ag" name="FlightPlanNegociationModel">
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_tCl10L98Ee6GGffmtGz0Ag" name="secureLinks"/>
+  <packagedElement xmi:type="uml:Node" xmi:id="_-X4jIL97Ee6GGffmtGz0Ag" name="AirplaneClient">
+    <nestedClassifier xmi:type="uml:Artifact" xmi:id="_SIm7oL98Ee6GGffmtGz0Ag" name="AirplaneGUI"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Node" xmi:id="_CohR4L98Ee6GGffmtGz0Ag" name="LocalAuthorityClient">
+    <nestedClassifier xmi:type="uml:Artifact" xmi:id="_VrJOQL98Ee6GGffmtGz0Ag" name="LocalAuthorityGUI"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Node" xmi:id="_HBigkL98Ee6GGffmtGz0Ag" name="AirplaneSubsystem">
+    <nestedClassifier xmi:type="uml:Artifact" xmi:id="_ZZE4kL98Ee6GGffmtGz0Ag" name="AirplaneProcessApp"/>
+    <nestedClassifier xmi:type="uml:Artifact" xmi:id="_d2vWsL98Ee6GGffmtGz0Ag" name="PlanDataBase"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Node" xmi:id="_L--D4L98Ee6GGffmtGz0Ag" name="LocalAuthoritySubsystem">
+    <nestedClassifier xmi:type="uml:Artifact" xmi:id="_hc9PcL98Ee6GGffmtGz0Ag" name="LocalAuthorityProcessApp"/>
+    <nestedClassifier xmi:type="uml:Artifact" xmi:id="_l48SkL98Ee6GGffmtGz0Ag" name="FlightPlanDataBase"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_yGM5oL98Ee6GGffmtGz0Ag" name="secrecy"/>
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_1btc4L98Ee6GGffmtGz0Ag" name="integrity"/>
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_4cqscL98Ee6GGffmtGz0Ag" name="encypted"/>
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_61I_sL98Ee6GGffmtGz0Ag" name="call"/>
+  <packagedElement xmi:type="uml:CommunicationPath" xmi:id="_-bW4cL98Ee6GGffmtGz0Ag" name="CommPath1" redefinedClassifier="_-X4jIL97Ee6GGffmtGz0Ag _HBigkL98Ee6GGffmtGz0Ag">
+    <elementImport xmi:id="_IkzNoL99Ee6GGffmtGz0Ag" alias="encrypted" importedElement="_4cqscL98Ee6GGffmtGz0Ag"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:CommunicationPath" xmi:id="_BEAVsL99Ee6GGffmtGz0Ag" name="CommPath2" redefinedClassifier="_CohR4L98Ee6GGffmtGz0Ag _L--D4L98Ee6GGffmtGz0Ag">
+    <elementImport xmi:id="_NjII0L99Ee6GGffmtGz0Ag" alias="encypted" importedElement="_4cqscL98Ee6GGffmtGz0Ag"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:CommunicationPath" xmi:id="_DQqagL99Ee6GGffmtGz0Ag" name="CommPath3" redefinedClassifier="_L--D4L98Ee6GGffmtGz0Ag _HBigkL98Ee6GGffmtGz0Ag">
+    <elementImport xmi:id="_RKScwL99Ee6GGffmtGz0Ag" alias="encypted" importedElement="_4cqscL98Ee6GGffmtGz0Ag"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_WoaSUL99Ee6GGffmtGz0Ag" name="AssoArtifactsLocalGUIProcessApp" redefinedClassifier="_VrJOQL98Ee6GGffmtGz0Ag _hc9PcL98Ee6GGffmtGz0Ag">
+    <elementImport xmi:id="_11icsL99Ee6GGffmtGz0Ag" alias="call" importedElement="_61I_sL98Ee6GGffmtGz0Ag"/>
+    <elementImport xmi:id="_5mFWIL99Ee6GGffmtGz0Ag" alias="secrecy" importedElement="_yGM5oL98Ee6GGffmtGz0Ag"/>
+    <elementImport xmi:id="_8b2pYL99Ee6GGffmtGz0Ag" alias="integrity" importedElement="_1btc4L98Ee6GGffmtGz0Ag"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_UyJe0L9-Ee6GGffmtGz0Ag" name="AssoArtifactsAiplaneGuiProcessApp" redefinedClassifier="_SIm7oL98Ee6GGffmtGz0Ag _ZZE4kL98Ee6GGffmtGz0Ag">
+    <elementImport xmi:id="_cAvMcL9-Ee6GGffmtGz0Ag" alias="secrecy" importedElement="_yGM5oL98Ee6GGffmtGz0Ag"/>
+    <elementImport xmi:id="_c2xckL9-Ee6GGffmtGz0Ag" alias="call" importedElement="_61I_sL98Ee6GGffmtGz0Ag"/>
+    <elementImport xmi:id="_d3_B8L9-Ee6GGffmtGz0Ag" alias="integrity" importedElement="_1btc4L98Ee6GGffmtGz0Ag"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_tPjB0L9-Ee6GGffmtGz0Ag" name="AssoArtifactsLocalProcesAppAirplaneProcessApp" redefinedClassifier="_hc9PcL98Ee6GGffmtGz0Ag _ZZE4kL98Ee6GGffmtGz0Ag">
+    <elementImport xmi:id="_1OEXkL9-Ee6GGffmtGz0Ag" alias="integrity" importedElement="_1btc4L98Ee6GGffmtGz0Ag"/>
+    <elementImport xmi:id="_2OQpQL9-Ee6GGffmtGz0Ag" alias="call" importedElement="_61I_sL98Ee6GGffmtGz0Ag"/>
+    <elementImport xmi:id="_3MDHML9-Ee6GGffmtGz0Ag" alias="secrecy" importedElement="_yGM5oL98Ee6GGffmtGz0Ag"/>
+  </packagedElement>
+</uml:Model>

@@ -67,6 +67,7 @@ public model ITrustSecurityFederation {
 		for (MessageFlowCommunicationPathCorrepondence item : objs) {
 			//listInstancesMessageComm.add(item);			
 		
+
 }    	
 	 }
 
@@ -95,15 +96,20 @@ public model ITrustSecurityFederation {
 	 	return poolList;
 	}
 
+	delete() {
+		delete devices;
+
+	}
+
     public concept Correspondences {
     	
-    }
+    
 
      public concept PoolArtifactCorrespondence extends Correspondences {
      	EMFObjectIndividual pool with EMFObjectRole(container=bpmnModelAccess);
      	EMFObjectIndividual artifact with EMFObjectRole(container=deploymentModelAccess);
-     	MessageFlowCommunicationPathCorrepondence[0,*] listInstancesMessageComm with ConceptInstance(virtualModelInstance=container);
-     	PoolArtifactCorrespondence[0,*] listInstancesPoolArtifact1 with ConceptInstance(virtualModelInstance=container);
+     	MessageFlowCommunicationPathCorrepondence[0,*] listInstancesMessageComm with ConceptInstance(virtualModelInstance=container.container);
+     	PoolArtifactCorrespondence[0,*] listInstancesPoolArtifact1 with ConceptInstance(virtualModelInstance=container.container);
      	EMFObjectIndividual [0,*] devicesArtifact with EMFObjectRole(container=this);
      	EMFObjectIndividual [0,*] assoArtifacts with EMFObjectRole(container=this);
      	EMFObjectIndividual [0,*] flowElements with EMFObjectRole(container=this);
@@ -161,7 +167,7 @@ public model ITrustSecurityFederation {
 
      // --- Get the list flowElements for a Pool ---//
 	public List<EMFObjectIndividual> getFlowElements(EMFObjectIndividual pool) {
-		flowElements = null;
+		this.flowElements = null;
 		List<? extends Object> listParticipant = select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess;
 		for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) parti : listParticipant) {
 			int n = parti.processRef.flowElements.size();
@@ -298,7 +304,7 @@ public model ITrustSecurityFederation {
     	     listInstancesMessageComm = container.listInstancesMessageComm;
 		this.listAssoArtifact = this.verifyExistenceArtifactAssociated(artifact.name); 
 		for (String assoArtifact : listAssoArtifact) {
-			assoArtifactsFilter = container.verifyExistenceCorresp(assoArtifact);	
+			assoArtifactsFilter = container.container.verifyExistenceCorresp(assoArtifact);	
 		}
 		this.devicesArtifact = this.getDeploymentDevices(artifact);
 		for (EMFObjectIndividual device : devicesArtifact) {
@@ -306,7 +312,7 @@ public model ITrustSecurityFederation {
 		}
 		this.messageFlows = this.getMessageFlow(pool);
 		for (EMFObjectIndividual assoArtifactFilt : assoArtifactsFilter) {
-			assoPool = container.getPool(assoArtifactFilt.name);
+			assoPool = container.container.getPool(assoArtifactFilt.name);
 			devicesArtifactsFilter =  this.getDeploymentDevices(assoArtifactFilt);
 			if (!this.verifyDeploy(devicesArtifact,devicesArtifactsFilter)) {
 				for (EMFObjectIndividual dataflow : messageFlows) {
@@ -375,4 +381,5 @@ public model ITrustSecurityFederation {
 		delete communicationPath;
 	}
 	}
+    }
 }

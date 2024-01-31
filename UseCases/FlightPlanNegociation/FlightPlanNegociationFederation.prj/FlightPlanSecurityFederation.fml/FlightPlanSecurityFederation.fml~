@@ -1,0 +1,103 @@
+use org.openflexo.technologyadapter.emf.EMFModelSlot as EMF;
+use org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot as FMLRT;
+
+import org.openflexo.technologyadapter.emf.model.EMFModel;
+import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
+import java.lang.String;
+import java.util.List;
+
+import ["http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"] as BPMN21;
+import ["http://www.eclipse.org/uml2/5.0.0/UML"] as UML2;
+
+import [UML2:"CommunicationPath"] as DEPLOYMENT_COMMUNICATION_PATH;
+import [UML2:"Association"] as UML_ASSOCIATION;
+import [BPMN21:"MessageFlow"] as BPMN_MESSAGE_FLOW;
+import ["http://www.eclipse.org/uml2/5.0.0/UML"] as UML22;
+import [BPMN21:"Association"] as BPMN_ASSOCIATION;
+import [BPMN21:"TextAnnotation"] as BPMN_TEXT_ANNOTATION;
+
+
+@URI("http://www.openflexo.org/projects/2024/1/FlightPlanNegociationFederation_1706652651621.prj/FlightPlanSecurityFederation.fml")
+@Author("chahr")
+public model FlightPlanSecurityFederation {
+
+	EMFModel bpmnModelAccess with EMFModelSlot(metaModel=BPMN21,isRequired=true);
+	EMFModel dataModelAccess with EMFModelSlot(metaModel=UML2,isRequired=true);
+	EMFModel deployementModelAccess with EMFModelSlot(metaModel=UML2,isRequired=true);
+
+	public create::createAccessObject(required Resource<EMFModel> bpmnModelResource, required Resource<EMFModel> dataModelResource, required Resource<EMFModel> deployementModelResource) {
+      	bpmnModelAccess = parameters.bpmnModelResource.resourceData;
+          dataModelAccess = parameters.dataModelResource.resourceData;
+          deployementModelAccess = parameters.deployementModelResource.resourceData;
+      }
+
+	delete() {
+	}
+
+	public concept Correspondences {
+		String [0,*] annotationsCommPath;
+		String [0,*] annotationsMessageFlow;
+		
+	    // --- Get the  annotation for the selected CommunicationPath ---//
+		public List<String> getAnnotationsCommunicationPath(EMFObjectIndividual commPath) {
+			for (EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) itemPath : select EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) from deployementModelAccess) {
+				if (itemPath == parameters.commPath) {
+					for (Object itemCommPath : itemPath.getValues("ownedElement")) {
+						annotationsCommPath.add(itemCommPath.toString.substring(14).toString);	
+					}	
+					}
+				}
+				return annotationsCommPath;
+			}
+		public List<String> getAnnotationsMessageFlow(EMFObjectIndividual messageFlow) {
+			for (EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) itemAsso : select EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) from bpmnModelAccess) {
+				if (itemAsso.targetRef == parameters.messageFlow) {
+					annotationsMessageFlow.add(itemAsso.sourceRef.toString.substring(15).toString);	
+				}
+			}
+			
+			return annotationsMessageFlow;
+		}
+
+		public boolean verifySecurityAnnotation(List<String> annotaCommPath, List<String> annotaMessageFlow ) {
+			for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) itemAnnota : select EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) from bpmnModelAccess) {
+				if (parameters.annotaMessageFlow.contains(itemAnnota.id)) {
+					if ((itemAnnota.text.contains("integrityMF") || itemAnnota.text.contains("confidentialityMF")) && parameters.annotaMessageFlow.contains("encrypted")) {
+						return true; 
+					}
+					
+				}
+			}
+			
+			return false;
+		}
+
+		
+
+		public concept MessageFlowCommunicationPathCorrespondences {
+			EMFObjectIndividual messageFlow with EMFObjectRole(container=bpmnModelAccess);
+	     	EMFObjectIndividual communicationPath with EMFObjectRole(container=deployementModelAccess);
+
+	     	create::_create(required String nameMessage,required String nameCommPath) {
+
+	     		for (EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) itemCommPath : select EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) from deployementModelAccess) {
+	     			if (itemCommPath.name == parameters.nameCommPath) {
+						communicationPath =itemCommPath;
+				     }
+	     		}
+
+	     		for (EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW) itemMessage : select EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW) from bpmnModelAccess) {
+	     			if (itemMessage.name == parameters.nameMessage) {
+						messageFlow = itemMessage;
+					}	
+	     		}
+	     	}
+
+	     	public flightPlanSecurityRule1() {"Security rule1 is  violated";
+		
+			
+		}
+		
+	}
+
+}

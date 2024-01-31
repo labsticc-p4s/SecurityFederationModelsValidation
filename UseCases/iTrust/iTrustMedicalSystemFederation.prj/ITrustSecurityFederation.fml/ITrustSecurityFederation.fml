@@ -68,6 +68,8 @@ public model ITrustSecurityFederation {
 			//listInstancesMessageComm.add(item);			
 		
 
+
+
 }    	
 	 }
 
@@ -98,8 +100,7 @@ public model ITrustSecurityFederation {
 
 	delete() {
 		delete devices;
-		delete artifactsList;
-		delete poolList;
+
 	}
 
     public concept Correspondences {

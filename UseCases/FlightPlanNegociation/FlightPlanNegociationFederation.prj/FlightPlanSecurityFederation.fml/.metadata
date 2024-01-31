@@ -1,0 +1,9 @@
+#Metadata for directory D:\HeterogenousSecureModelsFederation\UseCases\FlightPlanNegociation\FlightPlanNegociationFederation.prj\FlightPlanSecurityFederation.fml
+#Wed Jan 31 01:57:19 GMT+01:00 2024
+FlightPlanSecurityFederation.fml.version=0.1
+FlightPlanSecurityFederation.fml.name=FlightPlanSecurityFederation
+FlightPlanSecurityFederation.fml.requiredModelSlotList=org.openflexo.technologyadapter.emf.EMFModelSlot,org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot
+FlightPlanSecurityFederation.fml.uri=http\://www.openflexo.org/projects/2024/1/FlightPlanNegociationFederation_1706652651621.prj/FlightPlanSecurityFederation.fml
+FlightPlanSecurityFederation.fml.virtualModelClassName=org.openflexo.foundation.fml.VirtualModel
+FlightPlanSecurityFederation.fml.flexoConceptsList=Correspondences,Correspondences\#MessageFlowCommunicationPathCorrespondences
+FlightPlanSecurityFederation.fml.dependenciesList=http\://www.omg.org/spec/BPMN/20100524/MODEL-XMI,http\://www.eclipse.org/uml2/5.0.0/UML

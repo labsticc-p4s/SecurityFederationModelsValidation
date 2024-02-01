@@ -9,15 +9,15 @@ import java.util.List;
 import ["http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"] as BPMN21;
 import ["http://www.eclipse.org/uml2/5.0.0/UML"] as UML2;
 
-import [UML2:"CommunicationPath"] as DEPLOYMENT_COMMUNICATION_PATH;
-import [UML2:"Association"] as UML_ASSOCIATION;
+import [UML23:"CommunicationPath"] as DEPLOYMENT_COMMUNICATION_PATH;
+import [UML23:"Association"] as UML_ASSOCIATION;
 import [BPMN21:"MessageFlow"] as BPMN_MESSAGE_FLOW;
-import ["http://www.eclipse.org/uml2/5.0.0/UML"] as UML22;
 import [BPMN21:"Association"] as BPMN_ASSOCIATION;
 import [BPMN21:"TextAnnotation"] as BPMN_TEXT_ANNOTATION;
-import [BPMN21:"DataObject"] as BPMNDataObject;
-import [UML2:"Class"] as UML_CLASS;
-import [UML2:"ElementImport"] as UML_ELEMENT_IMPORT;
+import [BPMN21:"DataObject"] as BPMN_DATAOBJECT;
+import [UML23:"Class"] as UML_CLASS;
+import [UML23:"ElementImport"] as UML_ELEMENT_IMPORT;
+import ["http://www.eclipse.org/uml2/5.0.0/UML"] as UML23;
 
 typedef EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) as DeploymentCommunicationPath;
 typedef EMFObjectIndividualType(eClass=UML_ASSOCIATION) as UMLAssociation;
@@ -26,7 +26,7 @@ typedef EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) as BPMNTextAnnotati
 typedef EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW) as BPMNMessageFlow;
 typedef EMFObjectIndividualType(eClass= UML_CLASS) as UMLClass;
 typedef EMFObjectIndividualType(eClass=UML_ELEMENT_IMPORT) as UMLElementImport;
-
+typedef EMFObjectIndividualType(eClass=BPMN_DATAOBJECT) as BPMNDataObject;
 
 @URI("http://www.openflexo.org/projects/2024/1/FlightPlanNegociationFederation_1706652651621.prj/FlightPlanSecurityFederation.fml")
 @Author("chahr")
@@ -51,7 +51,7 @@ public model FlightPlanSecurityFederation {
 		String [0,*] annotationsClass;
 		
 	    // --- Get the  annotation for the selected CommunicationPath ---//
-		public List<String> getAnnotationsCommunicationPath(EMFObjectIndividual commPath) {
+		private List<String> getAnnotationsCommunicationPath(EMFObjectIndividual commPath) {
 		for (DeploymentCommunicationPath itemPath : select DeploymentCommunicationPath from deployementModelAccess) {
 			if (itemPath == parameters.commPath) {
 				for (Object itemCommPath : itemPath.getValues("ownedElement")) {
@@ -62,7 +62,7 @@ public model FlightPlanSecurityFederation {
 			return annotationsCommPath;
 		}
 		
-		public List<String> getAnnotationsObjects(EMFObjectIndividual object) {
+		private List<String> getAnnotationsObjects(EMFObjectIndividual object) {
 			for (BPMNAssociation itemAsso : select BPMNAssociation from bpmnModelAccess) {
 				if (itemAsso.targetRef == parameters.object) {
 					annotationsObject.add(itemAsso.sourceRef.toString.substring(15).toString);	
@@ -71,7 +71,7 @@ public model FlightPlanSecurityFederation {
 			return annotationsObject;
 		}
 
-	public boolean verifySecurityAnnotation(List<String> annotaCommPath, List<String> annotaMessageFlow ) {
+	private boolean verifySecurityAnnotation(List<String> annotaCommPath, List<String> annotaMessageFlow ) {
 		for (BPMNTextAnnotation itemAnnota : select BPMNTextAnnotation from bpmnModelAccess) {
 			if (parameters.annotaMessageFlow.contains(itemAnnota.id)) {
 				if ((itemAnnota.text.contains("integrityMF") || itemAnnota.text.contains("confidentialityMF")) && parameters.annotaMessageFlow.contains("encypted")) { 
@@ -83,7 +83,7 @@ public model FlightPlanSecurityFederation {
 		return false;
 	}
 
-	public List<String> getAnnotationClass( EMFObjectIndividual class) {
+	private List<String> getAnnotationClass( EMFObjectIndividual class) {
 		for (UMLClass itemClasses : select UMLClass from dataModelAccess) {
 			if (itemClasses.name == parameters.class) {
 				log itemClasses.toString;
@@ -106,17 +106,6 @@ public model FlightPlanSecurityFederation {
 	     	create::_create(required String messageName,required String comPathName) {
 				messageFlow = select unique BPMNMessageFlow from bpmnModelAccess where (selected.name == parameters.messageName);
 				communicationPath = select unique DeploymentCommunicationPath from deployementModelAccess where (selected.name == parameters.comPathName);
-	     		/*for (EMFObjectIndividualType(eClass= UML_CLASS) itemCommPath : select EMFObjectIndividualType(eClass= UML_CLASS) from deployementModelAccess) {
-	     			if (itemCommPath.name == parameters.nameCommPath) {
-						communicationPath =itemCommPath;
-				     }
-	     		}
-
-	     		for (EMFObjectIndividualType(eClass= UML_CLASS) itemMessage : select EMFObjectIndividualType(eClass= UML_CLASS) from bpmnModelAccess) {
-	     			if (itemMessage.name == parameters.nameMessage) {
-						messageFlow = itemMessage;
-					}	
-	     		}*/
 	     	}
 
 	       public flightPlanSecurityRule1() {
@@ -144,19 +133,11 @@ public model FlightPlanSecurityFederation {
 
 
 			create(required String nameDataObject,required String nameClass) {
-
-				for (EMFObjectIndividualType(eClass= UML_CLASS) itemData : select EMFObjectIndividualType(eClass= UML_CLASS) from bpmnModelAccess) {
-					if (itemData.name == parameters.nameDataObject) {
-						dataObject = itemData;
-					}
-				}
-
-				for (EMFObjectIndividualType(eClass= UML_CLASS) itemClass : select EMFObjectIndividualType(eClass= UML_CLASS) from dataModelAccess) {
-					if (itemClass.name == parameters.nameClass) {
-						class = itemClass;
-					}
-				}	
+				dataObject = select unique BPMNDataObject from  bpmnModelAccess where (selected.name == parameters.nameDataObject);
+				class = select unique UMLClass from dataModelAccess where (selected.name == parameters.nameClass);
 			}
+
+			
 
 		 public flightPlanSecurityRule2() {
 		 	//container.annotationsObject.toString;

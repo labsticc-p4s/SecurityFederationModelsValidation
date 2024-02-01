@@ -10,6 +10,7 @@ import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
 import java.util.List;
 
 import ["http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"] as BPMN21;
+
 import ["http://www.example.org/deployementEcoreMetaModel"] as DEPLOYEMENT_ECORE_META_MODEL;
 
 import [BPMN21:"Participant"] as BPMN_PARTICIPANT;
@@ -22,21 +23,31 @@ import [BPMN21:"DataObject"] as BPMN_DATAOBJECT;
 import [DEPLOYEMENT_ECORE_META_MODEL:"Deploy"] as DEPLOYMENT_DEPLOY;
 import [DEPLOYEMENT_ECORE_META_MODEL:"Association"] as DEPLOYMENT_ASSOCIATION;
 import [DEPLOYEMENT_ECORE_META_MODEL:"CommunicationPath"] as DEPLOYMENT_COMMUNICATION_PATH;
+import ["http://www.eclipse.org/uml2/5.0.0/UML"] as UML22;
+import [UML22:"Class"] as DATA_USER;
+
+import ["AccessControlMetamodel"] as ACCESS_CONTROL_METAMODEL2;
+import [ACCESS_CONTROL_METAMODEL2:"ROLE"] as ACCESS_CONTROL_ROLE;
 
 @URI("http://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/ITrustSecurityFederation.fml")
 @Author("chahr")
 public model ITrustSecurityFederation {
 	EMFModel bpmnModelAccess with EMFModelSlot(metaModel=BPMN21,isRequired=true);
 	EMFModel deploymentModelAccess with EMFModelSlot(metaModel=DEPLOYEMENT_ECORE_META_MODEL,isRequired=true);
+	EMFModel accessControlModelAccess with EMFModelSlot(metaModel=ACCESS_CONTROL_METAMODEL2,isRequired=true);
+	EMFModel dataModelAccess with EMFModelSlot(metaModel=UML2,isRequired=true);
+	
 	MessageFlowCommunicationPathCorrepondence[0,*] listInstancesMessageComm with ConceptInstance(virtualModelInstance=this);
 	PoolArtifactCorrespondence[0,*] listInstancesPoolArtifact with ConceptInstance(virtualModelInstance=this);
      EMFObjectIndividual devices with EMFObjectRole(container=this);
      EMFObjectIndividual[0,*] artifactsList with EMFObjectRole(container=this);
      EMFObjectIndividual[0,*] poolList with EMFObjectRole(container=this);
 
-	public create::createAccessObject(required Resource<EMFModel> bpmnModelResource, required Resource<EMFModel> deploymentModelResource) {
+	public create::createAccessObject(required Resource<EMFModel> bpmnModelResource, required Resource<EMFModel> deploymentModelResource, required Resource<EMFModel> dataModelResource, required Resource<EMFModel> accessControlModelResource) {
       	bpmnModelAccess = parameters.bpmnModelResource.resourceData;
           deploymentModelAccess = parameters.deploymentModelResource.resourceData;
+          dataModelAccess = parameters.dataModelResource.resourceData;
+    		accessControlModelAccess = parameters.accessControlModelResource.resourceData;
       }
 
 
@@ -67,6 +78,12 @@ public model ITrustSecurityFederation {
 		for (MessageFlowCommunicationPathCorrepondence item : objs) {
 			//listInstancesMessageComm.add(item);			
 		
+
+
+
+
+
+
 
 
 

@@ -1,5 +1,6 @@
 bpmnModelResource=bpmnModelResource
 checkSecurityAnnotations=checkSecurityAnnotations
+comPathName=comPathName
 dataModelResource=dataModelResource
 deployementModelResource=deployementModelResource
 flightPlanSecurityRule1=flightPlanSecurityRule1
@@ -9,6 +10,7 @@ getAnnotationsCommunicationPath=getAnnotationsCommunicationPath
 getAnnotationsMessageFlow=getAnnotationsMessageFlow
 getAnnotationsMessageFlow1=getAnnotationsMessageFlow1
 getAnnotationsObjects=getAnnotationsObjects
+messageName=messageName
 nameClass=nameClass
 nameCommPath=nameCommPath
 nameDataObject=nameDataObject

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FMLRTVirtualModelInstance id="0" virtualModelURI="http://www.openflexo.org/projects/2024/1/FlightPlanNegociationFederation_1706652651621.prj/FlightPlanSecurityFederation.fml" modelVersion="1.0" title="instanceFlightPlan1" version="0.1" flexoConceptURI="http://www.openflexo.org/projects/2024/1/FlightPlanNegociationFederation_1706652651621.prj/FlightPlanSecurityFederation.fml" userID="CHA" flexoID="1">
+  <FlexoConceptInstance id="1" flexoConceptURI="http://www.openflexo.org/projects/2024/1/FlightPlanNegociationFederation_1706652651621.prj/FlightPlanSecurityFederation.fml#Correspondences" userID="CHA" flexoID="5">
+    <PrimitiveActorReference id="2" valueAsString="encypted" roleName="annotationsCommPath" userID="CHA" flexoID="9" />
+    <PrimitiveActorReference id="3" valueAsString="TextAnnotation_1" roleName="annotationsObject" userID="CHA" flexoID="10" />
+    <EmbeddedFlexoConceptInstance id="4" flexoConceptURI="http://www.openflexo.org/projects/2024/1/FlightPlanNegociationFederation_1706652651621.prj/FlightPlanSecurityFederation.fml#Correspondences#MessageFlowCommunicationPathCorrespondences" userID="CHA" flexoID="6">
+      <ConceptActorReference id="5" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/flightPlanNegociation.bpmn#MessageFlow_1" roleName="messageFlow" userID="CHA" flexoID="7" />
+      <ConceptActorReference id="6" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/DeploymentFlightPlanNegociation.uml#_DQqagL99Ee6GGffmtGz0Ag" roleName="communicationPath" userID="CHA" flexoID="8" />
+    </EmbeddedFlexoConceptInstance>
+    <EmbeddedFlexoConceptInstance id="7" flexoConceptURI="http://www.openflexo.org/projects/2024/1/FlightPlanNegociationFederation_1706652651621.prj/FlightPlanSecurityFederation.fml#Correspondences#DataObjectClass" userID="CHA" flexoID="11">
+      <ConceptActorReference id="8" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/flightPlanNegociation.bpmn#DataObject_2" roleName="dataObject" userID="CHA" flexoID="12" />
+      <ConceptActorReference id="9" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DataModel/DataFlightPlanNegociation.uml#_ADdEML9oEe6GGffmtGz0Ag" roleName="class" userID="CHA" flexoID="13" />
+    </EmbeddedFlexoConceptInstance>
+  </FlexoConceptInstance>
+  <FlexoConceptInstance idref="4" />
+  <FlexoConceptInstance idref="7" />
+  <FlexoOntologyModelSlotInstance id="10" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/flightPlanNegociation.bpmn" modelSlotName="bpmnModelAccess" roleName="bpmnModelAccess" userID="CHA" flexoID="2" />
+  <FlexoOntologyModelSlotInstance id="11" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DataModel/DataFlightPlanNegociation.uml" modelSlotName="dataModelAccess" roleName="dataModelAccess" userID="CHA" flexoID="3" />
+  <FlexoOntologyModelSlotInstance id="12" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/DeploymentFlightPlanNegociation.uml" modelSlotName="deployementModelAccess" roleName="deployementModelAccess" userID="CHA" flexoID="4" />
+</FMLRTVirtualModelInstance>

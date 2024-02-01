@@ -17,6 +17,7 @@ import [BPMN21:"Association"] as BPMN_ASSOCIATION;
 import [BPMN21:"TextAnnotation"] as BPMN_TEXT_ANNOTATION;
 import [BPMN21:"DataObject"] as BPMNDataObject;
 import [UML2:"Class"] as UML_CLASS;
+import [UML2:"ElementImport"] as UML_ELEMENT_IMPORT;
 
 typedef EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) as DeploymentCommunicationPath;
 typedef EMFObjectIndividualType(eClass=UML_ASSOCIATION) as UMLAssociation;
@@ -24,6 +25,7 @@ typedef EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) as BPMNAssociation;
 typedef EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) as BPMNTextAnnotation;
 typedef EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW) as BPMNMessageFlow;
 typedef EMFObjectIndividualType(eClass= UML_CLASS) as UMLClass;
+typedef EMFObjectIndividualType(eClass=UML_ELEMENT_IMPORT) as UMLElementImport;
 
 
 @URI("http://www.openflexo.org/projects/2024/1/FlightPlanNegociationFederation_1706652651621.prj/FlightPlanSecurityFederation.fml")
@@ -85,7 +87,9 @@ public model FlightPlanSecurityFederation {
 		for (UMLClass itemClasses : select UMLClass from dataModelAccess) {
 			if (itemClasses.name == parameters.class) {
 				log itemClasses.toString;
-				for (Object itemClass : itemClasses.getValues("elementImport")) {
+				log itemClasses.elementImport.toString;
+				for (EMFObjectIndividualType(eClass=UML_ELEMENT_IMPORT) itemClass : itemClasses.elementImport) {
+				//for (Object itemClass : itemClasses.getValues("elementImport")) {
 					annotationsClass.add(itemClass.toString.substring(13).toString);
 				}
 			}

@@ -12,6 +12,7 @@ import java.util.List;
 import ["http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"] as BPMN21;
 
 import ["http://www.example.org/deployementEcoreMetaModel"] as DEPLOYEMENT_ECORE_META_MODEL;
+import ["http://www.eclipse.org/uml2/5.0.0/UML"] as UML2;
 
 import [BPMN21:"Participant"] as BPMN_PARTICIPANT;
 import [DEPLOYEMENT_ECORE_META_MODEL:"Artifact"] as DEPLOYMENT_ARTIFACT;
@@ -25,6 +26,7 @@ import [DEPLOYEMENT_ECORE_META_MODEL:"Association"] as DEPLOYMENT_ASSOCIATION;
 import [DEPLOYEMENT_ECORE_META_MODEL:"CommunicationPath"] as DEPLOYMENT_COMMUNICATION_PATH;
 import ["http://www.eclipse.org/uml2/5.0.0/UML"] as UML22;
 import [UML22:"Class"] as DATA_USER;
+import [UML2:"Class"] as DATA_USER;
 
 import ["AccessControlMetamodel"] as ACCESS_CONTROL_METAMODEL2;
 import [ACCESS_CONTROL_METAMODEL2:"ROLE"] as ACCESS_CONTROL_ROLE;
@@ -42,6 +44,8 @@ public model ITrustSecurityFederation {
      EMFObjectIndividual devices with EMFObjectRole(container=this);
      EMFObjectIndividual[0,*] artifactsList with EMFObjectRole(container=this);
      EMFObjectIndividual[0,*] poolList with EMFObjectRole(container=this);
+     UserRoleLink[0,*] listUserRoleLink with ConceptInstance(virtualModelInstance=this);
+
 
 	public create::createAccessObject(required Resource<EMFModel> bpmnModelResource, required Resource<EMFModel> deploymentModelResource, required Resource<EMFModel> dataModelResource, required Resource<EMFModel> accessControlModelResource) {
       	bpmnModelAccess = parameters.bpmnModelResource.resourceData;
@@ -78,6 +82,8 @@ public model ITrustSecurityFederation {
 		for (MessageFlowCommunicationPathCorrepondence item : objs) {
 			//listInstancesMessageComm.add(item);			
 		
+
+
 
 
 
@@ -401,4 +407,74 @@ public model ITrustSecurityFederation {
 	}
 	}
     }
+
+    // --- Check if the user has a valide role --- //
+	public boolean checkUserRole(required String userName) {
+	    boolean checked = false;
+	    List<UserRoleLink> links = select UserRoleLink from this;
+	    
+	    for (UserRoleLink item : links) {
+	        if (item.user.name == parameters.userName && item.verifyCorrespondence()) {
+	            checked = true;
+	        }
+	    }
+	    
+	    return checked;
+	}
+	
+	// --- Run the 3rd iTrust security rule --- //
+	public void iTrustRule3(required String name) {
+	    boolean checked = false;
+	    List<UserRoleLink> links = select UserRoleLink from this;
+	    checked = this.checkUserRole(parameters.name);
+	
+	    if (!checked) {
+	        for (UserRoleLink item : links) {	
+	            if (item.user.getValues("member").toString.contains(parameters.name) && this.checkUserRole(item.user.name)) {
+	                checked = true;
+	            }
+	        }
+	    }
+	
+	    if (checked) {
+	        log "Security rule verified";
+	    } 
+else {
+	        log "Security rule violated";
+	    }
+	    
+	}
+
+   public concept UserRoleLink {
+        EMFObjectIndividual user with EMFObjectRole(container=dataModelAccess);
+        EMFObjectIndividual role with EMFObjectRole(container=accessControlModelAccess);
+        
+        create::_create(required String roleName, required  String userName) {
+            for (EMFObjectIndividualType(eClass=DATA_USER) userItem : select EMFObjectIndividualType(eClass=DATA_USER) from dataModelAccess) {
+                if (userItem.name == parameters.userName) {    
+                    user = userItem;
+                }
+            }
+
+            for (EMFObjectIndividualType(eClass=ACCESS_CONTROL_ROLE) roleItem : select EMFObjectIndividualType(eClass=ACCESS_CONTROL_ROLE) from accessControlModelAccess) {
+                if (roleItem.nameRole == parameters.roleName) {
+                    role = roleItem;
+                }
+            }
+        }
+
+        delete() {
+        
+        }
+
+        public boolean verifyCorrespondence() {
+            if (user == null || role == null) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+    }
+
 }

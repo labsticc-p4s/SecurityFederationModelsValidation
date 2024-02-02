@@ -302,37 +302,37 @@ public model ITrustSecurityFederation {
 				}
 			}
 		}
-		public boolean verifyExistenceConsistentInstance() {
-			List<EMFObjectIndividual> assoPool;
-			List<EMFObjectIndividual> commPath;
-			listInstancesMessageComm = container.listInstancesMessageComm;
-			this.listAssoArtifact = this.verifyExistenceArtifactAssociated(artifact.name);
-			for (String assoArtifact : listAssoArtifact) {
-				assoArtifactsFilter = container.container.verifyExistenceCorresp(assoArtifact);
-			}
-			this.devicesArtifact = this.getDeploymentDevices(artifact);
-			for (EMFObjectIndividual device : devicesArtifact) {
-				this.commPath = this.getCommunication(device);
-			}
-			this.messageFlows = this.getMessageFlow(pool);
-			for (EMFObjectIndividual assoArtifactFilt : assoArtifactsFilter) {
-				assoPool = container.container.getPool(assoArtifactFilt.name);
-				devicesArtifactsFilter = this.getDeploymentDevices(assoArtifactFilt);
-				if (!this.verifyDeploy(devicesArtifact,devicesArtifactsFilter)) {
-					for (EMFObjectIndividual dataflow : messageFlows) {
-						for (MessageFlowCommunicationPathCorrepondence item : listInstancesMessageComm) {
-							if (dataflow == item.messageFlow.name && this.commPath.contains(item.communicationPath)) {
-								if (!item.verifySecureCommunication()) {
-									return false;
-								}
+	public boolean verifyExistenceConsistentInstance() {
+		List<EMFObjectIndividual> assoPool;
+		List<EMFObjectIndividual> commPath;
+		listInstancesMessageComm = container.listInstancesMessageComm;
+		this.listAssoArtifact = this.verifyExistenceArtifactAssociated(artifact.name);
+		for (String assoArtifact : listAssoArtifact) {
+			assoArtifactsFilter = container.container.verifyExistenceCorresp(assoArtifact);
+		}
+		this.devicesArtifact = this.getDeploymentDevices(artifact);
+		for (EMFObjectIndividual device : devicesArtifact) {
+			this.commPath = this.getCommunication(device);
+		}
+		this.messageFlows = this.getMessageFlow(pool);
+		for (EMFObjectIndividual assoArtifactFilt : assoArtifactsFilter) {
+			assoPool = container.container.getPool(assoArtifactFilt.name);
+			devicesArtifactsFilter = this.getDeploymentDevices(assoArtifactFilt);
+			if (!this.verifyDeploy(devicesArtifact,devicesArtifactsFilter)) {
+				for (EMFObjectIndividual dataflow : messageFlows) {
+					for (MessageFlowCommunicationPathCorrepondence item : listInstancesMessageComm) {
+						if (dataflow == item.messageFlow.name && this.commPath.contains(item.communicationPath)) {
+							if (!item.verifySecureCommunication()) {
+								return false;
 							}
 						}
 					}
 				}
 			}
-			return true;
 		}
+		return true;
 	}
+}
 
 	public concept MessageFlowCommunicationPathCorrepondence {
 		EMFObjectIndividual messageFlow with EMFObjectRole(container=bpmnModelAccess);

@@ -151,8 +151,11 @@ public model ITrustSecurityFederation {
 			}
 		}
 	}
+	
 
-	public concept PoolArtifactCorrespondence extends Correspondences {
+ }
+
+	public concept PoolArtifactCorrespondence {
 		EMFObjectIndividual pool with EMFObjectRole(container=bpmnModelAccess);
 		EMFObjectIndividual artifact with EMFObjectRole(container=deploymentModelAccess);
 		MessageFlowCommunicationPathCorrepondence[0,*] listInstancesMessageComm with ConceptInstance(virtualModelInstance=container.container);
@@ -193,17 +196,16 @@ public model ITrustSecurityFederation {
 			}
 			return this.devicesArtifact;
 		}
-		public List<EMFObjectIndividual> getTest(EMFObjectIndividual nameArtifact) {
-			return flowElements;
-		}
+
+		
 		public List<EMFObjectIndividual> getFlowElements(EMFObjectIndividual pool) {
 			this.flowElements = null;
 			List<? extends Object> listParticipant = select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess;
 			for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) parti : listParticipant) {
 				int n = parti.processRef.flowElements.size();
 				if (parti.id.toString == parameters.pool.name.toString) {
-					for (int j=0 ; j < n ; j++;) {
-						flowElements.add(parti.processRef.flowElements.get(j);
+					for (int j=0 ; j < n ; j++) {
+						flowElements.add(parti.processRef.flowElements.get(j));
 					}
 				}
 			}
@@ -257,7 +259,7 @@ public model ITrustSecurityFederation {
 				if (parti.id.toString == parameters.pool.name.toString) {
 					int n = parti.processRef.flowElements.size();
 					for (EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW) dataflow : listMessageFlow) {
-						for (int j=0 ; j < n ; j++;) {
+						for (int j=0 ; j < n ; j++) {
 							if (dataflow.sourceRef.toString == parti.processRef.flowElements.get(j).toString) {
 								messageFlows.add(dataflow);
 							}
@@ -330,7 +332,7 @@ public model ITrustSecurityFederation {
 		}
 	}
 
-	public concept MessageFlowCommunicationPathCorrepondence extends Correspondences {
+	public concept MessageFlowCommunicationPathCorrepondence {
 		EMFObjectIndividual messageFlow with EMFObjectRole(container=bpmnModelAccess);
 		EMFObjectIndividual communicationPath with EMFObjectRole(container=deploymentModelAccess);
 		create::_create(required String nameMessage, required String nameCommPath) {
@@ -365,7 +367,7 @@ public model ITrustSecurityFederation {
 		}
 	}
 
-	public concept UserRoleCorrespondence extends Correspondences {
+	public concept UserRoleCorrespondence {
 		EMFObjectIndividual user with EMFObjectRole(container=dataModelAccess);
 		EMFObjectIndividual role with EMFObjectRole(container=accessControlModelAccess);
 		create::_create(required String roleName, required String userName) {
@@ -374,6 +376,7 @@ public model ITrustSecurityFederation {
 		}
 		delete() {
 		}
+		// --- iTrust security Rule3 ---//
 		public void iTrustSecurityRule3(required String nameUser) {
 			boolean checked = false;
 			boolean checkedInherit = false;
@@ -401,9 +404,6 @@ public model ITrustSecurityFederation {
 			}
 		}
 	}
-	
-
- }
 
 	
 

@@ -30,7 +30,7 @@ import [UML2:"Class"] as DATA_USER;
 import [UML2:"Element"] as DATA_ELEMENT;
 import ["AccessControlMetamodel"] as ACCESS_CONTROL_METAMODEL2;
 import [ACCESS_CONTROL_METAMODEL2:"ROLE"] as ACCESS_CONTROL_ROLE;
-import [ITRUSTMEDICALSYSTEMFEDERATION_1705933420738PRJ+"/ITrustSecurityFederation.fml"] as ITrustSecurityFederation;
+import [ITRUSTMEDICALSYSTEMFEDERATION_1705933420738PRJ + "/ITrustSecurityFederation.fml"] as ITrustSecurityFederation;
 
 typedef EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) as BPMNParticipant;
 typedef EMFObjectIndividualType(eClass=DEPLOYMENT_ARTIFACT) as DeploymentArtifact;
@@ -155,321 +155,255 @@ public model ITrustSecurityFederation {
 
  }
 
-public concept PoolArtifactCorrespondence extends Correspondences inside Correspondences {
-     	EMFObjectIndividual pool with EMFObjectRole(container=bpmnModelAccess);
-     	EMFObjectIndividual artifact with EMFObjectRole(container=deploymentModelAccess);
-     	MessageFlowCommunicationPathCorrepondence[0,*] listInstancesMessageComm with ConceptInstance(virtualModelInstance=container.container);
-     	PoolArtifactCorrespondence[0,*] listInstancesPoolArtifact1 with ConceptInstance(virtualModelInstance=container.container);
-     	EMFObjectIndividual [0,*] devicesArtifact with EMFObjectRole(container=this);
-     	EMFObjectIndividual [0,*] assoArtifacts with EMFObjectRole(container=this);
-     	EMFObjectIndividual [0,*] flowElements with EMFObjectRole(container=this);
-     	EMFObjectIndividual [0,*] annotations with EMFObjectRole(container=this);
-     	EMFObjectIndividual [0,*] messageFlows with EMFObjectRole(container=this);
-     	EMFObjectIndividual [0,*] listAnnotation with EMFObjectRole(container=this);
-     	EMFObjectIndividual assoArtifactsA with EMFObjectRole(container=this);
-     	EMFObjectIndividual [0,*] assoArtifactsFilter with EMFObjectRole(container=this);
-     	EMFObjectIndividual [0,*] assoArtifactsFilter1 with EMFObjectRole(container=this);
-     	EMFObjectIndividual [0,*] devicesArtifactsFilter with EMFObjectRole(container=this);
-     	EMFObjectIndividual [0,*] commPath with EMFObjectRole(container=this);
-	     String[0,*] listAssoArtifact;
-
-     	create::_create(required String name) {	
-
-		pool = select unique BPMNParticipant from bpmnModelAccess where (selected.name == parameters.name);
-		artifact = select unique DeploymentArtifact from deploymentModelAccess where (selected.name == parameters.name);
-        }  
-
-	delete() {
-		delete pool;
-		delete artifact;
-	}
-
-
-
-
-     // --- Retrieve the list of devices where the artifact is deployed --- //
-	public List<EMFObjectIndividual> getDeploymentDevices(EMFObjectIndividual nameArtifact) {
-		this.devicesArtifact = null;
-		for (EMFObjectIndividualType(eClass=DEPLOYMENT_DEPLOY) itemDeploy : select EMFObjectIndividualType(eClass=DEPLOYMENT_DEPLOY) from deploymentModelAccess) {
-			if (itemDeploy.artifact == parameters.nameArtifact) {
-				if (itemDeploy.device != null ) {
-					this.devicesArtifact.add(itemDeploy.device);
-				}
-				else {
-					if (itemDeploy.node != null) {
-						this.devicesArtifact.add(itemDeploy.node);
+	public concept PoolArtifactCorrespondence {
+		EMFObjectIndividual pool with EMFObjectRole(container=bpmnModelAccess);
+		EMFObjectIndividual artifact with EMFObjectRole(container=deploymentModelAccess);
+		MessageFlowCommunicationPathCorrepondence[0,*] listInstancesMessageComm with ConceptInstance(virtualModelInstance=container.container);
+		PoolArtifactCorrespondence[0,*] listInstancesPoolArtifact1 with ConceptInstance(virtualModelInstance=container.container);
+		EMFObjectIndividual[0,*] devicesArtifact with EMFObjectRole(container=this);
+		EMFObjectIndividual[0,*] assoArtifacts with EMFObjectRole(container=this);
+		EMFObjectIndividual[0,*] flowElements with EMFObjectRole(container=this);
+		EMFObjectIndividual[0,*] annotations with EMFObjectRole(container=this);
+		EMFObjectIndividual[0,*] messageFlows with EMFObjectRole(container=this);
+		EMFObjectIndividual[0,*] listAnnotation with EMFObjectRole(container=this);
+		EMFObjectIndividual assoArtifactsA with EMFObjectRole(container=this);
+		EMFObjectIndividual[0,*] assoArtifactsFilter with EMFObjectRole(container=this);
+		EMFObjectIndividual[0,*] assoArtifactsFilter1 with EMFObjectRole(container=this);
+		EMFObjectIndividual[0,*] devicesArtifactsFilter with EMFObjectRole(container=this);
+		EMFObjectIndividual[0,*] commPath with EMFObjectRole(container=this);
+		String[0,*] listAssoArtifact;
+		create::_create(required String name) {
+			pool = select BPMNParticipant from bpmnModelAccess where (selected.name == parameters.name);
+			artifact = select DeploymentArtifact from deploymentModelAccess where (selected.name == parameters.name);
+		}
+		delete() {
+			delete pool;
+			delete artifact;
+		}
+		public List<EMFObjectIndividual> getDeploymentDevices(EMFObjectIndividual nameArtifact) {
+			this.devicesArtifact = null;
+			for (EMFObjectIndividualType(eClass=DEPLOYMENT_DEPLOY) itemDeploy : select EMFObjectIndividualType(eClass=DEPLOYMENT_DEPLOY) from deploymentModelAccess) {
+				if (itemDeploy.artifact == parameters.nameArtifact) {
+					if (itemDeploy.device != null) {
+						this.devicesArtifact.add(itemDeploy.device);
 					}
-				}		
-			}	
-		}
-		return this.devicesArtifact;	
-		
-	}
-
-    public List<EMFObjectIndividual> getTest(EMFObjectIndividual nameArtifact) {
-
-    //	List<BPMNParticipant> listP1 = new ArrayList<>(); 
-    	return flowElements;
-    	
-    }
-	
-
-     // --- Get the list flowElements for a Pool ---//
-	public List<EMFObjectIndividual> getFlowElements(EMFObjectIndividual pool) {
-		this.flowElements = null;
-		List<? extends Object> listParticipant = select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess;
-		for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) parti : listParticipant) {
-			int n = parti.processRef.flowElements.size();
-			if (parti.id.toString == parameters.pool.name.toString) {
-				 for (int j=0 ; j < n ; j++) {
-				 	flowElements.add(parti.processRef.flowElements.get(j));
-				 }
-				
-			}
-		}
-		
-		return flowElements;
-	}
-
-	// --- Get the list of the associated Artifacts --- //
-
-	public List<String> verifyExistenceArtifactAssociated(String nameArtifact) {
-
-		boolean existe = false;
-		listAssoArtifact = null;
-		for (EMFObjectIndividualType(eClass=DEPLOYMENT_ASSOCIATION) itemAsso : select EMFObjectIndividualType(eClass=DEPLOYMENT_ASSOCIATION) from deploymentModelAccess) {
-	      	for (Object itemArtifact : itemAsso.getValues("artifact")) { 
-	       	     if (itemArtifact.toString.substring(9) == artifact.name ) {
-	       	       	existe = true;	   	
-	       	      }
-				else {
-	       	      	existe = false;
-	       	      }
-	   
-	       	}
-	       	if (existe) {
-	       		for (Object itemArtifact : itemAsso.getValues("artifact")) {
-	       		  	if (!(itemArtifact.toString.substring(9).toString == artifact.name)) {
-						listAssoArtifact.add(itemArtifact.toString.substring(9).toString);
-					}
-	       		  }       	
-	       	}			
-		}
-		return listAssoArtifact;
-	}
-
-  	 // --- Get the Security annotation for the selected flowElement ---//
-    	public boolean checkAnnotations(String flowElements) {
-     
-	    	  List<? extends Object> associations = select EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) from bpmnModelAccess;
-	    	  List<? extends Object> annotations = select EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) from bpmnModelAccess;
-	    	  boolean checkannotation = false;
-	    	  for (EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) asso : associations) {
-	    	  	for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) annotation : annotations) {
-	    	  		if (parameters.flowElements == asso.sourceRef.id && annotation.id == asso.targetRef.id ) {
-	    	  			if (annotation.text.contains("IntegrityDo") || annotation.text.contains("ConfidentialityDo") || annotation.text.contains("PrivacyDo")) {
-	    	  				checkannotation = true;
-	    	  			}
 					else {
-	    	  				checkannotation = false;
-	    	  			}	
-	    	  		}
-	    	    	}
-    	  }
-    	  return checkannotation;
-    }
-
-    // --- Get list of MessageFlow owned to a pool --- //
-    public List<EMFObjectIndividual> getMessageFlow (EMFObjectIndividual pool) {
-
-    	 List<? extends Object> listParticipant = select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess;
-    	 List<? extends Object> listMessageFlow = select EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW)  from bpmnModelAccess;
-    	 messageFlows = null;
-	 for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) parti : listParticipant) {
-	 	if (parti.id.toString == parameters.pool.name.toString) {
-		 	int n = parti.processRef.flowElements.size();
-		 	for (EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW) dataflow :listMessageFlow)  {
-				for (int j=0 ; j < n ; j++) {
-					if (dataflow.sourceRef.toString == parti.processRef.flowElements.get(j).toString) {
-						messageFlows.add(dataflow);
-						
+						if (itemDeploy.node != null) {
+							this.devicesArtifact.add(itemDeploy.node);
+						}
 					}
 				}
-		 	}
-	 	}
-	 	
-	 }
+			}
+			return this.devicesArtifact;
+		}
 
-    	 return messageFlows;
-    }
-
-    
-    // --- Get list of Communication Path owned to a device --- //
-    public List<EMFObjectIndividual> getCommunication(EMFObjectIndividual device) {
-    	     commPath = null;
-    	     
-    		List<? extends Object> listCommuPath = select EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH)  from deploymentModelAccess; 		
-    		for (EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) commPath1 :listCommuPath ) {
-    			if (commPath1.device.name.toString == parameters.device.name) {
-    				commPath.add(commPath1);
-    			}
-    		}
-
-    	return commPath;
-    	}
-
-     // --- verify if the deployement of two artifacts ---//
-	public boolean verifyDeploy(List<EMFObjectIndividual> deviceArtifact, List<EMFObjectIndividual> devicesAssoArtifact ) {
 		
-		for (EMFObjectIndividual device : parameters.deviceArtifact) {
-			if (!parameters.devicesAssoArtifact.contains(device)) {
-				return false;	
+		public List<EMFObjectIndividual> getFlowElements(EMFObjectIndividual pool) {
+			this.flowElements = null;
+			List<? extends Object> listParticipant = select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess;
+			for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) parti : listParticipant) {
+				int n = parti.processRef.flowElements.size();
+				if (parti.id.toString == parameters.pool.name.toString) {
+					for (int j=0 ; j < n ; j++;) {
+						flowElements.add(parti.processRef.flowElements.get(j));
+					}
+				}
 			}
+			return flowElements;
 		}
-			
-		return true;
-	}
-    
-     // iTrust Security Rule1
-	public iTrustSecurityRule1() {
-	
-		boolean checkConfidentialData = false;
-		this.flowElements = this.getFlowElements(pool);
-		for (EMFObjectIndividual flowElt : flowElements ) {
-			checkConfidentialData  = this.checkAnnotations(flowElt.toString.substring(11));
-			if (checkConfidentialData == true && !this.verifyExistenceConsistentInstance()) {
-				log "Security rule violated";	
+		public List<String> verifyExistenceArtifactAssociated(String nameArtifact) {
+			boolean existe = false;
+			listAssoArtifact = null;
+			for (EMFObjectIndividualType(eClass=DEPLOYMENT_ASSOCIATION) itemAsso : select EMFObjectIndividualType(eClass=DEPLOYMENT_ASSOCIATION) from deploymentModelAccess) {
+				for (Object itemArtifact : itemAsso.getValues("artifact")) {
+					if (itemArtifact.toString.substring(9) == artifact.name) {
+						existe = true;
+					}
+					else {
+						existe = false;
+					}
+				}
+				if (existe) {
+					for (Object itemArtifact : itemAsso.getValues("artifact")) {
+						if (!(itemArtifact.toString.substring(9).toString == artifact.name)) {
+							listAssoArtifact.add(itemArtifact.toString.substring(9).toString);
+						}
+					}
+				}
 			}
-               else {
-				log "Security rule not violated";		
-			}
-		}	
-	}
-
-	// --- Verify the Security Rule2 whether the two artifacts are deployed in differents devices
-	public boolean verifyExistenceConsistentInstance() {
-
-    	     List<EMFObjectIndividual> assoPool;
-    	     List<EMFObjectIndividual> commPath;
-    	     listInstancesMessageComm = container.listInstancesMessageComm;
-		this.listAssoArtifact = this.verifyExistenceArtifactAssociated(artifact.name); 
-		for (String assoArtifact : listAssoArtifact) {
-			assoArtifactsFilter = container.container.verifyExistenceCorresp(assoArtifact);	
+			return listAssoArtifact;
 		}
-		this.devicesArtifact = this.getDeploymentDevices(artifact);
-		for (EMFObjectIndividual device : devicesArtifact) {
-			this.commPath =this.getCommunication(device); 	
-		}
-		this.messageFlows = this.getMessageFlow(pool);
-		for (EMFObjectIndividual assoArtifactFilt : assoArtifactsFilter) {
-			assoPool = container.container.getPool(assoArtifactFilt.name);
-			devicesArtifactsFilter =  this.getDeploymentDevices(assoArtifactFilt);
-			if (!this.verifyDeploy(devicesArtifact,devicesArtifactsFilter)) {
-				for (EMFObjectIndividual dataflow : messageFlows) {
-					for (MessageFlowCommunicationPathCorrepondence item : listInstancesMessageComm) {	
-						if (dataflow == item.messageFlow.name && this.commPath.contains(item.communicationPath)) {
-							if (!item.verifySecureCommunication()) {
-								return false;
-							}
-						 }
-					  }	
-				  }
-			   }
-			} 
-		return true;
-		}
-     	
-     }
-
-public concept MessageFlowCommunicationPathCorrepondence extends Correspondences inside Correspondences {
-		EMFObjectIndividual messageFlow with EMFObjectRole(container=bpmnModelAccess);
-     	EMFObjectIndividual communicationPath with EMFObjectRole(container=deploymentModelAccess);
-
-     	create::_create(required String nameMessage,required String nameCommPath) {	
-     		
-			messageFlow = select unique BPMNMessageFlow from bpmnModelAccess where(selected.name == parameters.nameMessage);
-			communicationPath = select unique DeploymentCommunicationPath from deploymentModelAccess where(selected.name == parameters.nameCommPath);
-	                 		         
-	     }
-	//--- iTrustSecurityRule2
-  	public boolean verifySecureCommunication() {
-  		boolean check = false;
-  		log communicationPath.toString;
-  		List<? extends Object> encrypted = communicationPath.getValues("encrypted");
-  		List<? extends Object> annotations = select EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) from bpmnModelAccess; 
-  		List<? extends Object> associations = select EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) from bpmnModelAccess;
-  		for (EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) asso : associations ) {
-  			if (asso.targetRef.id == messageFlow.toString.substring(12)) {
-  				for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) annota : annotations) {
-  					if (asso.sourceRef.id == annota.id) {
-  						if (encrypted != null && (annota.text.contains("NonRepudMF") || annota.text.contains("ConfidentialityMF") || annota.text.contains("IntegrityMF")) ) {
-							check =true;
+		public boolean checkAnnotations(String flowElements) {
+			List<? extends Object> associations = select EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) from bpmnModelAccess;
+			List<? extends Object> annotations = select EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) from bpmnModelAccess;
+			boolean checkannotation = false;
+			for (EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) asso : associations) {
+				for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) annotation : annotations) {
+					if (parameters.flowElements == asso.sourceRef.id && annotation.id == asso.targetRef.id) {
+						if (annotation.text.contains("IntegrityDo") || annotation.text.contains("ConfidentialityDo") || annotation.text.contains("PrivacyDo")) {
+							checkannotation = true;
 						}
 						else {
-							check = false;
-						     }
+							checkannotation = false;
+						}
 					}
-							
-  				}	
-  			}
-  		}
-     	return check;
-  	  }
-     
-
-	delete() {
-		delete messageFlow;
-		delete communicationPath;
+				}
+			}
+			return checkannotation;
+		}
+		public List<EMFObjectIndividual> getMessageFlow(EMFObjectIndividual pool) {
+			List<? extends Object> listParticipant = select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess;
+			List<? extends Object> listMessageFlow = select EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW) from bpmnModelAccess;
+			messageFlows = null;
+			for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) parti : listParticipant) {
+				if (parti.id.toString == parameters.pool.name.toString) {
+					int n = parti.processRef.flowElements.size();
+					for (EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW) dataflow : listMessageFlow) {
+						for (int j=0 ; j < n ; j++;) {
+							if (dataflow.sourceRef.toString == parti.processRef.flowElements.get(j).toString) {
+								messageFlows.add(dataflow);
+							}
+						}
+					}
+				}
+			}
+			return messageFlows;
+		}
+		public List<EMFObjectIndividual> getCommunication(EMFObjectIndividual device) {
+			commPath = null;
+			List<? extends Object> listCommuPath = select EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) from deploymentModelAccess;
+			for (EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) commPath1 : listCommuPath) {
+				if (commPath1.device.name.toString == parameters.device.name) {
+					commPath.add(commPath1);
+				}
+			}
+			return commPath;
+		}
+		public boolean verifyDeploy(List<EMFObjectIndividual> deviceArtifact, List<EMFObjectIndividual> devicesAssoArtifact) {
+			for (EMFObjectIndividual device : parameters.deviceArtifact) {
+				if (!parameters.devicesAssoArtifact.contains(device)) {
+					return false;
+				}
+			}
+			return true;
+		}
+		public void iTrustSecurityRule1() {
+			boolean checkConfidentialData = false;
+			this.flowElements = this.getFlowElements(pool);
+			for (EMFObjectIndividual flowElt : flowElements) {
+				checkConfidentialData = this.checkAnnotations(flowElt.toString.substring(11));
+				if (checkConfidentialData == true && !this.verifyExistenceConsistentInstance()) {
+					log "Security rule violated";
+				}
+				else {
+					log "Security rule not violated";
+				}
+			}
+		}
+		public boolean verifyExistenceConsistentInstance() {
+			List<EMFObjectIndividual> assoPool;
+			List<EMFObjectIndividual> commPath;
+			listInstancesMessageComm = container.listInstancesMessageComm;
+			this.listAssoArtifact = this.verifyExistenceArtifactAssociated(artifact.name);
+			for (String assoArtifact : listAssoArtifact) {
+				assoArtifactsFilter = container.container.verifyExistenceCorresp(assoArtifact);
+			}
+			this.devicesArtifact = this.getDeploymentDevices(artifact);
+			for (EMFObjectIndividual device : devicesArtifact) {
+				this.commPath = this.getCommunication(device);
+			}
+			this.messageFlows = this.getMessageFlow(pool);
+			for (EMFObjectIndividual assoArtifactFilt : assoArtifactsFilter) {
+				assoPool = container.container.getPool(assoArtifactFilt.name);
+				devicesArtifactsFilter = this.getDeploymentDevices(assoArtifactFilt);
+				if (!this.verifyDeploy(devicesArtifact,devicesArtifactsFilter)) {
+					for (EMFObjectIndividual dataflow : messageFlows) {
+						for (MessageFlowCommunicationPathCorrepondence item : listInstancesMessageComm) {
+							if (dataflow == item.messageFlow.name && this.commPath.contains(item.communicationPath)) {
+								if (!item.verifySecureCommunication()) {
+									return false;
+								}
+							}
+						}
+					}
+				}
+			}
+			return true;
+		}
 	}
+
+	public concept MessageFlowCommunicationPathCorrepondence {
+		EMFObjectIndividual messageFlow with EMFObjectRole(container=bpmnModelAccess);
+		EMFObjectIndividual communicationPath with EMFObjectRole(container=deploymentModelAccess);
+		create::_create(required String nameMessage, required String nameCommPath) {
+			messageFlow = select BPMNMessageFlow from bpmnModelAccess where (selected.name == parameters.nameMessage);
+			communicationPath = select DeploymentCommunicationPath from deploymentModelAccess where (selected.name == parameters.nameCommPath);
+		}
+		public boolean verifySecureCommunication() {
+			boolean check = false;
+			log communicationPath.toString;
+			List<? extends Object> encrypted = communicationPath.getValues("encrypted");
+			List<? extends Object> annotations = select EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) from bpmnModelAccess;
+			List<? extends Object> associations = select EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) from bpmnModelAccess;
+			for (EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) asso : associations) {
+				if (asso.targetRef.id == messageFlow.toString.substring(12)) {
+					for (EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) annota : annotations) {
+						if (asso.sourceRef.id == annota.id) {
+							if (encrypted != null && (annota.text.contains("NonRepudMF") || annota.text.contains("ConfidentialityMF") || annota.text.contains("IntegrityMF"))) {
+								check = true;
+							}
+							else {
+								check = false;
+							}
+						}
+					}
+				}
+			}
+			return check;
+		}
+		delete() {
+			delete messageFlow;
+			delete communicationPath;
+		}
+	}
+
+	public concept UserRoleCorrespondence {
+		EMFObjectIndividual user with EMFObjectRole(container=dataModelAccess);
+		EMFObjectIndividual role with EMFObjectRole(container=accessControlModelAccess);
+		create::_create(required String roleName, required String userName) {
+			user = select DataUser from dataModelAccess where (selected.name == parameters.userName);
+			role = select AccessControlRole from accessControlModelAccess where (selected.name == parameters.roleName);
+		}
+		delete() {
+		}
+		public void iTrustSecurityRule3(required String nameUser) {
+			boolean checked = false;
+			boolean checkedInherit = false;
+			checked = container.checkUserRole(parameters.nameUser);
+			if (!checked) {
+				for (DataUser itemUser : select DataUser from dataModelAccess) {
+					if (itemUser.getValues("member").toString.contains(parameters.nameUser) && container.checkUserRole(itemUser.name)) {
+						checkedInherit = true;
+					}
+				}
+			}
+			if (checkedInherit) {
+				log "Security rule verified";
+			}
+			else {
+				log "Security rule violated";
+			}
+		}
+		public boolean verifyCorrespondence() {
+			if (user == null || role == null) {
+				return false;
+			}
+			else {
+				return true;
+			}
+		}
 	}
 
 	
 
-
-   public concept UserRoleCorrespondence extends Correspondences inside Correspondences {
-        EMFObjectIndividual user with EMFObjectRole(container=dataModelAccess);
-        EMFObjectIndividual role with EMFObjectRole(container=accessControlModelAccess);
-        
-        create::_create(required String roleName, required  String userName) {
-
-		  user = select unique DataUser from dataModelAccess where(selected.name == parameters.userName);
-		  role = select unique AccessControlRole from accessControlModelAccess where(selected.name == parameters.roleName);
-
-        }
-
-        delete() {
-        
-        }
-
-	// --- Check The security rule3 for the concept UserRoleCorrespondence ---//
-	public iTrustSecurityRule3(required String nameUser) {
-
-		boolean checked = false;
-		boolean checkedInherit = false;
-		checked = container.checkUserRole(parameters.nameUser);
-		if (!checked) {
-			for (DataUser itemUser : select DataUser from dataModelAccess ) {
-				if (itemUser.getValues("member").toString.contains(parameters.nameUser) && container.checkUserRole(itemUser.name)) {
-						checkedInherit = true;
-				}
-			}
-		}
-		if (checkedInherit) {
-			log "Security rule verified";
-		}
-else {
-	      	log "Security rule violated";
-	    	}
-	}
-
-
-        public boolean verifyCorrespondence() {
-            if (user == null || role == null) {
-                return false;
-            }
-            else {
-                return true;
-            }
-        }
-    }
 }

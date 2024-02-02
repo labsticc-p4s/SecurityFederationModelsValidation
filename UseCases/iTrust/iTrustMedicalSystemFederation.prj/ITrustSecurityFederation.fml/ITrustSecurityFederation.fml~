@@ -1,4 +1,5 @@
 namespace "http://www.openflexo.org/projects/2024/1/ITrustMedicalSystem_1705498447306.prj" as ITRUSTMEDICALSYSTEM_1705498447306PRJ;
+namespace "http://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj" as ITRUSTMEDICALSYSTEMFEDERATION_1705933420738PRJ;
 
 use org.openflexo.technologyadapter.emf.EMFModelSlot as EMF;
 use org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot as FMLRT;
@@ -25,11 +26,20 @@ import [DEPLOYEMENT_ECORE_META_MODEL:"Deploy"] as DEPLOYMENT_DEPLOY;
 import [DEPLOYEMENT_ECORE_META_MODEL:"Association"] as DEPLOYMENT_ASSOCIATION;
 import [DEPLOYEMENT_ECORE_META_MODEL:"CommunicationPath"] as DEPLOYMENT_COMMUNICATION_PATH;
 import ["http://www.eclipse.org/uml2/5.0.0/UML"] as UML22;
-import [UML22:"Class"] as DATA_USER;
 import [UML2:"Class"] as DATA_USER;
-
+import [UML2:"Element"] as DATA_ELEMENT;
 import ["AccessControlMetamodel"] as ACCESS_CONTROL_METAMODEL2;
 import [ACCESS_CONTROL_METAMODEL2:"ROLE"] as ACCESS_CONTROL_ROLE;
+import [ITRUSTMEDICALSYSTEMFEDERATION_1705933420738PRJ+"/ITrustSecurityFederation.fml"] as ITrustSecurityFederation;
+
+typedef EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) as BPMNParticipant;
+typedef EMFObjectIndividualType(eClass=DEPLOYMENT_ARTIFACT) as DeploymentArtifact;
+typedef EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) as DeploymentCommunicationPath;
+typedef EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW) as BPMNMessageFlow;
+typedef EMFObjectIndividualType(eClass=DATA_USER) as DataUser;
+typedef EMFObjectIndividualType(eClass=ACCESS_CONTROL_ROLE) as AccessControlRole;
+typedef EMFObjectIndividualType(eClass=DATA_ELEMENT) as DataElement;
+
 
 @URI("http://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/ITrustSecurityFederation.fml")
 @Author("chahr")
@@ -44,7 +54,7 @@ public model ITrustSecurityFederation {
      EMFObjectIndividual devices with EMFObjectRole(container=this);
      EMFObjectIndividual[0,*] artifactsList with EMFObjectRole(container=this);
      EMFObjectIndividual[0,*] poolList with EMFObjectRole(container=this);
-     UserRoleLink[0,*] listUserRoleLink with ConceptInstance(virtualModelInstance=this);
+     UserRoleCorrespondence[0,*] listUserRoleLink with ConceptInstance(virtualModelInstance=this);
 
 
 	public create::createAccessObject(required Resource<EMFModel> bpmnModelResource, required Resource<EMFModel> deploymentModelResource, required Resource<EMFModel> dataModelResource, required Resource<EMFModel> accessControlModelResource) {
@@ -77,25 +87,6 @@ public model ITrustSecurityFederation {
 		}
     }
 
-	  public fillListInstanceMessageFlowComm(String nameArtifact) {
-	  	List<MessageFlowCommunicationPathCorrepondence> objs = select MessageFlowCommunicationPathCorrepondence from this;
-		for (MessageFlowCommunicationPathCorrepondence item : objs) {
-			//listInstancesMessageComm.add(item);			
-		
-
-
-
-
-
-
-
-
-
-
-
-}    	
-	 }
-
 
      // --- verify whether an artifact is a part of PoolArtifactLink intances and return the artifact --- //
 	public  List<EMFObjectIndividual> verifyExistenceCorresp(String nameArtifact) {
@@ -112,6 +103,7 @@ public model ITrustSecurityFederation {
     // --- Retrieve the list of Pools related to an Artifact selected --- //
 	public  List<EMFObjectIndividual> getPool(String nameArtifact) {
 		poolList =null;
+		//List<BPMNParticipant> listPool= new
 		List<PoolArtifactCorrespondence> objs = select PoolArtifactCorrespondence from this;
 	 	for (PoolArtifactCorrespondence item : objs ) {
 			if (item.artifact.name.toString == parameters.nameArtifact) {
@@ -130,7 +122,40 @@ public model ITrustSecurityFederation {
     	
     
 
-     public concept PoolArtifactCorrespondence extends Correspondences {
+   
+
+    // --- Check if the user has a valide role --- //
+	public boolean checkUserRole(required String userName) {
+	    boolean checked = false;
+	    List<UserRoleCorrespondence> links = select UserRoleCorrespondence from this;
+	    
+	    for (UserRoleCorrespondence item : links) {
+	        if (item.user.name == parameters.userName && item.verifyCorrespondence()) {
+	            checked = true;
+	        }
+	    }
+	    
+	    return checked;
+	}
+	
+
+	public Object getOwner(required String nameUser) {
+		DataElement toto;
+		for (DataUser itemUser : select DataUser from dataModelAccess ) {
+			log itemUser.toString;
+			if (itemUser.name == parameters.nameUser) {
+				toto = itemUser.getValues("owner"); 
+				//return itemUser.getValues("owner").toString;
+				return toto;
+				
+			}
+		}
+	}
+	
+
+ }
+
+public concept PoolArtifactCorrespondence extends Correspondences inside Correspondences {
      	EMFObjectIndividual pool with EMFObjectRole(container=bpmnModelAccess);
      	EMFObjectIndividual artifact with EMFObjectRole(container=deploymentModelAccess);
      	MessageFlowCommunicationPathCorrepondence[0,*] listInstancesMessageComm with ConceptInstance(virtualModelInstance=container.container);
@@ -149,18 +174,9 @@ public model ITrustSecurityFederation {
 	     String[0,*] listAssoArtifact;
 
      	create::_create(required String name) {	
-		for (EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) itemPool : select EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) from bpmnModelAccess) {
-			if (itemPool.name == parameters.name) {
-				pool = itemPool;
-			}
-		}
 
-		 for (EMFObjectIndividualType(eClass=DEPLOYMENT_ARTIFACT) itemArtifact : select EMFObjectIndividualType(eClass=DEPLOYMENT_ARTIFACT) from deploymentModelAccess) {
-	         	if (itemArtifact.nameArtifact == parameters.name) {
-	         		artifact =itemArtifact;	
-	  	 	}
-		}
-		
+		pool = select unique BPMNParticipant from bpmnModelAccess where (selected.name == parameters.name);
+		artifact = select unique DeploymentArtifact from deploymentModelAccess where (selected.name == parameters.name);
         }  
 
 	delete() {
@@ -189,6 +205,14 @@ public model ITrustSecurityFederation {
 		return this.devicesArtifact;	
 		
 	}
+
+    public List<EMFObjectIndividual> getTest(EMFObjectIndividual nameArtifact) {
+
+    //	List<BPMNParticipant> listP1 = new ArrayList<>(); 
+    	return flowElements;
+    	
+    }
+	
 
      // --- Get the list flowElements for a Pool ---//
 	public List<EMFObjectIndividual> getFlowElements(EMFObjectIndividual pool) {
@@ -283,6 +307,7 @@ public model ITrustSecurityFederation {
     // --- Get list of Communication Path owned to a device --- //
     public List<EMFObjectIndividual> getCommunication(EMFObjectIndividual device) {
     	     commPath = null;
+    	     
     		List<? extends Object> listCommuPath = select EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH)  from deploymentModelAccess; 		
     		for (EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) commPath1 :listCommuPath ) {
     			if (commPath1.device.name.toString == parameters.device.name) {
@@ -356,23 +381,14 @@ public model ITrustSecurityFederation {
      	
      }
 
-
-     public concept MessageFlowCommunicationPathCorrepondence extends Correspondences {
+public concept MessageFlowCommunicationPathCorrepondence extends Correspondences inside Correspondences {
 		EMFObjectIndividual messageFlow with EMFObjectRole(container=bpmnModelAccess);
      	EMFObjectIndividual communicationPath with EMFObjectRole(container=deploymentModelAccess);
 
      	create::_create(required String nameMessage,required String nameCommPath) {	
      		
-     		for (EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW) itemMessage : select EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW) from bpmnModelAccess) {
-				if (itemMessage.name == parameters.nameMessage) {
-					messageFlow = itemMessage;
-				}
-			}
-	       	 for (EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) itemCommPath : select EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) from deploymentModelAccess) {
-	        		if (itemCommPath.name == parameters.nameCommPath) {
-					communicationPath =itemCommPath;
-				}
-	      	 }
+			messageFlow = select unique BPMNMessageFlow from bpmnModelAccess where(selected.name == parameters.nameMessage);
+			communicationPath = select unique DeploymentCommunicationPath from deploymentModelAccess where(selected.name == parameters.nameCommPath);
 	                 		         
 	     }
 	//--- iTrustSecurityRule2
@@ -406,66 +422,46 @@ public model ITrustSecurityFederation {
 		delete communicationPath;
 	}
 	}
-    }
 
-    // --- Check if the user has a valide role --- //
-	public boolean checkUserRole(required String userName) {
-	    boolean checked = false;
-	    List<UserRoleLink> links = select UserRoleLink from this;
-	    
-	    for (UserRoleLink item : links) {
-	        if (item.user.name == parameters.userName && item.verifyCorrespondence()) {
-	            checked = true;
-	        }
-	    }
-	    
-	    return checked;
-	}
 	
-	// --- Run the 3rd iTrust security rule --- //
-	public void iTrustRule3(required String name) {
-	    boolean checked = false;
-	    List<UserRoleLink> links = select UserRoleLink from this;
-	    checked = this.checkUserRole(parameters.name);
-	
-	    if (!checked) {
-	        for (UserRoleLink item : links) {	
-	            if (item.user.getValues("member").toString.contains(parameters.name) && this.checkUserRole(item.user.name)) {
-	                checked = true;
-	            }
-	        }
-	    }
-	
-	    if (checked) {
-	        log "Security rule verified";
-	    } 
-else {
-	        log "Security rule violated";
-	    }
-	    
-	}
 
-   public concept UserRoleLink {
+
+   public concept UserRoleCorrespondence extends Correspondences inside Correspondences {
         EMFObjectIndividual user with EMFObjectRole(container=dataModelAccess);
         EMFObjectIndividual role with EMFObjectRole(container=accessControlModelAccess);
         
         create::_create(required String roleName, required  String userName) {
-            for (EMFObjectIndividualType(eClass=DATA_USER) userItem : select EMFObjectIndividualType(eClass=DATA_USER) from dataModelAccess) {
-                if (userItem.name == parameters.userName) {    
-                    user = userItem;
-                }
-            }
 
-            for (EMFObjectIndividualType(eClass=ACCESS_CONTROL_ROLE) roleItem : select EMFObjectIndividualType(eClass=ACCESS_CONTROL_ROLE) from accessControlModelAccess) {
-                if (roleItem.nameRole == parameters.roleName) {
-                    role = roleItem;
-                }
-            }
+		  user = select unique DataUser from dataModelAccess where(selected.name == parameters.userName);
+		  role = select unique AccessControlRole from accessControlModelAccess where(selected.name == parameters.roleName);
+
         }
 
         delete() {
         
         }
+
+	// --- Check The security rule3 for the concept UserRoleCorrespondence ---//
+	public iTrustSecurityRule3(required String nameUser) {
+
+		boolean checked = false;
+		boolean checkedInherit = false;
+		checked = container.checkUserRole(parameters.nameUser);
+		if (!checked) {
+			for (DataUser itemUser : select DataUser from dataModelAccess ) {
+				if (itemUser.getValues("member").toString.contains(parameters.nameUser) && container.checkUserRole(itemUser.name)) {
+						checkedInherit = true;
+				}
+			}
+		}
+		if (checkedInherit) {
+			log "Security rule verified";
+		}
+else {
+	      	log "Security rule violated";
+	    	}
+	}
+
 
         public boolean verifyCorrespondence() {
             if (user == null || role == null) {
@@ -476,5 +472,4 @@ else {
             }
         }
     }
-
 }

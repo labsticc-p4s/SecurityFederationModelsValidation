@@ -342,22 +342,19 @@ else {
 		// Get instance of the Concept MessageFlowCommunicatioPath
 		container.joinInstanceMessageFlowCommnicationPath();
 		// Get associated artifacts
-		this.listAssoArtifact = this.verifyExistenceArtifactAssociated(artifact);
-		for (String assoArtifact : listAssoArtifact) {
+		for (String assoArtifact : this.verifyExistenceArtifactAssociated(artifact)) {
 			assoArtifactsFilter = container.verifyExistenceCorresp(assoArtifact);
 		}
 		// Get Devices where the Artifact is deployed
-		this.devicesArtifact = this.getDeploymentDevices(artifact);
-		for (EMFObjectIndividual device : devicesArtifact) {
+		for (EMFObjectIndividual device : this.getDeploymentDevices(artifact)) {
 			this.commPath = this.getCommunication(device);
 		}
 		// Get MessageFlow outgoing from Pool
-		this.messageFlows = this.getMessageFlow(pool);
 		for (EMFObjectIndividual assoArtifactFilt : assoArtifactsFilter) {
 			assoPool = container.getPool(assoArtifactFilt.name);
 			devicesArtifactsFilter = this.getDeploymentDevices(assoArtifactFilt);
 			if (!this.verifyDeploy(devicesArtifact,devicesArtifactsFilter)) {
-				for (EMFObjectIndividual dataflow : messageFlows) {
+				for (EMFObjectIndividual dataflow : this.getMessageFlow(pool)) {
 					// Verify the security rule 2
 					for (MessageFlowCommunicationPathCorrepondence item : container.listInstancesMessageComm) {
 						if (dataflow == item.messageFlow.name && this.commPath.contains(item.communicationPath)) {

@@ -387,10 +387,9 @@ else {
 		has semantically the same secuirty annotation  */
 
 		public iTrustSecurityRule2() {
-			boolean check1 = false;
-			check1 = this.verifySecureCommunication();
-			log "check" + check1.toString;
-			if (check1) {
+			boolean check = false;
+			check = this.verifySecureCommunication();
+			if (check) {
 				log "Security rule verified";
 			} 
 else {

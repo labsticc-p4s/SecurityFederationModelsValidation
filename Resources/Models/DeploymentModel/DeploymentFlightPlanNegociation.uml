@@ -17,16 +17,16 @@
   </packagedElement>
   <packagedElement xmi:type="uml:Stereotype" xmi:id="_yGM5oL98Ee6GGffmtGz0Ag" name="secrecy"/>
   <packagedElement xmi:type="uml:Stereotype" xmi:id="_1btc4L98Ee6GGffmtGz0Ag" name="integrity"/>
-  <packagedElement xmi:type="uml:Stereotype" xmi:id="_4cqscL98Ee6GGffmtGz0Ag" name="encypted"/>
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_4cqscL98Ee6GGffmtGz0Ag" name="encrypted"/>
   <packagedElement xmi:type="uml:Stereotype" xmi:id="_61I_sL98Ee6GGffmtGz0Ag" name="call"/>
   <packagedElement xmi:type="uml:CommunicationPath" xmi:id="_-bW4cL98Ee6GGffmtGz0Ag" name="CommPath1" redefinedClassifier="_-X4jIL97Ee6GGffmtGz0Ag _HBigkL98Ee6GGffmtGz0Ag">
     <elementImport xmi:id="_IkzNoL99Ee6GGffmtGz0Ag" alias="encrypted" importedElement="_4cqscL98Ee6GGffmtGz0Ag"/>
   </packagedElement>
   <packagedElement xmi:type="uml:CommunicationPath" xmi:id="_BEAVsL99Ee6GGffmtGz0Ag" name="CommPath2" redefinedClassifier="_CohR4L98Ee6GGffmtGz0Ag _L--D4L98Ee6GGffmtGz0Ag">
-    <elementImport xmi:id="_NjII0L99Ee6GGffmtGz0Ag" alias="encypted" importedElement="_4cqscL98Ee6GGffmtGz0Ag"/>
+    <elementImport xmi:id="_NjII0L99Ee6GGffmtGz0Ag" alias="encrypted" importedElement="_4cqscL98Ee6GGffmtGz0Ag"/>
   </packagedElement>
   <packagedElement xmi:type="uml:CommunicationPath" xmi:id="_DQqagL99Ee6GGffmtGz0Ag" name="CommPath3" redefinedClassifier="_L--D4L98Ee6GGffmtGz0Ag _HBigkL98Ee6GGffmtGz0Ag">
-    <elementImport xmi:id="_RKScwL99Ee6GGffmtGz0Ag" alias="encypted" importedElement="_4cqscL98Ee6GGffmtGz0Ag"/>
+    <elementImport xmi:id="_RKScwL99Ee6GGffmtGz0Ag" alias="encrypted" importedElement="_4cqscL98Ee6GGffmtGz0Ag"/>
   </packagedElement>
   <packagedElement xmi:type="uml:Association" xmi:id="_WoaSUL99Ee6GGffmtGz0Ag" name="AssoArtifactsLocalGUIProcessApp" redefinedClassifier="_VrJOQL98Ee6GGffmtGz0Ag _hc9PcL98Ee6GGffmtGz0Ag">
     <elementImport xmi:id="_11icsL99Ee6GGffmtGz0Ag" alias="call" importedElement="_61I_sL98Ee6GGffmtGz0Ag"/>

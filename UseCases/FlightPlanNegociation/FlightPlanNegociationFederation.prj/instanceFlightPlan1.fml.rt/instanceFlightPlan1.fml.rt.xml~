@@ -17,16 +17,11 @@
       <ConceptActorReference id="13" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/flightPlanNegociation.bpmn#MessageFlow_1" roleName="messageFlow" userID="CHA" flexoID="15" />
       <ConceptActorReference id="14" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/DeploymentFlightPlanNegociation.uml#_DQqagL99Ee6GGffmtGz0Ag" roleName="communicationPath" userID="CHA" flexoID="16" />
     </EmbeddedFlexoConceptInstance>
-    <EmbeddedFlexoConceptInstance id="15" flexoConceptURI="http://www.openflexo.org/projects/2024/1/FlightPlanNegociationFederation_1706652651621.prj/FlightPlanSecurityFederation.fml#Correspondences#PoolClass" userID="CHA" flexoID="63">
-      <ConceptActorReference id="16" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/flightPlanNegociation.bpmn#Participant_1" roleName="pool" userID="CHA" flexoID="64" />
-      <ConceptActorReference id="17" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DataModel/DataFlightPlanNegociation.uml#_ADdEML9oEe6GGffmtGz0Ag" roleName="class" userID="CHA" flexoID="65" />
-    </EmbeddedFlexoConceptInstance>
   </FlexoConceptInstance>
   <FlexoConceptInstance idref="6" />
   <FlexoConceptInstance idref="9" />
   <FlexoConceptInstance idref="12" />
-  <FlexoConceptInstance idref="15" />
-  <FlexoOntologyModelSlotInstance id="18" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/flightPlanNegociation.bpmn" modelSlotName="bpmnModelAccess" roleName="bpmnModelAccess" userID="CHA" flexoID="2" />
-  <FlexoOntologyModelSlotInstance id="19" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DataModel/DataFlightPlanNegociation.uml" modelSlotName="dataModelAccess" roleName="dataModelAccess" userID="CHA" flexoID="3" />
-  <FlexoOntologyModelSlotInstance id="20" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/DeploymentFlightPlanNegociation.uml" modelSlotName="deployementModelAccess" roleName="deployementModelAccess" userID="CHA" flexoID="4" />
+  <FlexoOntologyModelSlotInstance id="15" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/flightPlanNegociation.bpmn" modelSlotName="bpmnModelAccess" roleName="bpmnModelAccess" userID="CHA" flexoID="2" />
+  <FlexoOntologyModelSlotInstance id="16" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DataModel/DataFlightPlanNegociation.uml" modelSlotName="dataModelAccess" roleName="dataModelAccess" userID="CHA" flexoID="3" />
+  <FlexoOntologyModelSlotInstance id="17" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/DeploymentFlightPlanNegociation.uml" modelSlotName="deployementModelAccess" roleName="deployementModelAccess" userID="CHA" flexoID="4" />
 </FMLRTVirtualModelInstance>

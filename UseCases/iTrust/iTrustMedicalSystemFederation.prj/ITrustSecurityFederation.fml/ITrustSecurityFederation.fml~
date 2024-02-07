@@ -95,6 +95,7 @@ public model ITrustSecurityFederation {
 		}
     }
 
+
      public joinInstanceMessageFlowCommnicationPath() {
 		for (MessageFlowCommunicationPathCorrepondence item :select MessageFlowCommunicationPathCorrepondence from this) {
 			listInstancesMessageComm.add(item);	

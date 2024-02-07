@@ -249,4 +249,5 @@
   <ConceptActorReference id="243" roleName="listFlowElements" userID="CHA" flexoID="435" />
   <ConceptActorReference id="244" roleName="listFlowElements" userID="CHA" flexoID="436" />
   <ConceptActorReference id="245" roleName="listFlowElements" userID="CHA" flexoID="437" />
+  <ModelObjectActorReference id="246" objectReference="http://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/instanceiTrustSecurityFederation.fml.rt#CHA_123" roleName="listInstancesMessageComm" userID="CHA" flexoID="438" />
 </FMLRTVirtualModelInstance>

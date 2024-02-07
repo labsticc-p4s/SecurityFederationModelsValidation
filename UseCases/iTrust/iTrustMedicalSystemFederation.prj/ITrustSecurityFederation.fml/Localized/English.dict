@@ -20,6 +20,7 @@ getOwner=GetOwner
 getPool=GetPool
 iTrustRule3=ITrustRule3
 iTrustSecurityRule1=ITrustSecurityRule1
+iTrustSecurityRule2=ITrustSecurityRule2
 iTrustSecurityRule3=ITrustSecurityRule3
 iTrustSecurityRule4=ITrustSecurityRule4
 iTrustSecurityRuleTest=ITrustSecurityRuleTest

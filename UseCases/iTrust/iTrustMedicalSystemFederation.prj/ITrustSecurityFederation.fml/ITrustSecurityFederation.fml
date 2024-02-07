@@ -385,17 +385,29 @@ else {
 		// --- iTrust security Rule2 --- 
 		/* This security rule check if the communicationPath in the BPMN model correponding to MessageFlow in the BPMN model 
 		has semantically the same secuirty annotation  */
+
+		public iTrustSecurityRule2() {
+			boolean check = false;
+			check = this.verifySecureCommunication();
+			if (check) {
+				log "Security rule verified";
+			} 
+else {
+				log "Security rule violated";
+			}
+			
+		}
 		
-		public boolean verifySecureCommunication() {
+		private boolean verifySecureCommunication() {
 			boolean check = false;
 			List<? extends Object> encrypted = communicationPath.getValues("encrypted");
 			for (BPMNAssociation asso : select BPMNAssociation from bpmnModelAccess) {
-				if (asso.targetRef.id == messageFlow.toString.substring(12)) {
+				if (asso.targetRef == messageFlow.toString.substring(12)) {
 					for (BPMNTextAnnotation annota : select BPMNTextAnnotation from  bpmnModelAccess) {
 						if (asso.sourceRef.id == annota.id) {
 							if (encrypted != null && (annota.text.contains("NonRepudMF") || annota.text.contains("ConfidentialityMF") || annota.text.contains("IntegrityMF"))) {
 								check = true;
-							}
+							} 
 else {
 								check = false;
 							}
@@ -405,6 +417,8 @@ else {
 			}
 			return check;
 		}
+
+
 
 		
 		delete() {

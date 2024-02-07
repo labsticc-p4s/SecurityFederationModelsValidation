@@ -62,7 +62,6 @@ public model ITrustSecurityFederation {
      UserRoleCorrespondence[0,*] listUserRoleLink with ConceptInstance(virtualModelInstance=this);
      EMFObjectIndividual[0,*] listArtifact with EMFObjectRole(container=this);
      EMFObjectIndividual[0,*] listFlowElements with EMFObjectRole(container=this);
-     //List<EMFObjectIndividual> listArtifact;
 
 
 	public create::createAccessObject(required Resource<EMFModel> bpmnModelResource, required Resource<EMFModel> deploymentModelResource, required Resource<EMFModel> dataModelResource, required Resource<EMFModel> accessControlModelResource) {
@@ -74,11 +73,9 @@ public model ITrustSecurityFederation {
 
 
 
-
+	// Verify if all the instance of MessageFlowCommunicationPath respect Security rule2
       public verifyAllMessageCommPath() {
- 
-      	List<MessageFlowCommunicationPathCorrepondence> objs = select MessageFlowCommunicationPathCorrepondence from this;
-      	for (MessageFlowCommunicationPathCorrepondence instanceMesageComm :objs ) {
+      	for (MessageFlowCommunicationPathCorrepondence instanceMesageComm :select MessageFlowCommunicationPathCorrepondence from this ) {
       		if (instanceMesageComm.verifySecureCommunication() == true) {
       			log "The Security rules is not violated"; 
       		}
@@ -86,26 +83,17 @@ public model ITrustSecurityFederation {
       	
       }
 
-       public verifyChange(required String name) {	
-		List<PoolArtifactCorrespondence> objs = select PoolArtifactCorrespondence from this;
-		for (PoolArtifactCorrespondence item : objs) {
-			if (parameters.name == item.artifact.name) {
-				item.iTrustSecurityRule1();
-			}
-		}
-    }
 
-
-     public joinInstanceMessageFlowCommnicationPath() {
+	// Join all the instances of the concept MessageFlowCommunicationPath
+     private joinInstanceMessageFlowCommnicationPath() {
 		for (MessageFlowCommunicationPathCorrepondence item :select MessageFlowCommunicationPathCorrepondence from this) {
 			listInstancesMessageComm.add(item);	
 		}
      }
 
 
-     // --- verify whether an artifact is a part of PoolArtifactLink intances and return the artifact --- //
-	public  List<EMFObjectIndividual> verifyExistenceCorresp(String nameArtifact) {
-		//List<EMFObjectIndividual>  listArtifact = new ArrayList<DeploymentArtifact>();
+     // Verify whether an artifact is a part of the PoolArtifactCorrespondence intance and return the artifact 
+	private  List<EMFObjectIndividual> verifyExistenceCorresp(String nameArtifact) {
 		List<PoolArtifactCorrespondence> objs = select PoolArtifactCorrespondence from this;
 		 	for (PoolArtifactCorrespondence item : objs ) {
 		 		if (item.artifact.name.toString == parameters.nameArtifact) {
@@ -116,16 +104,15 @@ public model ITrustSecurityFederation {
 	}
 
 
-    // --- Retrieve the list of Pools related to an Artifact selected --- //
-	public  List<EMFObjectIndividual> getPool(String nameArtifact) {
+    //  Retrieve the list of Pools related to an Artifact selected 
+	private  List<EMFObjectIndividual> getPool(String nameArtifact) {
 		poolList =null; 
-		List<EMFObjectIndividual> listPoolA = new ArrayList<DeploymentArtifact>();
-		List<PoolArtifactCorrespondence> objs = select PoolArtifactCorrespondence from this;
-	 	for (PoolArtifactCorrespondence item : objs ) {
+	 	for (PoolArtifactCorrespondence item : select PoolArtifactCorrespondence from this) {
 			if (item.artifact.name.toString == parameters.nameArtifact) {
 				poolList.add(item.pool);
 			}
 	 	}
+	 	
 	 	return poolList;
 	}
 
@@ -135,8 +122,8 @@ public model ITrustSecurityFederation {
 	}
 	
 	
-	   // --- Check if the user has a valide role --- //
-	public boolean checkUserRole(required String userName) {
+ 	//  Check if the user has a valid role 
+	private boolean checkUserRole(required String userName) {
 	    boolean checked = false;
 	    List<UserRoleCorrespondence> links = select UserRoleCorrespondence from this;
 	    for (UserRoleCorrespondence item : links) {
@@ -149,8 +136,8 @@ public model ITrustSecurityFederation {
 	}
 	
 
-
-	public boolean checkDataObjectAnnotations(BPMNFlowElements flowElements) {
+	// Check the security annotations of the flowelements
+	private boolean checkDataObjectAnnotations(BPMNFlowElements flowElements) {
 		for (BPMNAssociation itemAsso : select BPMNAssociation from bpmnModelAccess) {
 			for (BPMNTextAnnotation itemAnnota : select BPMNTextAnnotation from bpmnModelAccess ) {
 				if (parameters.flowElements == itemAsso.sourceRef && itemAnnota == itemAsso.targetRef) {
@@ -165,7 +152,8 @@ else {
 		}					
 	} 
 
-	public List<EMFObjectIndividual> getFlowElementsOfPool(EMFObjectIndividual pool) {
+	// Get the FlowElements of a selected Pool
+	private List<EMFObjectIndividual> getFlowElementsOfPool(EMFObjectIndividual pool) {
 		for (BPMNParticipant itemParticipant : select BPMNParticipant from  bpmnModelAccess) {
 			if (itemParticipant == parameters.pool) { 
 				for (BPMNFlowElements itemFlows : select BPMNFlowElements from bpmnModelAccess) {
@@ -179,7 +167,8 @@ else {
 		return listFlowElements;
 	}
 
-	public boolean verifyDataObjectAnnotation(List<EMFObjectIndividual> listFlowElements) {
+	// Verify the security annotations of a DataObject included in the FlowElements 
+	private boolean verifyDataObjectAnnotation(List<EMFObjectIndividual> listFlowElements) {
 		for (EMFObjectIndividual itemFlowElements : parameters.listFlowElements) {
 			for (BPMNAssociation itemAsso : select BPMNAssociation from bpmnModelAccess) {
 				for (BPMNTextAnnotation itemAnnota : select BPMNTextAnnotation from bpmnModelAccess ) {
@@ -200,10 +189,11 @@ else {
     	
       }
 
-
+	// The correspondence between a Pool in the BPMN model and an artifact in the Deployment model  
 	public concept PoolArtifactCorrespondence extends Correspondences {
 		EMFObjectIndividual pool with EMFObjectRole(container=bpmnModelAccess);
 		EMFObjectIndividual artifact with EMFObjectRole(container=deploymentModelAccess);
+		
 		MessageFlowCommunicationPathCorrepondence[0,*] listInstancesMessageComm with ConceptInstance(virtualModelInstance=container);
 		EMFObjectIndividual[0,*] devicesArtifact with EMFObjectRole(container=this);
 		EMFObjectIndividual[0,*] assoArtifacts with EMFObjectRole(container=this);
@@ -215,7 +205,8 @@ else {
 		EMFObjectIndividual[0,*] devicesArtifactsFilter with EMFObjectRole(container=this);
 		EMFObjectIndividual[0,*] commPath with EMFObjectRole(container=this);
 		String[0,*] listAssoArtifact;
-		
+
+		// create the instance of the concept with the selected pool and artifact
 		create::_create(required String name) {
 			pool = select unique BPMNParticipant from bpmnModelAccess where (selected.name == parameters.name);
 			artifact = select unique DeploymentArtifact from deploymentModelAccess where (selected.name == parameters.name);
@@ -224,7 +215,9 @@ else {
 			delete pool;
 			delete artifact;
 		}
-		public List<EMFObjectIndividual> getDeploymentDevices(EMFObjectIndividual nameArtifact) {
+		
+		// Get the device where an artifact is deployed
+		private List<EMFObjectIndividual> getDeploymentDevices(EMFObjectIndividual nameArtifact) {
 			this.devicesArtifact = null;
 			for (DeploymentDeploy itemDeploy : select DeploymentDeploy from deploymentModelAccess) {
 				if (itemDeploy.artifact == parameters.nameArtifact) {
@@ -242,20 +235,8 @@ else {
 		}
 
 
-		
-		public List<EMFObjectIndividual> getFlowElements(EMFObjectIndividual pool) {
-			this.flowElements = null;
-			for (BPMNParticipant parti : select BPMNParticipant from bpmnModelAccess) {
-				int n = parti.processRef.flowElements.size();
-				if (parti.id.toString == parameters.pool.name.toString) {
-					for (int j=0 ; j < n ; j++) {
-						flowElements.add(parti.processRef.flowElements.get(j));
-					}
-				}
-			}
-			return flowElements;
-		}
-		public List<String> verifyExistenceArtifactAssociated(EMFObjectIndividual artifact) {
+		// Verify if an artifact has association with other artifacts in the Deployment model
+		private List<String> verifyExistenceArtifactAssociated(EMFObjectIndividual artifact) {
 			boolean existe = false;
 			listAssoArtifact = null;
 			for (DeploymentAssociation itemAsso : select DeploymentAssociation from deploymentModelAccess) {
@@ -277,7 +258,9 @@ else {
 			}
 			return listAssoArtifact;
 		}
-		public boolean checkAnnotations(String flowElements) {
+
+
+		private boolean checkAnnotations(String flowElements) {
 			boolean checkannotation = false;
 			for (BPMNAssociation asso :  select BPMNAssociation from  bpmnModelAccess) {
 				for (BPMNTextAnnotation annotation : select BPMNTextAnnotation from  bpmnModelAccess) {
@@ -293,8 +276,9 @@ else {
 			}
 			return checkannotation;
 		}
-		///
-		public List<EMFObjectIndividual> getMessageFlow(EMFObjectIndividual pool) {
+		
+		// Get MessageFlow for a selected Pool 
+		private List<EMFObjectIndividual> getMessageFlow(EMFObjectIndividual pool) {
 			messageFlows = null;
 			for (BPMNParticipant parti : select BPMNParticipant from  bpmnModelAccess) {
 				if (parti.id.toString == parameters.pool.name.toString) {
@@ -310,7 +294,9 @@ else {
 			}
 			return messageFlows;
 		}
-		public List<EMFObjectIndividual> getCommunication(EMFObjectIndividual device) {
+
+		// Get communicationPath for a selected device
+		private List<EMFObjectIndividual> getCommunication(EMFObjectIndividual device) {
 			commPath = null;
 			for (DeploymentCommunicationPath commPath1 : select DeploymentCommunicationPath from deploymentModelAccess) {
 				if (commPath1.device.name.toString == parameters.device.name) {
@@ -319,8 +305,9 @@ else {
 			}
 			return commPath;
 		}
-		// verify if the
-		public boolean verifyDeploy(List<EMFObjectIndividual> deviceArtifact, List<EMFObjectIndividual> devicesAssoArtifact) {
+		
+		// verify if the artifact and the associated artifacts are deployed in the same devices
+		private boolean verifyDeploy(List<EMFObjectIndividual> deviceArtifact, List<EMFObjectIndividual> devicesAssoArtifact) {
 			for (EMFObjectIndividual device : parameters.deviceArtifact) {
 				if (!parameters.devicesAssoArtifact.contains(device)) {
 					return false;
@@ -336,8 +323,7 @@ else {
 		
 	public void iTrustSecurityRule1() {
 		boolean checkConfidentialData = false;
-		this.flowElements = this.getFlowElements(pool);
-		for (EMFObjectIndividual flowElt : flowElements) {
+		for (EMFObjectIndividual flowElt : container.getFlowElementsOfPool(pool)) {
 			checkConfidentialData = this.checkAnnotations(flowElt.toString.substring(11));
 			// This security rule request to verify the securityRule2 
 			if (checkConfidentialData == true && !this.verifyExistenceConsistentInstance()) {
@@ -350,25 +336,29 @@ else {
 	}
 
 
-	public boolean verifyExistenceConsistentInstance() {
+	private boolean verifyExistenceConsistentInstance() {
 		List<EMFObjectIndividual> assoPool;
 		List<EMFObjectIndividual> commPath;
-		// get instance of the concept MessageFlowCommunicatioPath
+		// Get instance of the Concept MessageFlowCommunicatioPath
 		container.joinInstanceMessageFlowCommnicationPath();
+		// Get associated artifacts
 		this.listAssoArtifact = this.verifyExistenceArtifactAssociated(artifact);
 		for (String assoArtifact : listAssoArtifact) {
 			assoArtifactsFilter = container.verifyExistenceCorresp(assoArtifact);
 		}
+		// Get Devices where the Artifact is deployed
 		this.devicesArtifact = this.getDeploymentDevices(artifact);
 		for (EMFObjectIndividual device : devicesArtifact) {
 			this.commPath = this.getCommunication(device);
 		}
+		// Get MessageFlow outgoing from Pool
 		this.messageFlows = this.getMessageFlow(pool);
 		for (EMFObjectIndividual assoArtifactFilt : assoArtifactsFilter) {
 			assoPool = container.getPool(assoArtifactFilt.name);
 			devicesArtifactsFilter = this.getDeploymentDevices(assoArtifactFilt);
 			if (!this.verifyDeploy(devicesArtifact,devicesArtifactsFilter)) {
 				for (EMFObjectIndividual dataflow : messageFlows) {
+					// Verify the security rule 2
 					for (MessageFlowCommunicationPathCorrepondence item : container.listInstancesMessageComm) {
 						if (dataflow == item.messageFlow.name && this.commPath.contains(item.communicationPath)) {
 							if (!item.verifySecureCommunication()) {
@@ -395,18 +385,31 @@ else {
 		// --- iTrust security Rule2 --- 
 		/* This security rule check if the communicationPath in the BPMN model correponding to MessageFlow in the BPMN model 
 		has semantically the same secuirty annotation  */
+
+		public iTrustSecurityRule2() {
+			boolean check1 = false;
+			check1 = this.verifySecureCommunication();
+			log "check" + check1.toString;
+			if (check1) {
+				log "Security rule verified";
+			} 
+else {
+				log "Security rule violated";
+			}
+			
+		}
 		
-		public boolean verifySecureCommunication() {
+		private boolean verifySecureCommunication() {
 			boolean check = false;
 			List<? extends Object> encrypted = communicationPath.getValues("encrypted");
 			for (BPMNAssociation asso : select BPMNAssociation from bpmnModelAccess) {
-				if (asso.targetRef.id == messageFlow.toString.substring(12)) {
+				if (asso.targetRef == messageFlow.toString.substring(12)) {
 					for (BPMNTextAnnotation annota : select BPMNTextAnnotation from  bpmnModelAccess) {
 						if (asso.sourceRef.id == annota.id) {
 							if (encrypted != null && (annota.text.contains("NonRepudMF") || annota.text.contains("ConfidentialityMF") || annota.text.contains("IntegrityMF"))) {
 								check = true;
-							}
-							else {
+							} 
+else {
 								check = false;
 							}
 						}
@@ -415,6 +418,10 @@ else {
 			}
 			return check;
 		}
+
+
+
+		
 		delete() {
 			delete messageFlow;
 			delete communicationPath;
@@ -462,11 +469,11 @@ else {
 		/*  These function verify whether the user and the role is not null 
 		 for an isntance of UserRoleCorreponeces  */
 		 
-		public boolean verifyCorrespondence() {
+		private boolean verifyCorrespondence() {
 			if (user == null || role == null) {
 				return false;
-			}
-			else {
+			} 
+else {
 				return true;
 			}
 		}
@@ -484,7 +491,7 @@ else {
 		}
 
 		// --- iTrust security Rule4 --- 
-		/*  This security rule check if the Pool in the BPMN model contains a confidential DataObject,
+		/*  This security rule checks if the Pool in the BPMN model contains a confidential DataObject,
 		 the corresponding Class must have semantically the same security annotations  */
 		       
 		public iTrustSecurityRule4() {
@@ -494,14 +501,14 @@ else {
 			// Get all FlowElements for the selected pool 
 			container.listFlowElements = container.getFlowElementsOfPool(pool);
 			
-			// Verify if between the FlowElements exists confidential DataObjects
+			// Verify if there are confidential DataObjects between the FlowElements.
 			checkConfidentialDataObject = container.verifyDataObjectAnnotation(this.listFlowElements);
 			
-			// Verify whether the corresponding Class have the security annotations Critical when pool contains Confidential DataObject
+			// Verify whether the corresponding class has the security annotation 'Critical' when the Pool contains a confidential DataObject.
 			if (checkConfidentialDataObject && class.getValues("member").toString.contains("Critical") ) {
 				log "Security rule verified";
-			}
-			else {
+			} 
+else {
 				log "Security rule violated";
 			}
 

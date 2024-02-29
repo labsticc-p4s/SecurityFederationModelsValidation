@@ -1,0 +1,7 @@
+bpmnModelResource=BpmnModelResource
+checkSecurityDataTransmission=CheckSecurityDataTransmission
+nameDataObject=NameDataObject
+nameElement=NameElement
+securityCheckAnnotations=SecurityCheckAnnotations
+soamlModelResource=SoamlModelResource
+wsdlModelResource=WsdlModelResource

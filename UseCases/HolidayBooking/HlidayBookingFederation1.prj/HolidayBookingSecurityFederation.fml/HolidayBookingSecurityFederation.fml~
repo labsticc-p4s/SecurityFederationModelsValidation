@@ -1,0 +1,209 @@
+use org.openflexo.technologyadapter.emf.EMFModelSlot as EMF;
+use org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot as FMLRT;
+
+import org.openflexo.technologyadapter.emf.model.EMFModel;
+import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
+import java.lang.String;
+
+import ["http://www.example.org/metamodelProject/Metamodel/SOAMLmetaModel"] as SOAML_META_MODEL;
+import ["http://www.example.org/metamodelProject/Metamodel/WSDLmetaModel"] as WSDLMETAMODEL;
+import ["http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"] as BPMN21;
+
+import [BPMN21:"Participant"] as BPMN_PARTICIPANT;
+import [SOAML_META_MODEL:"Participant"] as SOAML_PARTICIPANT;
+import [BPMN21:"TextAnnotation"] as BPMN_TEXT_ANNOTATION;
+import [BPMN21:"Association"] as BPMN_ASSOCIATION;
+import [SOAML_META_MODEL:"ParticipantRole"] as SOAML_PARTICIPANT_ROLE;
+import [BPMN21:"DataObject"] as BPMN_DATAOBJECT;
+import [WSDLMETAMODEL: "Element"] as WSDL_ELEMENT;
+import[WSDLMETAMODEL: "Operation"] as WSDL_OPERATION;
+import[WSDLMETAMODEL: "InPut"] as WSDL_INPUT;
+import[WSDLMETAMODEL: "Binding"] as WSDL_BINDING;
+import[WSDLMETAMODEL: "Fault"] as WSDL_FAULT;
+
+typedef EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) as BPMNParticipant;
+typedef EMFObjectIndividualType(eClass=SOAML_PARTICIPANT) as SOAMLParticipant;
+typedef EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) as BPMNTextAnnotation;
+typedef EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) as BPMNAssociation;
+typedef EMFObjectIndividualType(eClass=SOAML_PARTICIPANT_ROLE) as SOAMLParticipantRole;
+typedef EMFObjectIndividualType(eClass=BPMN_DATAOBJECT) as BPMNDataObject;
+typedef EMFObjectIndividualType(eClass= WSDL_ELEMENT) as WSDLElement;
+typedef EMFObjectIndividualType(eClass= WSDL_OPERATION) as WSDLOperation;
+typedef EMFObjectIndividualType(eClass= WSDL_INPUT) as WSDLInPut;
+typedef EMFObjectIndividualType(eClass= WSDL_BINDING) as WSDLBinding;
+typedef EMFObjectIndividualType(eClass= WSDL_FAULT) as WSDLFault;
+
+@URI("http://www.openflexo.org/projects/2024/2/HlidayBookingFederation1_1708967384458.prj/HolidayBookingSecurityFederation.fml")
+@Author("chahr")
+public model HolidayBookingSecurityFederation {
+
+   EMFModel soamlModelAceess with EMFModelSlot(metaModel=SOAML_META_MODEL,isRequired=true);
+   EMFModel wsdlModelAcess with EMFModelSlot(metaModel=WSDLMETAMODEL,isRequired=true);
+   EMFModel bpmnModelAccess with EMFModelSlot(metaModel=BPMN21,isRequired=true);
+
+    public create::createAccessObject(required Resource<EMFModel> bpmnModelResource, required Resource<EMFModel> wsdlModelResource, required Resource<EMFModel> soamlModelResource) {
+         soamlModelAceess = parameters.soamlModelResource.resourceData;
+         wsdlModelAcess = parameters.wsdlModelResource.resourceData;
+         bpmnModelAccess = parameters.bpmnModelResource.resourceData;
+      }
+
+   delete() {
+      soamlModelAceess = null;
+      wsdlModelAcess = null;
+      bpmnModelAccess = null;
+   }
+
+   // get the list of security annotations for the selected Pool in BPMN model
+   private List<BPMNTextAnnotation> getPoolAnnotations(BPMNParticipant pool) {
+       List<BPMNTextAnnotation> annotationsPool = new ArrayList<BPMNTextAnnotation>();
+       for (BPMNAssociation itemAsso : select BPMNAssociation from bpmnModelAccess) {
+         if (itemAsso.targetRef == parameters.pool) {
+            for (BPMNTextAnnotation itemAnnota : select BPMNTextAnnotation from bpmnModelAccess ) {
+               if (itemAnnota == itemAsso.sourceRef) {
+                    annotationsPool.add(itemAnnota);
+               }
+            }
+         } 
+       }
+       
+      return annotationsPool;
+   }
+
+   // Check if the DataObject in the BPMN model contains one or both of these security annotations (integrity , NonRepudiation)
+   private boolean checkDataObjectSecurityAnnotations(BPMNDataObject dataObject) {
+      boolean check = false;
+      for (BPMNAssociation itemAsso : select BPMNAssociation from bpmnModelAccess) {
+         if (itemAsso.targetRef == parameters.dataObject) {
+            for (BPMNTextAnnotation itemAnnota : select BPMNTextAnnotation from bpmnModelAccess ) {
+               if (itemAnnota == itemAsso.sourceRef && (itemAnnota.text.contains("integrity") || itemAnnota.text.contains("nonrepudiation")) ) {
+                  check = true;
+               }
+else {
+                  check = false;
+               }
+            }
+         }
+      }
+      
+      return check;
+   }
+
+   private boolean checkFaultBinding(WSDLElement element) {
+      boolean checkfault = false;
+       for (WSDLOperation operation : select WSDLOperation from wsdlModelAcess) {
+         List<? extends Object> itemInputOperation = operation.getValues("input");
+         for (WSDLInPut itemInPut : select WSDLInPut from wsdlModelAcess) {
+             List<? extends Object> itemElementInput = itemInPut.getValues("element");
+             log "element" + itemElementInput.get(0).toString;
+            if (itemInputOperation.contains(itemInPut) && itemElementInput.contains(parameters.element)) {
+               log "input1" + itemInPut.name;
+               for ( WSDLBinding itemBinding : select WSDLBinding from wsdlModelAcess ) {
+                  log "input3" + itemBinding.name; 
+                  List<? extends Object> itemBindingOperation = itemBinding.getValues("operation");
+                  List<? extends Object> itemBindingFault = itemBinding.getValues("fault");
+                  log "operation" + itemBindingOperation.get(0).toString; 
+                  if (itemBindingOperation.contains(operation) && itemBinding.getValues("fault").toString.contains("SOAP")) {
+                     log "exists";
+                     checkfault = true;  
+                  }
+else {
+                     checkfault = false;
+                  }
+               }
+               
+            }
+         }
+         //log "input"+ itemInputOperation.get(0).toString;
+       }
+
+      return checkfault;
+   }
+   
+
+   public concept Correspondences {
+      
+      // The correspondence between a Pool in the BPMN model and a Participant in the SOAML model  
+      public concept PoolParticipantCorrespondence extends Correspondences{
+         
+         BPMNParticipant pool with EMFObjectRole(container=bpmnModelAccess,type=BPMN_PARTICIPANT);
+         SOAMLParticipant participant with EMFObjectRole(container= soamlModelAceess, type = SOAML_PARTICIPANT); 
+
+         // create the instance of the concept with the selected pool and Participant
+         create(required String name) {
+            pool = select unique BPMNParticipant from bpmnModelAccess where (selected.name == parameters.name);
+            participant = select unique SOAMLParticipant from soamlModelAceess where (selected.name == parameters.name);
+            
+         }
+
+         // --- Holiday Booking security Rule2 ---
+
+         /* This security rule check if the pool in the BPMN model and the Participant in the SOAML model contains the right security annotations  */
+         public securityCheckAnnotations() {
+            List<BPMNTextAnnotation> annotationsPool = new ArrayList<BPMNTextAnnotation>();
+            annotationsPool = container.container.getPoolAnnotations(pool);
+            boolean check = false;
+            for (BPMNTextAnnotation item : annotationsPool ) {
+               for (SOAMLParticipantRole itemParticipantRole : select SOAMLParticipantRole from soamlModelAceess ) {
+                  if (itemParticipantRole.name == participant.name + "Role") {
+                     List<? extends Object> privacy = itemParticipantRole.getValues("privacy");
+                     List<? extends Object> access =  itemParticipantRole.getValues("accesscontrol");
+                     
+                     if (privacy != null && item.text.contains("privacy")) {
+                        check = true;
+                     }
+                     if (access != null && item.text.contains("accesscontrol")) {
+                        check = true;
+                     } 
+else {
+                        check = false;
+                     }
+                   }
+                  }
+               }
+               if (check) {
+                  log "Security annotation verification succeeded";
+               } 
+else {
+                  log "Security annotation verification failed";
+               }
+         }
+
+         
+      }
+
+      // The correspondence between a DataObject in the BPMN model and a Message in the WSDL model
+      public concept DataObjectMessageCorrespondence extends Correspondences{
+        BPMNDataObject dataObject with EMFObjectRole(container=bpmnModelAccess,type=BPMN_DATAOBJECT);
+        WSDLElement element with EMFObjectRole(container= wsdlModelAcess, type = WSDL_ELEMENT);
+
+        // create the instance of the concept with the selected pool and Participant
+        create(required String nameDataObject, required String nameElement ) {
+            dataObject = select unique BPMNDataObject from bpmnModelAccess where (selected.name == parameters.nameDataObject);
+            element = select unique WSDLElement from wsdlModelAcess where (selected.name == parameters.nameElement);
+        }
+
+         delete() {
+      		delete dataObject;
+      		delete element;
+      	}
+
+        // --- Holiday Booking security Rule1 ---
+        public checkSecurityDataTransmission() {
+         boolean checkAnnotation = false;
+         boolean checkBinding = false;
+         checkAnnotation =container.container.checkDataObjectSecurityAnnotations(dataObject);
+         log checkAnnotation.toString;
+         checkBinding = container.container.checkFaultBinding(element);
+         log checkBinding.toString;
+         if (checkBinding && checkAnnotation ) {
+            log "Security annotation verification succeeded";
+         }
+else {
+            log "Security annotation verification failed";
+         }
+        }
+      }
+      
+   }
+
+}

@@ -94,26 +94,19 @@ else {
          List<? extends Object> itemInputOperation = operation.getValues("input");
          for (WSDLInPut itemInPut : select WSDLInPut from wsdlModelAcess) {
              List<? extends Object> itemElementInput = itemInPut.getValues("element");
-             log "element" + itemElementInput.get(0).toString;
             if (itemInputOperation.contains(itemInPut) && itemElementInput.contains(parameters.element)) {
-               log "input1" + itemInPut.name;
                for ( WSDLBinding itemBinding : select WSDLBinding from wsdlModelAcess ) {
-                  log "input3" + itemBinding.name; 
                   List<? extends Object> itemBindingOperation = itemBinding.getValues("operation");
                   List<? extends Object> itemBindingFault = itemBinding.getValues("fault");
-                  log "operation" + itemBindingOperation.get(0).toString; 
                   if (itemBindingOperation.contains(operation) && itemBinding.getValues("fault").toString.contains("SOAP")) {
-                     log "exists";
                      checkfault = true;  
                   }
 else {
                      checkfault = false;
                   }
                }
-               
             }
          }
-         //log "input"+ itemInputOperation.get(0).toString;
        }
 
       return checkfault;
@@ -192,9 +185,8 @@ else {
          boolean checkAnnotation = false;
          boolean checkBinding = false;
          checkAnnotation =container.container.checkDataObjectSecurityAnnotations(dataObject);
-         log checkAnnotation.toString;
          checkBinding = container.container.checkFaultBinding(element);
-         log checkBinding.toString;
+         
          if (checkBinding && checkAnnotation ) {
             log "Security annotation verification succeeded";
          }

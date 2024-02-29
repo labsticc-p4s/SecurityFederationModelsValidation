@@ -1,5 +1,5 @@
 #Metadata for directory D:\HeterogenousSecureModelsFederation\UseCases\HolidayBooking\HlidayBookingFederation1.prj\HolidayBookingSecurityFederation.fml
-#Thu Feb 29 10:52:37 GMT+01:00 2024
+#Thu Feb 29 11:02:05 GMT+01:00 2024
 HolidayBookingSecurityFederation.fml.dependenciesList=http\://www.example.org/metamodelProject/Metamodel/SOAMLmetaModel,http\://www.example.org/metamodelProject/Metamodel/WSDLmetaModel,http\://www.omg.org/spec/BPMN/20100524/MODEL-XMI
 HolidayBookingSecurityFederation.fml.requiredModelSlotList=org.openflexo.technologyadapter.emf.EMFModelSlot,org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot
 HolidayBookingSecurityFederation.fml.virtualModelClassName=org.openflexo.foundation.fml.VirtualModel

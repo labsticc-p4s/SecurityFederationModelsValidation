@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Mym:AccessControlModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Mym="AccessControlMetamodel" xsi:schemaLocation="AccessControlMetamodel AccessControlMetamodel.ecore">
+<AccessControl:AccessControlModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:AccessControl="AccessControlMetamodel" nameModel="iTrustAccessControl">
   <user role="//@role.1" name="Claire"/>
   <user role="//@role.3" name="Justine"/>
   <user role="//@role.0" name="Adel"/>
@@ -12,5 +12,7 @@
   <authorization nameAuthorization="RecordVisitPatient"/>
   <authorization nameAuthorization="AccessSystem"/>
   <authorization nameAuthorization="AddPatient"/>
+  <authorization nameAuthorization="editPrescription"/>
   <accesstype/>
-</Mym:AccessControlModel>
+  <accesstype/>
+</AccessControl:AccessControlModel>

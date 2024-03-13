@@ -43,6 +43,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="secrecy" eType="#//Secrecy"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="call" eType="#//Call"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="nameAssociation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="loggedIn" eType="#//LoggedIn"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CommunicationPath">
     <eStructuralFeatures xsi:type="ecore:EReference" name="node" upperBound="2" eType="#//Node"/>
@@ -57,4 +58,5 @@
   <eClassifiers xsi:type="ecore:EClass" name="Encrypted" eSuperTypes="#//SecurityProperties"/>
   <eClassifiers xsi:type="ecore:EClass" name="Call" eSuperTypes="#//SecurityProperties"/>
   <eClassifiers xsi:type="ecore:EClass" name="SecurityProperties"/>
+  <eClassifiers xsi:type="ecore:EClass" name="LoggedIn" eSuperTypes="#//SecurityProperties"/>
 </ecore:EPackage>

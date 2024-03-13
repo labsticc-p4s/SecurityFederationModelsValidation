@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deployementEcoreMetaModel:DeployementModel
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ddeployementEcoreMetaModel="http://www.example.org/ddeployementEcoreMetaModel"
+    xsi:schemaLocation="http://www.example.org/deployementEcoreMetaModel deployementEcoreMetaModel.ecore"
+    nameModel="iTrustModelDeployement">
+  <node nameNode="Hospital">
+    <node nameNode="WebServer"/>
+    <node nameNode="iTrustServer"/>
+  </node>
+  <artifact
+      nameArtifact="iTrust"/>
+  <artifact
+      nameArtifact="Doctor"/>
+  <artifact
+      nameArtifact="DataBase"/>
+  <artifact
+      nameArtifact="Patient"/>
+  <artifact
+      nameArtifact="Authentication"/>
+  <device nameDevice="Mobile"/>
+  <association
+      artifact="//@artifact.0 //@artifact.1"
+      integrity="//@securityproperties.0"
+      secrecy="//@securityproperties.1"
+      call="//@securityproperties.3"
+      nameAssociation="AssoiTrustDoctor"/>
+  <association
+      artifact="//@artifact.3 //@artifact.4"
+      integrity="//@securityproperties.0"
+      secrecy="//@securityproperties.1"
+      call="//@securityproperties.3"
+      nameAssociation="AssoAuthentiPatient"
+      loggedIn="//@securityproperties.5"/>
+  <association
+      artifact="//@artifact.4 //@artifact.1"
+      integrity="//@securityproperties.0"
+      secrecy="//@securityproperties.1"
+      call="//@securityproperties.3"
+      nameAssociation="AssoAutheDoctor"
+      loggedIn="//@securityproperties.5"/>
+  <association
+      artifact="//@artifact.2 //@artifact.0"
+      integrity="//@securityproperties.0"
+      secrecy="//@securityproperties.1"
+      call="//@securityproperties.3"
+      nameAssociation="AssoDataBaseiTrust"
+      loggedIn="//@securityproperties.5"/>
+  <communicationpath
+      node="//@node.0/@node.0 //@node.0/@node.1"
+      namePathComm="CommNodes"/>
+  <communicationpath
+      node="//@node.0"
+      device="//@device.0"
+      encrypted="//@securityproperties.4"
+      namePathComm="CommMobileHospital"/>
+  <deploy artifact="//@artifact.1"
+      device="//@device.0"
+      nameDeploy="deployDoctorMobile"/>
+  <deploy node="//@node.0/@node.1"
+      artifact="//@artifact.0"
+      nameDeploy="DeployiTrustiTrustServer"/>
+  <deploy artifact="//@artifact.3"
+      device="//@device.0"
+      nameDeploy="deployPatientMobile"/>
+  <deploy node="//@node.0/@node.0"
+      artifact="//@artifact.2"
+      nameDeploy="deployDataBaseWebServer"/>
+  <deploy node="//@node.0/@node.0"
+      artifact="//@artifact.4"
+      nameDeploy="deployeAuthenticationWebServer"/>
+  <securityproperties
+      xsi:type="deployementEcoreMetaModel:Integrity"/>
+  <securityproperties
+      xsi:type="deployementEcoreMetaModel:Secrecy"/>
+  <securityproperties
+      xsi:type="deployementEcoreMetaModel:Internet"/>
+  <securityproperties
+      xsi:type="deployementEcoreMetaModel:Call"/>
+  <securityproperties
+      xsi:type="deployementEcoreMetaModel:Encrypted"/>
+  <securityproperties
+      xsi:type="deployementEcoreMetaModel:LoggedIn"/>
+</deployementEcoreMetaModel:DeployementModel>

@@ -26,27 +26,32 @@
       integrity="//@securityproperties.0"
       secrecy="//@securityproperties.1"
       call="//@securityproperties.3"
-      nameAssociation="AssoiTrustDoctor"/>
+      nameAssociation="AssoiTrustDoctor"
+      loggedIn="//@securityproperties.5"/>
   <association
       artifact="//@artifact.3 //@artifact.4"
       integrity="//@securityproperties.0"
       secrecy="//@securityproperties.1"
       call="//@securityproperties.3"
-      nameAssociation="AssoAuthentiPatient"/>
+      nameAssociation="AssoAuthentiPatient"
+      loggedIn="//@securityproperties.5"/>
   <association
       artifact="//@artifact.4 //@artifact.1"
       integrity="//@securityproperties.0"
       secrecy="//@securityproperties.1"
       call="//@securityproperties.3"
-      nameAssociation="AssoAutheDoctor"/>
+      nameAssociation="AssoAutheDoctor"
+      loggedIn="//@securityproperties.5"/>
   <association
       artifact="//@artifact.2 //@artifact.0"
       integrity="//@securityproperties.0"
       secrecy="//@securityproperties.1"
       call="//@securityproperties.3"
-      nameAssociation="AssoDataBaseiTrust"/>
+      nameAssociation="AssoDataBaseiTrust"
+      loggedIn="//@securityproperties.5"/>
   <communicationpath
       node="//@node.0/@node.0 //@node.0/@node.1"
+      encrypted="//@securityproperties.4"
       namePathComm="CommNodes"/>
   <communicationpath
       node="//@node.0"
@@ -78,4 +83,6 @@
       xsi:type="deployementEcoreMetaModel:Call"/>
   <securityproperties
       xsi:type="deployementEcoreMetaModel:Encrypted"/>
+    <securityproperties
+      xsi:type="deployementEcoreMetaModel:LoggedIn"/>
 </deployementEcoreMetaModel:DeployementModel>

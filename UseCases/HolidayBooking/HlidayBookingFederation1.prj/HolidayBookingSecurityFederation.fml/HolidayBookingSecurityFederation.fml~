@@ -88,6 +88,7 @@ else {
       return check;
    }
 
+   // check if the binding parameter of the WSDL operation is one with an encryption mechanism
    private boolean checkFaultBinding(WSDLElement element) {
       boolean checkfault = false;
        for (WSDLOperation operation : select WSDLOperation from wsdlModelAcess) {
@@ -181,6 +182,9 @@ else {
       	}
 
         // --- Holiday Booking security Rule1 ---
+        /* If a message in an operation in the WSDL model holds a correspondence with a DataObject in the BMPN model tagged with the
+            integrity annotation, then, the binding parameter of the WSDL operation must be one with an encryption mechanism.*/
+            
         public checkSecurityDataTransmission() {
          boolean checkAnnotation = false;
          boolean checkBinding = false;

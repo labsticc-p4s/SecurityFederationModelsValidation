@@ -10,10 +10,10 @@
     <nestedClassifier xmi:type="uml:Class" xmi:id="_aSrukLYPEe6JM9aBK8QXKg" name="Admin"/>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_gR2bsLYPEe6JM9aBK8QXKg" name="Prescription">
-    <ownedOperation xmi:id="_cW-TUODJEe6Vgp91jiy-Ww" name="editOperation">
+    <ownedOperation xmi:id="_cW-TUODJEe6Vgp91jiy-Ww" name="editPrescription">
       <elementImport xmi:id="_n4FJkODKEe6Vgp91jiy-Ww" alias="abacRequire" importedElement="_ZbpVMODKEe6Vgp91jiy-Ww">
         <ownedComment xmi:id="_uuNT4ODKEe6Vgp91jiy-Ww" annotatedElement="_AoERYODLEe6Vgp91jiy-Ww">
-          <body>Edit Prescription</body>
+          <body>editPrescription</body>
         </ownedComment>
         <ownedComment xmi:id="_iuWaMODLEe6Vgp91jiy-Ww" annotatedElement="_9wiqoODKEe6Vgp91jiy-Ww">
           <body>Doctor</body>

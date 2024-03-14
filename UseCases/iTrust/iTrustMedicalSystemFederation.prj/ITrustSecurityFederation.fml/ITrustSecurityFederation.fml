@@ -265,7 +265,32 @@ else {
 		return sharedMessageFlows; 
 	}
 
-	
+	private boolean checkAssociationArtifactSecurityAnnotaions(DeploymentArtifact artifact) {
+      boolean check = false;
+      for (DeploymentAssociation association : select DeploymentAssociation from deploymentModelAccess) {
+         if (association.getValues("artifact").toString.contains(parameters.artifact.nameArtifact)) {
+            if (association.getValues("secrecy") != null || association.getValues("integrity") != null) {
+               check = true;
+            }
+         }
+       }
+      return check;
+	}
+
+  private boolean ckechCommunicationPathSecurityAnnotation(DeploymentArtifact artifact) {
+    boolean check = false;
+      for (DeploymentDeploy deploy : select DeploymentDeploy from deploymentModelAccess) {
+         if (deploy.getValues("artifact").toString.contains(parameters.artifact.nameArtifact)) {
+            for (DeploymentCommunicationPath path : select DeploymentCommunicationPath from deploymentModelAccess) {
+               if (path.getValues("node").toString.contains(deploy.node.nameNode) && path.getValues("encrypted") != null) {
+                  check = true;
+               }
+            }
+         }
+      }
+   
+   return check; 
+  }
 
     public concept Correspondences {
     	
@@ -496,7 +521,50 @@ else {
 			}
 
 		}
-	}
+	}	}
+
+   public concept ClassArtifactCorrespondence extends Correspondences {
+       DataClass class with EMFObjectRole(container=dataModelAccess,type=DATA_CLASS);
+       DeploymentArtifact artifact with EMFObjectRole(container=deploymentModelAccess,type=DEPLOYMENT_ARTIFACT);
+
+        create::_create(required String className, required String artifactName) {
+        class = select unique DataClass from dataModelAccess where (selected.name == parameters.className);
+        artifact = select unique DeploymentArtifact from deploymentModelAccess where (selected.name == parameters.artifactName);
+      }
+
+      // --- iTrust security Rule5 ---
+      /*   when a Class in the Data model (that corresponds to artifact in the deployment model deployed in device), contains security
+         annotation “Critical”. The communication Path between the corresponding device must be encrypted */
+         
+      public iTrustSecurityRule5() {
+          boolean checkAnnotation = false;  
+          checkAnnotation = container.container.ckechCommunicationPathSecurityAnnotation(artifact); 
+          if (class.getValues("nestedClassifier").toString.contains("Critical") && checkAnnotation) {
+            log "Security rule verified";
+          } 
+else {
+            log "Security rule violated";
+          }
+      }
+     
+
+       // --- iTrust security Rule6 ---
+       /* when a class in the data model (that correspond to artifact in the deployment model) annotated "Critical". the associations relating 
+        this artifact with other must to be annotated Secrecy or Integrity */
+       public iTrustSecurityRule6() {
+         boolean checkAnnotation = false;
+         checkAnnotation = container.container.checkAssociationArtifactSecurityAnnotaions(artifact);
+         if (class.getValues("nestedClassifier").toString.contains("Critical") && checkAnnotation) {
+            log "Security rule verified";
+          } 
+else {
+            log "Security rule violated";
+          }
+       }
+      
+   }
+
+  
     }
 	
 }

@@ -1,4 +1,5 @@
 accessControlModelResource=accessControlModelResource
+artifactName=artifactName
 bpmnModelResource=bpmnModelResource
 checkAnnotations=checkAnnotations
 checkDataObjectAnnotations=checkDataObjectAnnotations
@@ -25,6 +26,9 @@ iTrustSecurityRule1x=iTrustSecurityRule1x
 iTrustSecurityRule2=iTrustSecurityRule2
 iTrustSecurityRule3=iTrustSecurityRule3
 iTrustSecurityRule4=iTrustSecurityRule4
+iTrustSecurityRule5=iTrustSecurityRule5
+iTrustSecurityRule6=iTrustSecurityRule6
+iTrustSecurityRule7=iTrustSecurityRule7
 iTrustSecurityRuleTest=iTrustSecurityRuleTest
 invalid_parameter=invalid_parameter
 nameCommPath=nameCommPath

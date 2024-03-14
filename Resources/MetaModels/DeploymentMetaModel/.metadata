@@ -1,10 +1,6 @@
 #Metadata for directory D:\HeterogenousSecureModelsFederation\Resources\MetaModels\DeploymentMetaModel
-#Mon Jan 22 13:30:02 GMT+01:00 2024
-deployementEcoreMetaModel.ecore.prefix=deployementEcoreMetaModel
+#Wed Mar 13 11:04:11 GMT+01:00 2024
 deployementEcoreMetaModel.ecore.name=deployementEcoreMetaModel
 deployementEcoreMetaModel.ecore.prefix=deployementEcoreMetaModel
-deployementEcoreMetaModel.ecore.uri=http\://www.example.org/deployementEcoreMetaModel
-deployementEcoreMetaModel.ecore.version=2.0
-deployementEcoreMetaModel.ecore.name=deployementEcoreMetaModel
 deployementEcoreMetaModel.ecore.uri=http\://www.example.org/deployementEcoreMetaModel
 deployementEcoreMetaModel.ecore.version=2.0

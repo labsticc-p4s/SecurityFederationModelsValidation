@@ -551,6 +551,7 @@ else {
        // --- iTrust security Rule6 ---
        /* when a class in the data model (that correspond to artifact in the deployment model) annotated "Critical". the associations relating 
         this artifact with other must to be annotated Secrecy or Integrity */
+        
        public iTrustSecurityRule6() {
          boolean checkAnnotation = false;
          checkAnnotation = container.container.checkAssociationArtifactSecurityAnnotaions(artifact);

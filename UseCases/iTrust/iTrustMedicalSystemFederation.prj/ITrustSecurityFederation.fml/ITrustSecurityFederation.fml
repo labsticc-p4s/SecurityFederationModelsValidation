@@ -521,20 +521,21 @@ else {
 			}
 
 		}
-	}	}
+	}
+	
 
-   public concept ClassArtifactCorrespondence extends Correspondences {
+	public concept ClassArtifactCorrespondence extends Correspondences {
        DataClass class with EMFObjectRole(container=dataModelAccess,type=DATA_CLASS);
        DeploymentArtifact artifact with EMFObjectRole(container=deploymentModelAccess,type=DEPLOYMENT_ARTIFACT);
 
        create::_create(required String className, required String artifactName) {
          class = select unique DataClass from dataModelAccess where (selected.name == parameters.className);
          artifact = select unique DeploymentArtifact from deploymentModelAccess where (selected.name == parameters.artifactName);
-      }
+      } 
 
-       // --- iTrust security Rule5 ---
+      // --- iTrust security Rule5 ---
        /*   when a Class in the Data model (that corresponds to artifact in the deployment model deployed in device), contains security
-         annotation “Critical”. The communication Path between the corresponding device must be encrypted */
+         annotation ?Critical?. The communication Path between the corresponding device must be encrypted */
          
         public iTrustSecurityRule5() {
            boolean checkAnnotation = container.container.ckeckSecurityAnnotationOnCommunicationPath(artifact); 
@@ -559,10 +560,16 @@ else {
 else {
                log "Security rule violated";
             }
-         }   
-   }
+         }
 
+	delete() {
+		delete class;
+		delete artifact;
+	}
+   }
   
-    }
 	
+	}
+
+   	 
 }

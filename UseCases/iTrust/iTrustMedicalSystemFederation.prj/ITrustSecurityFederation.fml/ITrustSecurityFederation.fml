@@ -23,14 +23,22 @@ import [BPMN21:"Association"] as BPMN_ASSOCIATION;
 import [BPMN21:"Process"] as BPMN_PROCESS;
 import [BPMN21:"DataObject"] as BPMN_DATAOBJECT;
 import [BPMN21:"FlowElement"] as BPMN_FLOW_ELEMENTS;
+import [BPMN21:"Task"] as BPMN_TASK;
+import [BPMN21:"UserTask"] as BPMN_USER_TASK;
+import [BPMN21:"SequenceFlow"] as BPMN_SEQUENCE_FLOW;
 import [DEPLOYEMENT_ECORE_META_MODEL:"Deploy"] as DEPLOYMENT_DEPLOY;
 import [DEPLOYEMENT_ECORE_META_MODEL:"Association"] as DEPLOYMENT_ASSOCIATION;
 import [DEPLOYEMENT_ECORE_META_MODEL:"CommunicationPath"] as DEPLOYMENT_COMMUNICATION_PATH;
 import ["http://www.eclipse.org/uml2/5.0.0/UML"] as UML22;
 import [UML2:"Class"] as DATA_CLASS;
 import [UML2:"Element"] as DATA_ELEMENT;
+import [UML2:"Operation"] as DATA_OPERATION;
+import [UML2:"Stereotype"] as DATA_STEREOTYPE;
+import [UML2:"Comment"] as DATA_COMMENT;
+import [UML2:"ElementImport"] as DATA_ELEMENT_IMPORT;
 import ["AccessControlMetamodel"] as ACCESS_CONTROL_METAMODEL2;
 import [ACCESS_CONTROL_METAMODEL2:"ROLE"] as ACCESS_CONTROL_ROLE;
+import [ACCESS_CONTROL_METAMODEL2:"Authorization"] as ACCESS_CONTROL_AUTHORIZATION;
 import [ITRUSTMEDICALSYSTEMFEDERATION_1705933420738PRJ + "/ITrustSecurityFederation.fml"] as ITrustSecurityFederation;
 
 typedef EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) as BPMNParticipant;
@@ -46,6 +54,14 @@ typedef EMFObjectIndividualType(eClass=BPMN_FLOW_ELEMENTS) as BPMNFlowElements;
 typedef EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) as BPMNTextAnnotation;
 typedef EMFObjectIndividualType(eClass=DEPLOYMENT_ASSOCIATION) as DeploymentAssociation;
 typedef EMFObjectIndividualType(eClass=DEPLOYMENT_DEPLOY) as DeploymentDeploy;
+typedef EMFObjectIndividualType(eClass=BPMN_TASK) as BPMNTask;
+typedef EMFObjectIndividualType(eClass=BPMN_USER_TASK) as BPMNUserTask;
+typedef EMFObjectIndividualType(eClass=DATA_OPERATION) as DataOperation;
+typedef EMFObjectIndividualType(eClass=ACCESS_CONTROL_AUTHORIZATION) as AccessAuthorization;
+typedef EMFObjectIndividualType(eClass=DATA_STEREOTYPE) as DataStereotype;
+typedef EMFObjectIndividualType(eClass=DATA_COMMENT) as DataComment;
+typedef EMFObjectIndividualType(eClass=DATA_ELEMENT_IMPORT) as DataElementImport;
+typedef EMFObjectIndividualType(eClass=BPMN_SEQUENCE_FLOW) as BPMNSequenceFlow;
 
 @URI("http://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/ITrustSecurityFederation.fml")
 @Author("chahr")
@@ -151,6 +167,21 @@ else {
 		
 		return listFlowElements;
 	}
+
+  private List<BPMNFlowElements> getFlowElementOfPool(BPMNParticipant pool) {
+    List<BPMNFlowElements> listFlowElements = new ArrayList<BPMNFlowElements>();
+      for (BPMNParticipant itemParticipant : select BPMNParticipant from  bpmnModelAccess) {
+         if (itemParticipant == parameters.pool) { 
+            for (BPMNFlowElements itemFlows : select BPMNFlowElements from bpmnModelAccess) {
+               if (itemParticipant.processRef.flowElements.contains(itemFlows)) {
+                  listFlowElements.add(itemFlows);
+               }
+            }
+         }
+      }
+      
+      return listFlowElements;
+   }
 
 	// Verify the security annotations of a DataObject included in the FlowElements 
 	private boolean verifyDataObjectAnnotation(List<BPMNFlowElements> listFlowElements) {
@@ -277,6 +308,18 @@ else {
       return check;
 	}
 
+  private boolean checkLogInAnnotaionsOnAssociation(DeploymentArtifact artifact) {
+      boolean check = false;
+      for (DeploymentAssociation association : select DeploymentAssociation from deploymentModelAccess) {
+         if (association.getValues("artifact").toString.contains(parameters.artifact.nameArtifact)) {
+            if (association.getValues("loggedIn") != null) {
+               check = true;
+            }
+         }
+       }
+      return check;
+ }
+
   private boolean ckeckSecurityAnnotationOnCommunicationPath(DeploymentArtifact artifact) {
     boolean check = false;
       for (DeploymentDeploy deploy : select DeploymentDeploy from deploymentModelAccess) {
@@ -290,6 +333,52 @@ else {
       }
    
    return check; 
+  }
+
+  private boolean checkSecurityAnnotationTask(List<BPMNFlowElements> listFlowElements) {
+   for (BPMNFlowElements itemFlowElements : parameters.listFlowElements) {
+      for (BPMNAssociation itemAsso : select BPMNAssociation from bpmnModelAccess) {
+         for (BPMNTextAnnotation itemAnnota : select BPMNTextAnnotation from bpmnModelAccess ) {
+            if (itemFlowElements == itemAsso.targetRef && itemAnnota == itemAsso.sourceRef) {
+              if (itemAnnota.text.contains("IntegrityAct")) {
+                   return true;
+                  }  
+            }
+         }
+      }
+   }
+     return false; 
+  }
+
+  private boolean checkLogInTask(BPMNFlowElements task) {
+   for (BPMNSequenceFlow itemSequenceFlow : select BPMNSequenceFlow from bpmnModelAccess) {
+      if (itemSequenceFlow.targetRef == parameters.task) {
+         if (itemSequenceFlow.sourceRef instanceof BPMNTask && itemSequenceFlow.sourceRef.name == "LogIn") {
+          return true; 
+         }
+        
+      }
+      
+   }
+   return false;
+  }
+  private boolean checkTaskPrecedence(List<BPMNFlowElements> listFlowElements) {
+   for (BPMNFlowElements itemFlowElements : parameters.listFlowElements) {
+      if (itemFlowElements instanceof BPMNUserTask || itemFlowElements instanceof BPMNTask) {
+         for (BPMNAssociation itemAsso : select BPMNAssociation from bpmnModelAccess) {
+            for (BPMNTextAnnotation itemAnnota : select BPMNTextAnnotation from bpmnModelAccess ) {
+               if (itemFlowElements == itemAsso.targetRef && itemAnnota == itemAsso.sourceRef) {
+                  if (itemAnnota.text.contains("IntegrityAct") && this.checkLogInTask(itemFlowElements)) {
+                    log itemFlowElements.toString;
+                    return true;
+                  }
+                  
+               }
+            }
+         }
+      }
+   }
+   return false;
   }
 
     public concept Correspondences {
@@ -379,6 +468,63 @@ else {
 		}
 		return true;
 	}
+
+    // --- iTrust security Rule7 ---
+
+    /*  when the Pool in the BPMN model (that corresponds to artifact in the deployment model deployed in a device), 
+    contains a DataObject that is associate to a ConfidentialityDO, IntegrityDo or PrivacyDO annotations. 
+    The dependency between the corresponding Artifact and other Artifact must be annotated with Integrity or secrecy  */
+    
+    public iTrustSecurityRule7() {
+      List<BPMNFlowElements> listFlowElements = new ArrayList<BPMNFlowElements>();
+      listFlowElements = container.container.getFlowElementsOfPool(pool);
+      boolean checkCofidentialDataObject = container.container.verifyDataObjectAnnotation(listFlowElements);
+      boolean checkAssociationAnnotation = container.container.checkSecurityAnnotaionsOnAssociation(artifact);
+      if (checkCofidentialDataObject && checkAssociationAnnotation) {
+         log "Security rule verified";
+         }
+      else {
+         log "Security rule violated";
+         }
+     }
+     
+    // --- iTrust security Rule8 ---
+    /*  when the Pool in the BPMN model (that corresponds to artifact in the deployment model), 
+     contains a Task annotated with IntegrityAct .
+    The dependency between the corresponding Artifact and other Artifact must be annotated with Integrity ou Secrecy */
+    
+    public iTrustSecurityRule8() {
+      List<BPMNFlowElements> listFlowElements = new ArrayList<BPMNFlowElements>();
+      listFlowElements = container.container.getFlowElementOfPool(pool);
+      boolean checkTaskAnnotation = container.container.checkSecurityAnnotationTask(listFlowElements);
+      boolean checkAssociationAnnotation = container.container.checkSecurityAnnotaionsOnAssociation(artifact);
+      if (checkTaskAnnotation && checkAssociationAnnotation) {
+         log "Security rule verified";
+         }
+      else {
+         log "Security rule violated";
+         }
+    }
+
+    // --- iTrust security Rule9 ---
+
+    /*  when the Pool in the BPMN model (that corresponds to artifact in the deployment model), 
+     contains a Task annotated with IntegrityAct and preceded with log task.
+    The dependency between the corresponding Artifact and other Artifact must be annotated  with loggedIn  */
+    public iTrustSecurityRule9() {
+      List<BPMNFlowElements> listFlowElements = new ArrayList<BPMNFlowElements>();
+      listFlowElements = container.container.getFlowElementOfPool(pool);
+      boolean checkTaskAnnotation = container.container.checkSecurityAnnotationTask(listFlowElements);
+      boolean checkTaskPrecedence = container.container.checkTaskPrecedence(listFlowElements);
+      boolean checklogin = container.container.checkLogInAnnotaionsOnAssociation(artifact);
+      if (checkTaskAnnotation && checkTaskPrecedence && checklogin ) {
+         log "Security rule verified";   
+      } 
+else {
+         log "Security rule violated";
+         }
+    }
+     
 }
 
 	public concept MessageFlowCommunicationPathCorrepondence extends Correspondences {
@@ -535,7 +681,7 @@ else {
 
       // --- iTrust security Rule5 ---
        /*   when a Class in the Data model (that corresponds to artifact in the deployment model deployed in device), contains security
-         annotation ?Critical?. The communication Path between the corresponding device must be encrypted */
+         annotation Critical. The communication Path between the corresponding device must be encrypted */
          
         public iTrustSecurityRule5() {
            boolean checkAnnotation = container.container.ckeckSecurityAnnotationOnCommunicationPath(artifact); 
@@ -567,7 +713,54 @@ else {
 		delete artifact;
 	}
    }
-  
+
+  public concept OperationAuthorisationCorrespondence extends Correspondences {
+      DataOperation operation with EMFObjectRole(container=dataModelAccess, type=DATA_OPERATION);
+      AccessAuthorization authorization with EMFObjectRole(container=accessControlModelAccess, type=ACCESS_CONTROL_AUTHORIZATION);
+
+      create::_create(required String operationName, required String authorizationName) {
+         operation = select unique DataOperation from dataModelAccess where (selected.name == parameters.operationName);
+         authorization = select unique AccessAuthorization from accessControlModelAccess where (selected.name == parameters.authorizationName);
+      }
+
+      public iTrustSecurityRule10() {
+         boolean state = false;
+
+         for (DataElementImport element : select DataElementImport from dataModelAccess) {
+            
+            if (element.getValues("owner").toString.contains(operation.name) && operation.getValues("elementImport").toString.contains("abacRequire")) {
+               for (DataStereotype stereotype : select DataStereotype from dataModelAccess) {
+                  if (stereotype.name == "abacRequire" && stereotype.getValues("ownedMember").toString.contains("right") && stereotype.getValues("ownedMember").toString.contains("role")) {
+                     for (DataComment comment : select DataComment from dataModelAccess) {
+                        if (comment.getValues("owner").toString.contains("abacRequire") && comment.getValues("annotatedElement").toString.contains("role")) {
+                           for (AccessControlRole role : select AccessControlRole from accessControlModelAccess) {
+                              if (role.nameRole == comment.body && role.getValues("authorization").toString.contains(authorization.nameAuthorization)) {
+                                 state = true;
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+
+         
+
+         if (state) {
+            log "Security rule verified";
+         } 
+else {
+            log "Security rule violated";
+         }
+      }
+
+      delete() {
+         delete operation;
+         delete authorization;
+      }
+   }
+
 	
 	}
 

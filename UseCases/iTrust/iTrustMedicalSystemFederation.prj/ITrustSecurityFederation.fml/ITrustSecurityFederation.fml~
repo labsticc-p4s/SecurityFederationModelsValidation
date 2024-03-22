@@ -94,6 +94,7 @@ public model ITrustSecurityFederation {
 		}
 	}
 
+	// Verify whether an artifact is a part of the PoolArtifactCorrespondence intance and return the artifact 
 	private List<DeploymentArtifact> verifyExistenceCorresp(List<String> artifacts) {
 		List<DeploymentArtifact> listArtifact = new ArrayList<DeploymentArtifact>();
 		for (PoolArtifactCorrespondence item : select PoolArtifactCorrespondence from this) {
@@ -104,6 +105,7 @@ public model ITrustSecurityFederation {
 		return listArtifact;
 	}
 
+	//  Retrieve the list of Pools related to an Artifact selected
 	private BPMNParticipant getPool(DeploymentArtifact artifact) {
 		BPMNParticipant associatedPool;
 		for (PoolArtifactCorrespondence item : select PoolArtifactCorrespondence from this) {
@@ -117,6 +119,7 @@ public model ITrustSecurityFederation {
 	delete() {
 	}
 
+	//  Check if the user has a valid role
 	private boolean checkUserRole(required String userName) {
 		boolean checked = false;
 		for (UserRoleCorrespondence item : select UserRoleCorrespondence from this) {
@@ -127,6 +130,7 @@ public model ITrustSecurityFederation {
 		return checked;
 	}
 
+	// Check the security annotations of the flowelements
 	private boolean checkDataObjectAnnotations(BPMNFlowElements flowElements) {
 		for (BPMNAssociation itemAsso : select BPMNAssociation from bpmnModelAccess) {
 			for (BPMNTextAnnotation itemAnnota : select BPMNTextAnnotation from bpmnModelAccess) {
@@ -142,6 +146,7 @@ public model ITrustSecurityFederation {
 		}
 	}
 
+	// Get the FlowElements of a selected Pool
 	private List<BPMNFlowElements> getFlowElementsOfPool(BPMNParticipant pool) {
 		List<BPMNFlowElements> listFlowElements = new ArrayList<BPMNFlowElements>();
 		for (BPMNParticipant itemParticipant : select BPMNParticipant from bpmnModelAccess) {
@@ -170,6 +175,7 @@ public model ITrustSecurityFederation {
 		return listFlowElements;
 	}
 
+	// Verify the security annotations of a DataObject included in the FlowElements 
 	private boolean verifyDataObjectAnnotation(List<BPMNFlowElements> listFlowElements) {
 		for (BPMNFlowElements itemFlowElements : parameters.listFlowElements) {
 			for (BPMNAssociation itemAsso : select BPMNAssociation from bpmnModelAccess) {
@@ -185,6 +191,7 @@ public model ITrustSecurityFederation {
 		return false;
 	}
 
+	// Verify if an artifact has association with other artifacts in the Deployment model
 	private List<String> verifyExistenceArtifactAssociated(DeploymentArtifact artifact) {
 		boolean existe = false;
 		List<String> listAssoArtifact = new ArrayList<String>();
@@ -208,6 +215,7 @@ public model ITrustSecurityFederation {
 		return listAssoArtifact;
 	}
 
+	// Get the device where an artifact is deployed
 	private List<EMFObjectIndividual> getDeploymentArtifact(DeploymentArtifact artifact) {
 		List<EMFObjectIndividual> devicesArtifact = new ArrayList<EMFObjectIndividual>();
 		for (DeploymentDeploy itemDeploy : select DeploymentDeploy from deploymentModelAccess) {
@@ -225,6 +233,7 @@ public model ITrustSecurityFederation {
 		return devicesArtifact;
 	}
 
+	// Get communicationPath for a selected device
 	private List<DeploymentCommunicationPath> getCommunicationPath(List<EMFObjectIndividual> devices) {
 		List<DeploymentCommunicationPath> commPath = new ArrayList<DeploymentCommunicationPath>();
 		for (DeploymentCommunicationPath commPath1 : select DeploymentCommunicationPath from deploymentModelAccess) {
@@ -235,6 +244,7 @@ public model ITrustSecurityFederation {
 		return commPath;
 	}
 
+	// verify if the artifact and the associated artifacts are deployed in the same devices
 	private boolean verifyDeploy(List<EMFObjectIndividual> deviceArtifact, List<EMFObjectIndividual> devicesAssoArtifact) {
 		for (EMFObjectIndividual device : parameters.deviceArtifact) {
 			if (!parameters.devicesAssoArtifact.contains(device)) {
@@ -244,6 +254,7 @@ public model ITrustSecurityFederation {
 		return true;
 	}
 
+	// Get MessageFlow for a selected Pool
 	private List<BPMNMessageFlow> getMessageFlows(EMFObjectIndividual pool) {
 		List<BPMNMessageFlow> messageFlows = new ArrayList<BPMNMessageFlow>();
 		for (BPMNParticipant parti : select BPMNParticipant from bpmnModelAccess) {
@@ -264,6 +275,7 @@ public model ITrustSecurityFederation {
 		return messageFlows;
 	}
 
+	// Get MessageFlows shared between two Pools
 	private List<BPMNMessageFlow> getSharedMessageFlows(List<BPMNMessageFlow> messageFlowsPool, List<BPMNMessageFlow> messageFlowsAssociatedPool) {
 		List<BPMNMessageFlow> sharedMessageFlows = new ArrayList<BPMNMessageFlow>();
 		for (BPMNMessageFlow messageflow : parameters.messageFlowsAssociatedPool) {
@@ -356,8 +368,8 @@ public model ITrustSecurityFederation {
 		return false;
 	}
 
-	private boolean checkSecurityAnnotationModel(DataModel dataModel) {
-		if (parameters.dataModel.getValues("ownedStereotype").toString.contains("SecureLink")) {
+	private boolean checkSecurityAnnotationModels(DeploymentModel deploymentModel) {
+		if (parameters.deploymentModel.getValues("securityproperties").toString.contains("secureDependency")) {
 			for (DataClass itemClass : select DataClass from dataModelAccess) {
 				if (itemClass.getValues("ownedElement").toString.contains("Critical")) {
 					return true;
@@ -367,11 +379,30 @@ public model ITrustSecurityFederation {
 		return false;
 	}
 
+   private boolean checkSecurityAnnotationModel(DataModel dataModel) {
+      if (parameters.dataModel.getValues("ownedStereotype").toString.contains("SecureLink")) {
+         return true;
+      }
+      return false;
+   }
+
+  private boolean checkAssociationAnnotation() {
+      for (DeploymentAssociation association : select DeploymentAssociation from deploymentModelAccess) {
+        if (association.getValues("secrecy") != null || association.getValues("integrity") != null) {
+          return true;
+        } 
+      }
+   return false;
+  }
+
 	public concept Correspondences {
+		// The correspondence between a Pool in the BPMN model and an artifact in the Deployment model
 		public concept PoolArtifactCorrespondence extends Correspondences {
 			BPMNParticipant pool with EMFObjectRole(container=bpmnModelAccess,type=BPMN_PARTICIPANT);
 			DeploymentArtifact artifact with EMFObjectRole(container=deploymentModelAccess,type=DEPLOYMENT_ARTIFACT);
 			MessageFlowCommunicationPathCorrespondence[0,*] listInstancesMessageComm with ConceptInstance(virtualModelInstance=container.container);
+
+			// create the instance of the concept with the selected pool and artifact
 			create::_create(required String name) {
 				pool = select unique BPMNParticipant from bpmnModelAccess where (selected.name == parameters.name);
 				artifact = select unique DeploymentArtifact from deploymentModelAccess where (selected.name == parameters.name);
@@ -380,9 +411,17 @@ public model ITrustSecurityFederation {
 				delete pool;
 				delete artifact;
 			}
+
+			// --- iTrust security Rule1 --- 
+			/*  this security verify when two Pools in the BPMN model (that correspond to artifacts in the deployment model), communicate security-critical data and
+			are deployed in different devices, the communication between the two devices must occur through an encrypted channel. This rule is added to the
+			concept PoolArtifactCorrespondence  */
+
 			public void iTrustSecurityRule1() {
 				boolean checkConfidentialData = false;
 				List<BPMNFlowElements> flowElts = new ArrayList<BPMNFlowElements>();
+
+				// Get instance of the Concept MessageFlowCommunicatioPath
 				container.container.joinInstanceMessageFlowCommnicationPath();
 				listInstancesMessageComm = container.container.listInstancesMessageComm;
 				flowElts = container.container.getFlowElementsOfPool(pool);
@@ -419,6 +458,7 @@ public model ITrustSecurityFederation {
 						sharedMessageFlows = container.container.getSharedMessageFlows(messageFlowsPool,messageFlowsAssociatedPool);
 						for (BPMNMessageFlow dataflow : sharedMessageFlows) {
 							for (MessageFlowCommunicationPathCorrespondence item : container.container.listInstancesMessageComm) {
+								// Verify the security rule 2
 								if (dataflow == item.messageFlow && commPath.contains(item.communicationPath)) {
 									if (!item.verifySecureCommunication()) {
 										return false;
@@ -430,6 +470,13 @@ public model ITrustSecurityFederation {
 				}
 				return true;
 			}
+
+			// --- iTrust security Rule3 ---
+
+   			/*  when the Pool in the BPMN model (that corresponds to artifact in the deployment model deployed in a device), 
+            contains a DataObject that is associate to a ConfidentialityDO, IntegrityDo or PrivacyDO annotations. 
+            The dependency between the corresponding Artifact and other Artifact must be annotated with Integrity or secrecy  */
+
 			public void iTrustSecurityRule3() {
 				List<BPMNFlowElements> listFlowElements = new ArrayList<BPMNFlowElements>();
 				listFlowElements = container.container.getFlowElementsOfPool(pool);
@@ -442,6 +489,12 @@ public model ITrustSecurityFederation {
 					log "[iTrust - SecurityRule 3] -> Security rule violated";
 				}
 			}
+
+			// --- iTrust security Rule8 ---
+			/*  when the Pool in the BPMN model (that corresponds to artifact in the deployment model), 
+			contains a Task annotated with IntegrityAct and preceded with log in task .
+			The dependency between the corresponding Artifact and other Artifact must be annotated with login  */
+
 			public void iTrustSecurityRule8() {
 				List<BPMNFlowElements> listFlowElements = new ArrayList<BPMNFlowElements>();
 				listFlowElements = container.container.getFlowElementOfPool(pool);
@@ -454,6 +507,11 @@ public model ITrustSecurityFederation {
 					log "[iTrust - SecurityRule 8] -> Security rule violated";
 				}
 			}
+
+			// --- iTrust security Rule9 ---
+			/*  when the Pool in the BPMN model (that corresponds to artifact in the deployment model), 
+			contains a Task annotated with IntegrityAct .The dependency between the corresponding Artifact and other Artifact must be  with Integrity or secrecy  */
+
 			public void iTrustSecurityRule9() {
 				List<BPMNFlowElements> listFlowElements = new ArrayList<BPMNFlowElements>();
 				listFlowElements = container.container.getFlowElementOfPool(pool);
@@ -475,6 +533,11 @@ public model ITrustSecurityFederation {
 				messageFlow = select unique BPMNMessageFlow from bpmnModelAccess where (selected.name == parameters.nameMessage);
 				communicationPath = select unique DeploymentCommunicationPath from deploymentModelAccess where (selected.name == parameters.nameCommPath);
 			}
+
+			// --- iTrust security Rule2 --- 
+			/* This security rule check if the communicationPath in the BPMN model correponding to MessageFlow in the BPMN model 
+			has semantically the same secuirty annotation  */
+
 			public void iTrustSecurityRule2() {
 				//boolean check = false;
            
@@ -486,6 +549,8 @@ public model ITrustSecurityFederation {
 					log "[iTrust - SecurityRule 2] -> Security rule violated";
 				}
 			}
+
+			// Verify if the communicationPath is encypted and MessageFlow contains at least one of these security annotations(NonRepudMF, ConfidentialityMF, IntegrityMF)
 			private boolean verifySecureCommunication() {
 				boolean check = false;
 				List<? extends Object> encrypted = communicationPath.getValues("encrypted");
@@ -516,17 +581,24 @@ public model ITrustSecurityFederation {
 			}
 			delete() {
 			}
+
+			// --- iTrust security Rule7 ---
+			/*  This security rule check if the user in the Data model correponds to a role in the AccessControl model 
+			or this user inherit from other users that have a role   */
+
 			public void iTrustSecurityRule7(required String nameUser) {
 				boolean checked = false;
 				boolean checkedInherit = false;
 				checked = container.container.checkUserRole(parameters.nameUser);
 				if (!checked) {
+					// Whether no, verify if the instances of the concept UserRoleCorrespondence include the inheriting user
 					for (DataClass itemUser : select DataClass from dataModelAccess) {
 						if (itemUser.getValues("member").toString.contains(parameters.nameUser) && container.container.checkUserRole(itemUser.name)) {
 							checkedInherit = true;
 						}
 					}
 				}
+				// Notify the user 
 				if (checkedInherit) {
 					log "[iTrust - SecurityRule 7] -> Security rule verified";
 				}
@@ -534,6 +606,10 @@ public model ITrustSecurityFederation {
 					log "[iTrust - SecurityRule 7] -> Security rule violated";
 				}
 			}
+
+			/*  These function verify whether the user and the role is not null 
+		 	for an isntance of UserRoleCorreponeces  */
+
 			private boolean verifyCorrespondence() {
 				if (user == null || role == null) {
 					return false;
@@ -541,22 +617,6 @@ public model ITrustSecurityFederation {
 				else {
 					return true;
 				}
-			}
-			public void testRule() {
-				List<DataClass> classes = select DataClass from dataModelAccess;
-				List<DataClass> users = classes;
-				for (DataClass class : classes) {
-					log users.contains(class.owner).toString;
-					log users.contains(class.member).toString;
-					log "++";
-					if (!classes.contains(class.owner) && !classes.contains(class.member)) {
-						users.remove(class);
-					}
-				}
-				for (DataClass class : users) {
-					log class.name;
-				}
-				log "----";
 			}
 		}
 		public concept PoolClassCorrespondence extends Correspondences {
@@ -566,11 +626,18 @@ public model ITrustSecurityFederation {
 				pool = select unique BPMNParticipant from bpmnModelAccess where (selected.name == parameters.poolName);
 				class = select unique DataClass from dataModelAccess where (selected.name == parameters.className);
 			}
+
+			// --- iTrust security Rule4 --- 
+			/*  This security rule checks if the Pool in the BPMN model contains a confidential DataObject,
+			the corresponding Class must have semantically the same security annotations  */
+
 			public void iTrustSecurityRule4() {
 				boolean checkConfidentialDataObject = false;
 				List<BPMNFlowElements> listFlowElements = new ArrayList<BPMNFlowElements>();
 				listFlowElements = container.container.getFlowElementsOfPool(pool);
+				// Verify if there are confidential DataObjects between the FlowElements.
 				checkConfidentialDataObject = container.container.verifyDataObjectAnnotation(listFlowElements);
+				// Verify whether the corresponding class has the security annotation Critical when the Pool contains a confidential DataObject.
 				if (checkConfidentialDataObject && class.getValues("member").toString.contains("Critical")) {
 					log "[iTrust - SecurityRule 4] -> Security rule verified";
 				}
@@ -578,6 +645,7 @@ public model ITrustSecurityFederation {
 					log "[iTrust - SecurityRule 4] -> Security rule violated";
 				}
 			}
+
 		}
 		public concept ClassArtifactCorrespondence extends Correspondences {
 			DataClass class with EMFObjectRole(container=dataModelAccess,type=DATA_CLASS);
@@ -586,6 +654,11 @@ public model ITrustSecurityFederation {
 				class = select unique DataClass from dataModelAccess where (selected.name == parameters.className);
 				artifact = select unique DeploymentArtifact from deploymentModelAccess where (selected.name == parameters.artifactName);
 			}
+
+			// --- iTrust security Rule5 ---
+			/*   when a Class in the Data model (that corresponds to artifact in the deployment model deployed in device), contains security
+				annotation Critical. The communication Path between the corresponding device must be encrypted */
+
 			public void iTrustSecurityRule5() {
 				boolean checkAnnotation = container.container.ckeckSecurityAnnotationOnCommunicationPath(artifact);
 				if (class.getValues("nestedClassifier").toString.contains("Critical") && checkAnnotation) {
@@ -595,6 +668,11 @@ public model ITrustSecurityFederation {
 					log "[iTrust - SecurityRule 5] -> Security rule violated";
 				}
 			}
+
+			// --- iTrust security Rule6 ---
+			/* when a class in the data model (that correspond to artifact in the deployment model) annotated Critical. the associations relating 
+			this artifact with other must to be annotated Secrecy or Integrity */
+
 			public void iTrustSecurityRule6() {
 				boolean checkAnnotation = container.container.checkSecurityAnnotaionsOnAssociation(artifact);
 				if (class.getValues("nestedClassifier").toString.contains("Critical") && checkAnnotation) {
@@ -620,8 +698,9 @@ public model ITrustSecurityFederation {
         
 			public void iTrustSecurityRule11() {
 				boolean checkAnnotation = container.container.checkSecurityAnnotationModel(dataModel);
+            boolean checkAssociationAnnotation = container.container.checkAssociationAnnotation();
 				log checkAnnotation.toString;
-				if (checkAnnotation) {
+				if (checkAnnotation && checkAssociationAnnotation) {
 					log "[iTrust - SecurityRule 11] -> Security rule verified";
 				}
 				else {
@@ -632,6 +711,16 @@ public model ITrustSecurityFederation {
 				delete deployementModel;
 				delete dataModel;
 			}
+
+        public void iTrustSecurity12() {
+           boolean checkAnnotation = container.container.checkSecurityAnnotationModels(deployementModel);
+           if (checkAnnotation) {
+              log "[iTrust - SecurityRule 12] -> Security rule verified";
+           } 
+else {
+              log "[iTrust - SecurityRule 12] -> Security rule violated";
+           } 
+        }
 		
 		}
 		public concept OperationAuthorisationCorrespondence extends Correspondences {

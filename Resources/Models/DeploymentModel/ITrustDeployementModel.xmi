@@ -85,4 +85,6 @@
       xsi:type="deployementEcoreMetaModel:Encrypted"/>
     <securityproperties
       xsi:type="deployementEcoreMetaModel:LoggedIn"/>
+    <securityproperties
+      xsi:type="deployementEcoreMetaModel:SecureDependency"/>
 </deployementEcoreMetaModel:DeployementModel>

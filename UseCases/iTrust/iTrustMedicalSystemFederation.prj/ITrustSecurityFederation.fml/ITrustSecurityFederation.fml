@@ -74,7 +74,7 @@ public model ITrustSecurityFederation {
 	EMFModel deploymentModelAccess with EMFModelSlot(metaModel=DEPLOYEMENT_ECORE_META_MODEL,isRequired=true);
 	EMFModel accessControlModelAccess with EMFModelSlot(metaModel=ACCESS_CONTROL_METAMODEL2,isRequired=true);
 	EMFModel dataModelAccess with EMFModelSlot(metaModel=UML2,isRequired=true);
-	MessageFlowCommunicationPathCorrepondence[0,*] listInstancesMessageComm with ConceptInstance(virtualModelInstance=this);
+	MessageFlowCommunicationPathCorrespondence[0,*] listInstancesMessageComm with ConceptInstance(virtualModelInstance=this);
 	PoolArtifactCorrespondence[0,*] listInstancesPoolArtifact with ConceptInstance(virtualModelInstance=this);
 	UserRoleCorrespondence[0,*] listUserRoleLink with ConceptInstance(virtualModelInstance=this);
 
@@ -87,7 +87,7 @@ public model ITrustSecurityFederation {
 
    // Join all the instances of the concept MessageFlowCommunicationPath
 	private void joinInstanceMessageFlowCommnicationPath() {
-		for (MessageFlowCommunicationPathCorrepondence item : select MessageFlowCommunicationPathCorrepondence from this) {
+		for (MessageFlowCommunicationPathCorrespondence item : select MessageFlowCommunicationPathCorrespondence from this) {
 			if (!listInstancesMessageComm.contains(item)) {
 				listInstancesMessageComm.add(item);
 			}
@@ -371,7 +371,7 @@ public model ITrustSecurityFederation {
 		public concept PoolArtifactCorrespondence extends Correspondences {
 			BPMNParticipant pool with EMFObjectRole(container=bpmnModelAccess,type=BPMN_PARTICIPANT);
 			DeploymentArtifact artifact with EMFObjectRole(container=deploymentModelAccess,type=DEPLOYMENT_ARTIFACT);
-			MessageFlowCommunicationPathCorrepondence[0,*] listInstancesMessageComm with ConceptInstance(virtualModelInstance=container.container);
+			MessageFlowCommunicationPathCorrespondence[0,*] listInstancesMessageComm with ConceptInstance(virtualModelInstance=container.container);
 			create::_create(required String name) {
 				pool = select unique BPMNParticipant from bpmnModelAccess where (selected.name == parameters.name);
 				artifact = select unique DeploymentArtifact from deploymentModelAccess where (selected.name == parameters.name);
@@ -418,7 +418,7 @@ public model ITrustSecurityFederation {
 						messageFlowsAssociatedPool = container.container.getMessageFlows(associatedPool);
 						sharedMessageFlows = container.container.getSharedMessageFlows(messageFlowsPool,messageFlowsAssociatedPool);
 						for (BPMNMessageFlow dataflow : sharedMessageFlows) {
-							for (MessageFlowCommunicationPathCorrepondence item : container.container.listInstancesMessageComm) {
+							for (MessageFlowCommunicationPathCorrespondence item : container.container.listInstancesMessageComm) {
 								if (dataflow == item.messageFlow && commPath.contains(item.communicationPath)) {
 									if (!item.verifySecureCommunication()) {
 										return false;
@@ -468,7 +468,7 @@ public model ITrustSecurityFederation {
 				}
 			}
 		}
-		public concept MessageFlowCommunicationPathCorrepondence extends Correspondences {
+		public concept MessageFlowCommunicationPathCorrespondence extends Correspondences {
 			BPMNMessageFlow messageFlow with EMFObjectRole(container=bpmnModelAccess,type=BPMN_MESSAGE_FLOW);
 			DeploymentCommunicationPath communicationPath with EMFObjectRole(container=deploymentModelAccess,type=DEPLOYMENT_COMMUNICATION_PATH);
 			create::_create(required String nameMessage, required String nameCommPath) {

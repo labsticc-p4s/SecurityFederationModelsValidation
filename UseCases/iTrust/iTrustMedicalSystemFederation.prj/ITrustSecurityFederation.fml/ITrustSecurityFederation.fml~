@@ -695,7 +695,9 @@ public model ITrustSecurityFederation {
 				dataModel = select unique DataModel from dataModelAccess where (selected.name == parameters.dataModelName);
 			}
 
-        
+			// --- iTrust security Rule11 ---
+        	/*  when Data model annotated with annotated secureLink. The deployment model must contain at least one association annotated Integrity or Secrecy */
+
 			public void iTrustSecurityRule11() {
 				boolean checkAnnotation = container.container.checkSecurityAnnotationModel(dataModel);
             boolean checkAssociationAnnotation = container.container.checkAssociationAnnotation();
@@ -712,15 +714,17 @@ public model ITrustSecurityFederation {
 				delete dataModel;
 			}
 
-        public void iTrustSecurity12() {
-           boolean checkAnnotation = container.container.checkSecurityAnnotationModels(deployementModel);
-           if (checkAnnotation) {
-              log "[iTrust - SecurityRule 12] -> Security rule verified";
-           } 
-else {
-              log "[iTrust - SecurityRule 12] -> Security rule violated";
-           } 
-        }
+			// --- iTrust security Rule12 ---
+        	/*  when Deployment model annotated with secure dependency.The data model must contain at least one one Class annotated Critical */
+			public void iTrustSecurity12() {
+			boolean checkAnnotation = container.container.checkSecurityAnnotationModels(deployementModel);
+			if (checkAnnotation) {
+				log "[iTrust - SecurityRule 12] -> Security rule verified";
+			} 
+	else {
+				log "[iTrust - SecurityRule 12] -> Security rule violated";
+			} 
+			}
 		
 		}
 		public concept OperationAuthorisationCorrespondence extends Correspondences {
@@ -730,6 +734,8 @@ else {
 				operation = select unique DataOperation from dataModelAccess where (selected.name == parameters.operationName);
 				authorization = select unique AccessAuthorization from accessControlModelAccess where (selected.name == parameters.authorizationName);
 			}
+
+			// --- iTrust security Rule10 ---
 			public void iTrustSecurityRule10() {
 				boolean state = false;
 				for (DataElementImport element : select DataElementImport from dataModelAccess) {

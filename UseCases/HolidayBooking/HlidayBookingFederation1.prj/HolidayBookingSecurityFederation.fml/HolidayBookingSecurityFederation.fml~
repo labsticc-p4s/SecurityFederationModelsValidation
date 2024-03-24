@@ -22,10 +22,10 @@ import[WSDLMETAMODEL: "Binding"] as WSDL_BINDING;
 import[WSDLMETAMODEL: "Fault"] as WSDL_FAULT;
 
 typedef EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) as BPMNParticipant;
-typedef EMFObjectIndividualType(eClass=SOAML_PARTICIPANT) as SOAMLParticipant;
+typedef EMFObjectIndividualType(eClass= SOAML_PARTICIPANT) as SOAMLParticipant;
 typedef EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) as BPMNTextAnnotation;
 typedef EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) as BPMNAssociation;
-typedef EMFObjectIndividualType(eClass=SOAML_PARTICIPANT_ROLE) as SOAMLParticipantRole;
+typedef EMFObjectIndividualType(eClass= SOAML_PARTICIPANT_ROLE) as SOAMLParticipantRole;
 typedef EMFObjectIndividualType(eClass=BPMN_DATAOBJECT) as BPMNDataObject;
 typedef EMFObjectIndividualType(eClass= WSDL_ELEMENT) as WSDLElement;
 typedef EMFObjectIndividualType(eClass= WSDL_OPERATION) as WSDLOperation;
@@ -37,18 +37,18 @@ typedef EMFObjectIndividualType(eClass= WSDL_FAULT) as WSDLFault;
 @Author("chahr")
 public model HolidayBookingSecurityFederation {
 
-   EMFModel soamlModelAceess with EMFModelSlot(metaModel=SOAML_META_MODEL,isRequired=true);
+   EMFModel soamlModelAccess with EMFModelSlot(metaModel=SOAML_META_MODEL,isRequired=true);
    EMFModel wsdlModelAcess with EMFModelSlot(metaModel=WSDLMETAMODEL,isRequired=true);
    EMFModel bpmnModelAccess with EMFModelSlot(metaModel=BPMN21,isRequired=true);
 
     public create::createAccessObject(required Resource<EMFModel> bpmnModelResource, required Resource<EMFModel> wsdlModelResource, required Resource<EMFModel> soamlModelResource) {
-         soamlModelAceess = parameters.soamlModelResource.resourceData;
+         soamlModelAccess = parameters.soamlModelResource.resourceData;
          wsdlModelAcess = parameters.wsdlModelResource.resourceData;
          bpmnModelAccess = parameters.bpmnModelResource.resourceData;
       }
 
    delete() {
-      soamlModelAceess = null;
+      soamlModelAccess = null;
       wsdlModelAcess = null;
       bpmnModelAccess = null;
    }
@@ -120,12 +120,12 @@ else {
       public concept PoolParticipantCorrespondence extends Correspondences{
          
          BPMNParticipant pool with EMFObjectRole(container=bpmnModelAccess,type=BPMN_PARTICIPANT);
-         SOAMLParticipant participant with EMFObjectRole(container= soamlModelAceess, type = SOAML_PARTICIPANT); 
+         EMFObjectIndividual participant with EMFObjectRole(container= soamlModelAccess, type = null); 
 
          // create the instance of the concept with the selected pool and Participant
          create(required String name) {
             pool = select unique BPMNParticipant from bpmnModelAccess where (selected.name == parameters.name);
-            participant = select unique SOAMLParticipant from soamlModelAceess where (selected.name == parameters.name);
+            participant = select unique SOAMLParticipant from soamlModelAccess where (selected.name == parameters.name);
             
          }
 
@@ -137,7 +137,7 @@ else {
             annotationsPool = container.container.getPoolAnnotations(pool);
             boolean check = false;
             for (BPMNTextAnnotation item : annotationsPool ) {
-               for (SOAMLParticipantRole itemParticipantRole : select SOAMLParticipantRole from soamlModelAceess ) {
+               for (SOAMLParticipantRole itemParticipantRole : select SOAMLParticipantRole from soamlModelAccess ) {
                   if (itemParticipantRole.name == participant.name + "Role") {
                      List<? extends Object> privacy = itemParticipantRole.getValues("privacy");
                      List<? extends Object> access =  itemParticipantRole.getValues("accesscontrol");
@@ -168,7 +168,7 @@ else {
       // The correspondence between a DataObject in the BPMN model and a Message in the WSDL model
       public concept DataObjectMessageCorrespondence extends Correspondences{
         BPMNDataObject dataObject with EMFObjectRole(container=bpmnModelAccess,type=BPMN_DATAOBJECT);
-        WSDLElement element with EMFObjectRole(container= wsdlModelAcess, type = WSDL_ELEMENT);
+        EMFObjectIndividual element with EMFObjectRole(container= wsdlModelAcess, type = null);
 
         // create the instance of the concept with the selected pool and Participant
         create(required String nameDataObject, required String nameElement ) {

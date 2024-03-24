@@ -22,23 +22,23 @@ import[WSDLMETAMODEL: "Binding"] as WSDL_BINDING;
 import[WSDLMETAMODEL: "Fault"] as WSDL_FAULT;
 
 typedef EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) as BPMNParticipant;
-typedef EMFObjectIndividualType(eClass= WSDL_FAULT) as SOAMLParticipant;
+typedef EMFObjectIndividualType(eClass= SOAML_PARTICIPANT) as SOAMLParticipant;
 typedef EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) as BPMNTextAnnotation;
 typedef EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) as BPMNAssociation;
-typedef EMFObjectIndividualType(eClass= WSDL_FAULT) as SOAMLParticipantRole;
+typedef EMFObjectIndividualType(eClass= SOAML_PARTICIPANT_ROLE) as SOAMLParticipantRole;
 typedef EMFObjectIndividualType(eClass=BPMN_DATAOBJECT) as BPMNDataObject;
-typedef EMFObjectIndividualType(eClass= WSDL_FAULT) as WSDLElement;
-typedef EMFObjectIndividualType(eClass= WSDL_FAULT) as WSDLOperation;
-typedef EMFObjectIndividualType(eClass= WSDL_FAULT) as WSDLInPut;
-typedef EMFObjectIndividualType(eClass= WSDL_FAULT) as WSDLBinding;
+typedef EMFObjectIndividualType(eClass= WSDL_ELEMENT) as WSDLElement;
+typedef EMFObjectIndividualType(eClass= WSDL_OPERATION) as WSDLOperation;
+typedef EMFObjectIndividualType(eClass= WSDL_INPUT) as WSDLInPut;
+typedef EMFObjectIndividualType(eClass= WSDL_BINDING) as WSDLBinding;
 typedef EMFObjectIndividualType(eClass= WSDL_FAULT) as WSDLFault;
 
 @URI("http://www.openflexo.org/projects/2024/2/HlidayBookingFederation1_1708967384458.prj/HolidayBookingSecurityFederation.fml")
 @Author("chahr")
 public model HolidayBookingSecurityFederation {
 
-   EMFModel soamlModelAccess with EMFModelSlot(metaModel=null,isRequired=true);
-   EMFModel wsdlModelAcess with EMFModelSlot(metaModel=null,isRequired=true);
+   EMFModel soamlModelAccess with EMFModelSlot(metaModel=SOAML_META_MODEL,isRequired=true);
+   EMFModel wsdlModelAcess with EMFModelSlot(metaModel=WSDLMETAMODEL,isRequired=true);
    EMFModel bpmnModelAccess with EMFModelSlot(metaModel=BPMN21,isRequired=true);
 
     public create::createAccessObject(required Resource<EMFModel> bpmnModelResource, required Resource<EMFModel> wsdlModelResource, required Resource<EMFModel> soamlModelResource) {
@@ -120,7 +120,7 @@ else {
       public concept PoolParticipantCorrespondence extends Correspondences{
          
          BPMNParticipant pool with EMFObjectRole(container=bpmnModelAccess,type=BPMN_PARTICIPANT);
-         EMFObjectIndividual participant with EMFObjectRole(container= soamlModelAccess, type = null); 
+         SOAMLParticipant participant with EMFObjectRole(container= soamlModelAccess, type = SOAML_PARTICIPANT); 
 
          // create the instance of the concept with the selected pool and Participant
          create(required String name) {
@@ -168,7 +168,7 @@ else {
       // The correspondence between a DataObject in the BPMN model and a Message in the WSDL model
       public concept DataObjectMessageCorrespondence extends Correspondences{
         BPMNDataObject dataObject with EMFObjectRole(container=bpmnModelAccess,type=BPMN_DATAOBJECT);
-        EMFObjectIndividual element with EMFObjectRole(container= wsdlModelAcess, type = null);
+        WSDLElement element with EMFObjectRole(container= wsdlModelAcess, type = WSDL_ELEMENT);
 
         // create the instance of the concept with the selected pool and Participant
         create(required String nameDataObject, required String nameElement ) {

@@ -1,9 +1,9 @@
 #Metadata for directory D:\HeterogenousSecureModelsFederation\UseCases\iTrust\iTrustMedicalSystemFederation.prj\ITrustSecurityFederation.fml
-#Sun Mar 24 10:40:27 GMT+01:00 2024
-ITrustSecurityFederation.fml.uri=http\://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/ITrustSecurityFederation.fml
+#Thu Mar 28 15:30:58 GMT+01:00 2024
 ITrustSecurityFederation.fml.name=ITrustSecurityFederation
-ITrustSecurityFederation.fml.flexoConceptsList=Correspondences,Correspondences\#PoolArtifactCorrespondence,Correspondences\#MessageFlowCommunicationPathCorrespondence,Correspondences\#UserRoleCorrespondence,Correspondences\#PoolClassCorrespondence,Correspondences\#ClassArtifactCorrespondence,Correspondences\#ModelsCorrespondence,Correspondences\#OperationAuthorisationCorrespondence
+ITrustSecurityFederation.fml.uri=http\://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/ITrustSecurityFederation.fml
 ITrustSecurityFederation.fml.version=0.1
+ITrustSecurityFederation.fml.flexoConceptsList=Correspondences,Correspondences\#PoolArtifactCorrespondence,Correspondences\#MessageFlowCommunicationPathCorrespondence,Correspondences\#UserRoleCorrespondence,Correspondences\#PoolClassCorrespondence,Correspondences\#ClassArtifactCorrespondence,Correspondences\#ModelsCorrespondence,Correspondences\#OperationAuthorisationCorrespondence
 ITrustSecurityFederation.fml.requiredModelSlotList=org.openflexo.technologyadapter.emf.EMFModelSlot,org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot
 ITrustSecurityFederation.fml.virtualModelClassName=org.openflexo.foundation.fml.VirtualModel
 ITrustSecurityFederation.fml.dependenciesList=http\://www.omg.org/spec/BPMN/20100524/MODEL-XMI,http\://www.example.org/deployementEcoreMetaModel,http\://www.eclipse.org/uml2/5.0.0/UML,http\://www.eclipse.org/uml2/5.0.0/UML,AccessControlMetamodel,http\://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/ITrustSecurityFederation.fml

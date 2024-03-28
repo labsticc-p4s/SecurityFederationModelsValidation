@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FMLRTVirtualModelInstance id="0" virtualModelURI="http://www.openflexo.org/projects/2024/2/HlidayBookingFederation1_1708967384458.prj/HolidayBookingSecurityFederation.fml" modelVersion="1.0" title="instanceHolidayBooking" version="0.1" flexoConceptURI="http://www.openflexo.org/projects/2024/2/HlidayBookingFederation1_1708967384458.prj/HolidayBookingSecurityFederation.fml" userID="CHA" flexoID="1">
+  <FlexoConceptInstance id="1" flexoConceptURI="http://www.openflexo.org/projects/2024/2/HlidayBookingFederation1_1708967384458.prj/HolidayBookingSecurityFederation.fml#Correspondences" userID="CHA" flexoID="5">
+    <EmbeddedFlexoConceptInstance id="2" flexoConceptURI="http://www.openflexo.org/projects/2024/2/HlidayBookingFederation1_1708967384458.prj/HolidayBookingSecurityFederation.fml#Correspondences#OperationsCorrespondece" userID="CHA" flexoID="6">
+      <ConceptActorReference id="3" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/WSDLModel/WSDLModel.xmi#//@description.0/@interface.0/@operation.1" roleName="operationWsdl" userID="CHA" flexoID="7" />
+      <ConceptActorReference id="4" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/SOAMLModel/MetaSOAML.xmi#//@capability.2/@operation.0" roleName="operationSOAML" userID="CHA" flexoID="8" />
+    </EmbeddedFlexoConceptInstance>
+  </FlexoConceptInstance>
+  <FlexoConceptInstance idref="2" />
+  <FlexoOntologyModelSlotInstance id="5" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/SOAMLModel/MetaSOAML.xmi" modelSlotName="soamlModelAccess" roleName="soamlModelAccess" userID="CHA" flexoID="2" />
+  <FlexoOntologyModelSlotInstance id="6" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/WSDLModel/WSDLModel.xmi" modelSlotName="wsdlModelAcess" roleName="wsdlModelAcess" userID="CHA" flexoID="3" />
+  <FlexoOntologyModelSlotInstance id="7" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/BookingHoliday.bpmn" modelSlotName="bpmnModelAccess" roleName="bpmnModelAccess" userID="CHA" flexoID="4" />
+</FMLRTVirtualModelInstance>

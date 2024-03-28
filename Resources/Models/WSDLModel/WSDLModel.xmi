@@ -16,18 +16,26 @@
         Name="Binding1"/>
     <service
         interface="//@description.0/@interface.0"
-        Name="Service1"/>
+        Name="Service1">
+      <endpoint
+          binding="//@description.0/@binding.0"
+          Name="endPoint"/>
+    </service>
     <interface
         extends="//@description.0/@interface.0"
         Name="InterfaceClient"
         privacy="//@securityrequirement.0"
         accesscontrol="//@securityrequirement.4">
       <operation
-          Name="Operation1">
+          Name="RequestBooking">
         <input
             element="//@element.0"
             Name="message1"/>
       </operation>
+      <operation
+          Name="Pay"/>
+      <operation
+          Name="Confirmation"/>
       <fault
           element="//@element.0"
           Name="SOAP"/>

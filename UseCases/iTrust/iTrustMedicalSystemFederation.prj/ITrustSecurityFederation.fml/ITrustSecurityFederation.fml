@@ -38,6 +38,7 @@ import [UML2:"Stereotype"] as DATA_STEREOTYPE;
 import [UML2:"Comment"] as DATA_COMMENT;
 import [UML2:"ElementImport"] as DATA_ELEMENT_IMPORT;
 import [UML2:"Model"] as DATA_MODEL;
+import [UML2:"AssociationClass"] as DATA_ASSOCIATION_CLASS;
 import ["AccessControlMetamodel"] as ACCESS_CONTROL_METAMODEL2;
 import [ACCESS_CONTROL_METAMODEL2:"ROLE"] as ACCESS_CONTROL_ROLE;
 import [ACCESS_CONTROL_METAMODEL2:"Authorization"] as ACCESS_CONTROL_AUTHORIZATION;
@@ -66,6 +67,7 @@ typedef EMFObjectIndividualType(eClass=DATA_ELEMENT_IMPORT) as DataElementImport
 typedef EMFObjectIndividualType(eClass=BPMN_SEQUENCE_FLOW) as BPMNSequenceFlow;
 typedef EMFObjectIndividualType(eClass=DATA_MODEL) as DataModel;
 typedef EMFObjectIndividualType(eClass=DEPLOYMENT_DEPLOYEMENT_MODEL) as DeploymentModel;
+typedef EMFObjectIndividualType(eClass= DATA_ASSOCIATION_CLASS) as DataAssociationClass;
 
 @URI("http://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/ITrustSecurityFederation.fml")
 @Author("chahr")
@@ -76,6 +78,7 @@ public model ITrustSecurityFederation {
 	EMFModel dataModelAccess with EMFModelSlot(metaModel=UML2,isRequired=true);
 	MessageFlowCommunicationPathCorrespondence[0,*] listInstancesMessageComm with ConceptInstance(virtualModelInstance=this);
 	PoolArtifactCorrespondence[0,*] listInstancesPoolArtifact with ConceptInstance(virtualModelInstance=this);
+   ClassArtifactCorrespondence[0,*] listInstancesClassArtifact with ConceptInstance(virtualModelInstance=this);
 	UserRoleCorrespondence[0,*] listUserRoleLink with ConceptInstance(virtualModelInstance=this);
 
 	public create::createAccessObject(required Resource<EMFModel> bpmnModelResource, required Resource<EMFModel> deploymentModelResource, required Resource<EMFModel> dataModelResource, required Resource<EMFModel> accessControlModelResource) {
@@ -129,6 +132,15 @@ public model ITrustSecurityFederation {
 		}
 		return checked;
 	}
+
+   private DeploymentArtifact getArtifact(String element) {
+      for (ClassArtifactCorrespondence item : select ClassArtifactCorrespondence from this) {
+         log item.toString;
+         if (item.class.name == parameters.element) {
+           return item.artifact; 
+         }
+      }
+   }
 
 	// Check the security annotations of the flowelements
 	private boolean checkDataObjectAnnotations(BPMNFlowElements flowElements) {
@@ -298,6 +310,22 @@ public model ITrustSecurityFederation {
 		return check;
 	}
 
+
+  private List<String> getAssociatedClass(DataClass class) {
+   List<String> associatedClass = new ArrayList<String>();
+   for (DataAssociationClass association : select DataAssociationClass from dataModelAccess) {
+      if (association.getValues("redefinedClassifier").toString.contains(parameters.class.name) && (association.getValues("ownedElement").toString.contains("Integrity") || association.getValues("ownedElement").toString.contains("Secrecy"))) {
+         for (Object itemClass : association.getValues("redefinedClassifier")) {
+            if (itemClass != parameters.class) {
+               associatedClass.add(itemClass.toString.substring(6));  
+            }
+         }
+      }
+   }
+
+   return associatedClass;
+  }
+
 	private boolean checkLogInAnnotaionsOnAssociation(DeploymentArtifact artifact) {
 		boolean check = false;
 		for (DeploymentAssociation association : select DeploymentAssociation from deploymentModelAccess) {
@@ -384,6 +412,16 @@ public model ITrustSecurityFederation {
          return true;
       }
       return false;
+   }
+
+   private boolean checkSecurityAnnotaionsOnAssociation(DeploymentArtifact artifact, DeploymentArtifact artifact1 ) {
+      for (DeploymentAssociation association : select DeploymentAssociation from deploymentModelAccess) {
+         if (association.getValues("artifact").toString.contains(parameters.artifact.nameArtifact) && association.getValues("artifact").toString.contains(parameters.artifact1.nameArtifact)) {
+            log association.toString;
+         }
+      }
+      
+     return false;  
    }
 
   private boolean checkAssociationAnnotation() {
@@ -646,6 +684,11 @@ public model ITrustSecurityFederation {
 				}
 			}
 
+	delete() {
+		delete pool;
+		delete class;
+	}
+
 		}
 		public concept ClassArtifactCorrespondence extends Correspondences {
 			DataClass class with EMFObjectRole(container=dataModelAccess,type=DATA_CLASS);
@@ -686,6 +729,21 @@ public model ITrustSecurityFederation {
 				delete class;
 				delete artifact;
 			}
+
+         // --- iTrust security Rule13 ---
+         public void iTrustSecurity13() {
+            List<String> associatedClass = new ArrayList<String>();
+            associatedClass = container.container.getAssociatedClass(class);
+            log associatedClass.toString;
+            for (String itemClass : associatedClass) {
+               log itemClass.toString;
+               DeploymentArtifact associatedArtifact = container.container.getArtifact(itemClass);
+               boolean test = container.container.checkSecurityAnnotaionsOnAssociation(artifact,associatedArtifact);
+               log "test" + associatedArtifact.toString;
+            }
+           
+         }
+        
 		}
 		public concept ModelsCorrespondence extends Correspondences {
 			DeploymentModel deployementModel with EMFObjectRole(container=deploymentModelAccess,type=DEPLOYMENT_DEPLOYEMENT_MODEL);

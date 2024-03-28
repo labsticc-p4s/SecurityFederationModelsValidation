@@ -14,6 +14,7 @@ import [SOAML_META_MODEL:"Participant"] as SOAML_PARTICIPANT;
 import [BPMN21:"TextAnnotation"] as BPMN_TEXT_ANNOTATION;
 import [BPMN21:"Association"] as BPMN_ASSOCIATION;
 import [SOAML_META_MODEL:"ParticipantRole"] as SOAML_PARTICIPANT_ROLE;
+import [SOAML_META_MODEL:"Operation"] as SOAML_OPERATION; 
 import [BPMN21:"DataObject"] as BPMN_DATAOBJECT;
 import [WSDLMETAMODEL: "Element"] as WSDL_ELEMENT;
 import[WSDLMETAMODEL: "Operation"] as WSDL_OPERATION;
@@ -32,6 +33,7 @@ typedef EMFObjectIndividualType(eClass= WSDL_OPERATION) as WSDLOperation;
 typedef EMFObjectIndividualType(eClass= WSDL_INPUT) as WSDLInPut;
 typedef EMFObjectIndividualType(eClass= WSDL_BINDING) as WSDLBinding;
 typedef EMFObjectIndividualType(eClass= WSDL_FAULT) as WSDLFault;
+typedef EMFObjectIndividualType(eClass=SOAML_OPERATION) as SOAMLOperation; 
 
 @URI("http://www.openflexo.org/projects/2024/2/HlidayBookingFederation1_1708967384458.prj/HolidayBookingSecurityFederation.fml")
 @Author("chahr")
@@ -120,7 +122,7 @@ else {
       public concept PoolParticipantCorrespondence extends Correspondences{
          
          BPMNParticipant pool with EMFObjectRole(container=bpmnModelAccess,type=BPMN_PARTICIPANT);
-         EMFObjectIndividual participant with EMFObjectRole(container= soamlModelAccess, type = null); 
+         SOAMLParticipant participant with EMFObjectRole(container= soamlModelAccess, type = SOAML_PARTICIPANT); 
 
          // create the instance of the concept with the selected pool and Participant
          create(required String name) {
@@ -168,7 +170,7 @@ else {
       // The correspondence between a DataObject in the BPMN model and a Message in the WSDL model
       public concept DataObjectMessageCorrespondence extends Correspondences{
         BPMNDataObject dataObject with EMFObjectRole(container=bpmnModelAccess,type=BPMN_DATAOBJECT);
-        EMFObjectIndividual element with EMFObjectRole(container= wsdlModelAcess, type = null);
+        WSDLElement element with EMFObjectRole(container= wsdlModelAcess, type = WSDL_ELEMENT);
 
         // create the instance of the concept with the selected pool and Participant
         create(required String nameDataObject, required String nameElement ) {
@@ -198,6 +200,22 @@ else {
             log "Security annotation verification failed";
          }
         }
+      }
+
+      public concept OperationsCorrespondece extends Correspondences{
+         WSDLOperation operationWsdl with EMFObjectRole(container= wsdlModelAcess, type = WSDL_OPERATION);
+         SOAMLOperation operationSOAML with EMFObjectRole(container= soamlModelAccess, type = SOAML_OPERATION);
+
+          create(required String nameOperationWsdl, required String nameOperationSOAML ) {
+            operationWsdl = select unique WSDLOperation from wsdlModelAcess where (selected.name == parameters.nameOperationWsdl);
+            operationSOAML = select unique SOAMLOperation from soamlModelAccess where (selected.name == parameters.nameOperationSOAML);
+            
+          }
+
+	delete() {
+		delete operationWsdl;
+		delete operationSOAML;
+	}
       }
       
    }

@@ -135,7 +135,6 @@ public model ITrustSecurityFederation {
 
    private DeploymentArtifact getArtifact(String element) {
       for (ClassArtifactCorrespondence item : select ClassArtifactCorrespondence from this) {
-         log item.toString;
          if (item.class.name == parameters.element) {
            return item.artifact; 
          }
@@ -297,7 +296,8 @@ public model ITrustSecurityFederation {
 		}
 		return sharedMessageFlows;
 	}
-
+  
+   // verify the security annotation on the association 
 	private boolean checkSecurityAnnotaionsOnAssociation(DeploymentArtifact artifact) {
 		boolean check = false;
 		for (DeploymentAssociation association : select DeploymentAssociation from deploymentModelAccess) {
@@ -310,7 +310,7 @@ public model ITrustSecurityFederation {
 		return check;
 	}
 
-
+  // Get associated Class
   private List<String> getAssociatedClass(DataClass class) {
    List<String> associatedClass = new ArrayList<String>();
    for (DataAssociationClass association : select DataAssociationClass from dataModelAccess) {
@@ -326,6 +326,7 @@ public model ITrustSecurityFederation {
    return associatedClass;
   }
 
+   // Verify wether the association contains a loggedIn annotation
 	private boolean checkLogInAnnotaionsOnAssociation(DeploymentArtifact artifact) {
 		boolean check = false;
 		for (DeploymentAssociation association : select DeploymentAssociation from deploymentModelAccess) {
@@ -338,6 +339,7 @@ public model ITrustSecurityFederation {
 		return check;
 	}
 
+   // Verify the security annotation on the communication Path
 	private boolean ckeckSecurityAnnotationOnCommunicationPath(DeploymentArtifact artifact) {
 		boolean check = false;
 		for (DeploymentDeploy deploy : select DeploymentDeploy from deploymentModelAccess) {
@@ -352,6 +354,7 @@ public model ITrustSecurityFederation {
 		return check;
 	}
 
+   // Verify the security annotation on the Task
 	private boolean checkSecurityAnnotationTask(List<BPMNFlowElements> listFlowElements) {
 		for (BPMNFlowElements itemFlowElements : parameters.listFlowElements) {
 			for (BPMNAssociation itemAsso : select BPMNAssociation from bpmnModelAccess) {
@@ -367,6 +370,7 @@ public model ITrustSecurityFederation {
 		return false;
 	}
 
+   // verify wether a selected Task in the BPMN model is a logIn Task
 	private boolean checkLogInTask(BPMNFlowElements task) {
 		for (BPMNSequenceFlow itemSequenceFlow : select BPMNSequenceFlow from bpmnModelAccess) {
 			if (itemSequenceFlow.targetRef == parameters.task) {
@@ -412,6 +416,19 @@ public model ITrustSecurityFederation {
          return true;
       }
       return false;
+   }
+
+   // Verify the security annotation on the association relating two selected artifects
+   private boolean checkSecurityAnnotaionsOnAssociation(DeploymentArtifact artifact, DeploymentArtifact artifact1 ) {
+      for (DeploymentAssociation association : select DeploymentAssociation from deploymentModelAccess) {
+         if (association.getValues("artifact").toString.contains(parameters.artifact.nameArtifact) && association.getValues("artifact").toString.contains(parameters.artifact1.nameArtifact)) {
+            if (association.getValues("secrecy") != null || association.getValues("integrity") != null) {
+               return true;
+            }
+         }
+      }
+      
+     return false;  
    }
 
   private boolean checkAssociationAnnotation() {
@@ -724,11 +741,15 @@ public model ITrustSecurityFederation {
          public void iTrustSecurity13() {
             List<String> associatedClass = new ArrayList<String>();
             associatedClass = container.container.getAssociatedClass(class);
-            log associatedClass.toString;
             for (String itemClass : associatedClass) {
-               log itemClass.toString;
                DeploymentArtifact associatedArtifact = container.container.getArtifact(itemClass);
-               log "test" + associatedArtifact.toString;
+               boolean check = container.container.checkSecurityAnnotaionsOnAssociation(artifact,associatedArtifact);
+               if (check) {
+                  log "[iTrust - SecurityRule 13] -> Security rule verified";
+               }  
+else {
+                  log "[iTrust - SecurityRule 13] -> Security rule violated";
+               }
             }
            
          }

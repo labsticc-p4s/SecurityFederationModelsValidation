@@ -118,6 +118,15 @@ public model ITrustSecurityFederation {
 		}
 		return associatedPool;
 	}
+   private DeploymentArtifact getArtifact( BPMNParticipant pool) {
+      DeploymentArtifact associatedArtifact;
+      for (PoolArtifactCorrespondence item : select PoolArtifactCorrespondence from this) {
+         if (item.pool == parameters.pool) {
+            associatedArtifact = item.artifact;
+         }
+      }
+      return associatedArtifact;
+   }
 
 	delete() {
 	}
@@ -202,6 +211,20 @@ public model ITrustSecurityFederation {
 		return false;
 	}
 
+   // Verify the security annotations of a MessageFlow 
+   private boolean checkMessageFlowAnnotation(BPMNMessageFlow messageFlow) {
+         for (BPMNAssociation itemAssociation : select BPMNAssociation from bpmnModelAccess) {
+            for (BPMNTextAnnotation itemAnnotation : select BPMNTextAnnotation from bpmnModelAccess) {
+               if (parameters.messageFlow == itemAssociation.targetRef && itemAnnotation == itemAssociation.sourceRef) {
+                  if (itemAnnotation.text.contains("IntegrityMF") || itemAnnotation.text.contains("ConfidentialityMF") || itemAnnotation.text.contains("NonRepudMF")) {
+                     return true;
+                  }
+               }
+            }
+         }
+      return false;
+   }
+
 	// Verify if an artifact has association with other artifacts in the Deployment model
 	private List<String> verifyExistenceArtifactAssociated(DeploymentArtifact artifact) {
 		boolean existe = false;
@@ -284,7 +307,21 @@ public model ITrustSecurityFederation {
 			}
 		}
 		return messageFlows;
-	}
+	} 
+
+   private BPMNParticipant getAssociatedPool(BPMNMessageFlow messageFlow, BPMNParticipant pool ) {
+      List<BPMNFlowElements> listFlowElements = new ArrayList<BPMNFlowElements>();
+      List<BPMNMessageFlow> messageFlows = new ArrayList<BPMNMessageFlow>();
+      for (BPMNParticipant participant : select BPMNParticipant from bpmnModelAccess) {
+         if (participant != parameters.pool) {
+            messageFlows = this.getMessageFlows(participant);
+            if (messageFlows.contains(parameters.messageFlow)) {
+               return participant;
+            }
+            
+         }
+      }
+   }
 
 	// Get MessageFlows shared between two Pools
 	private List<BPMNMessageFlow> getSharedMessageFlows(List<BPMNMessageFlow> messageFlowsPool, List<BPMNMessageFlow> messageFlowsAssociatedPool) {
@@ -296,6 +333,20 @@ public model ITrustSecurityFederation {
 		}
 		return sharedMessageFlows;
 	}
+ 
+  private List<BPMNMessageFlow> getMessageFlowsWithFilter(List<BPMNMessageFlow> messageFlowsPool) {
+      List<BPMNMessageFlow> messageFlowsFilter = new ArrayList<BPMNMessageFlow>();
+      for (BPMNMessageFlow itemMessageFlow : parameters.messageFlowsPool) {
+         for (BPMNAssociation itemAssociation : select BPMNAssociation from bpmnModelAccess) {
+            if (itemAssociation.targetRef == itemMessageFlow && this.checkMessageFlowAnnotation(itemMessageFlow)) {
+               messageFlowsFilter.add(itemMessageFlow);    
+            }
+         }
+      }
+
+      
+     return messageFlowsFilter;
+  }
   
    // verify the security annotation on the association 
 	private boolean checkSecurityAnnotaionsOnAssociation(DeploymentArtifact artifact) {
@@ -389,7 +440,6 @@ public model ITrustSecurityFederation {
 					for (BPMNTextAnnotation itemAnnota : select BPMNTextAnnotation from bpmnModelAccess) {
 						if (itemFlowElements == itemAsso.targetRef && itemAnnota == itemAsso.sourceRef) {
 							if (itemAnnota.text.contains("IntegrityAct") && this.checkLogInTask(itemFlowElements)) {
-								log itemFlowElements.toString;
 								return true;
 							}
 						}
@@ -570,6 +620,28 @@ public model ITrustSecurityFederation {
 					log "[iTrust - SecurityRule 9] -> Security rule violated";
 				}
 			}
+
+        // --- iTrust security Rule14 --- 
+        /*  when two Pools in the BPMN model (that correspond to artifacts in the deployment model), Communicate with each other via MessageFlow that is linked to 
+       IntegrityMF, ConfidentialityMF or NonRepuMF.The dependency between the corresponding Artifact and other Artifact must be  with Integrity or secrecy  */
+       
+        public void iTrustSecurityRule14() {
+         List<BPMNMessageFlow> messageFlowsPool = new ArrayList<BPMNMessageFlow>();
+         messageFlowsPool = container.container.getMessageFlows(pool);
+         List<BPMNMessageFlow> messageFlowsPoolWithFilter = new ArrayList<BPMNMessageFlow>();
+         messageFlowsPoolWithFilter = container.container.getMessageFlowsWithFilter(messageFlowsPool); 
+         for (BPMNMessageFlow itemMessageFlow : messageFlowsPoolWithFilter ) {
+           BPMNParticipant associatedPool = container.container.getAssociatedPool(itemMessageFlow,pool); 
+           DeploymentArtifact associatedArtifact = container.container.getArtifact(associatedPool);
+           boolean checkAssociationAnnotation = container.container.checkSecurityAnnotaionsOnAssociation(artifact,associatedArtifact);
+           if (checkAssociationAnnotation) {
+             log "[iTrust - SecurityRule 14] -> Security rule verified";
+            }
+            else {
+               log "[iTrust - SecurityRule 14] -> Security rule violated";
+            }
+         }
+        }
 		}
 		public concept MessageFlowCommunicationPathCorrespondence extends Correspondences {
 			BPMNMessageFlow messageFlow with EMFObjectRole(container=bpmnModelAccess,type=BPMN_MESSAGE_FLOW);

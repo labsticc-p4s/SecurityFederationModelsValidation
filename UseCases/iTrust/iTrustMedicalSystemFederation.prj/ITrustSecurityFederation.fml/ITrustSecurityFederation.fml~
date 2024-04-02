@@ -323,6 +323,19 @@ public model ITrustSecurityFederation {
       }
    }
 
+   private BPMNParticipant getTaskPoolContainer(BPMNUserTask task) {
+      List<BPMNFlowElements> listFlowElements = new ArrayList<BPMNFlowElements>();
+      for (BPMNParticipant participant : select BPMNParticipant from bpmnModelAccess) {
+        listFlowElements = this.getFlowElementOfPool(participant);
+        if (listFlowElements.contains(parameters.task)) {
+          return participant;
+        }
+      }
+   }
+
+ 
+
+
 	// Get MessageFlows shared between two Pools
 	private List<BPMNMessageFlow> getSharedMessageFlows(List<BPMNMessageFlow> messageFlowsPool, List<BPMNMessageFlow> messageFlowsAssociatedPool) {
 		List<BPMNMessageFlow> sharedMessageFlows = new ArrayList<BPMNMessageFlow>();
@@ -421,6 +434,20 @@ public model ITrustSecurityFederation {
 		return false;
 	}
 
+   // Verify the security annotation on the Task
+ private boolean checkSecurityAnnotationTask(BPMNUserTask task) {
+         for (BPMNAssociation itemAssociation : select BPMNAssociation from bpmnModelAccess) {
+            for (BPMNTextAnnotation itemAnnotation : select BPMNTextAnnotation from bpmnModelAccess) {
+               if (itemAnnotation == itemAssociation.sourceRef && itemAssociation.targetRef == parameters.task) {
+                  if (itemAnnotation.text.contains("IntegrityAct")) {
+                     return true;
+                  }
+               }
+         }
+      }
+      return false;
+   }
+
    // verify wether a selected Task in the BPMN model is a logIn Task
 	private boolean checkLogInTask(BPMNFlowElements task) {
 		for (BPMNSequenceFlow itemSequenceFlow : select BPMNSequenceFlow from bpmnModelAccess) {
@@ -466,6 +493,14 @@ public model ITrustSecurityFederation {
          return true;
       }
       return false;
+   }
+
+   private AccessControlRole getRoleAuthorizationContainer(AccessAuthorization authorization) {
+      for (AccessControlRole role : select AccessControlRole from accessControlModelAccess) {
+         if (role.getValues("authorization").contains(parameters.authorization)) {
+             return role;
+         }
+      } 
    }
 
    // Verify the security annotation on the association relating two selected artifects
@@ -867,6 +902,45 @@ else {
 			}
 		
 		}
+      public concept TaskAuthorisationCorrespondence extends Correspondences {
+        BPMNUserTask task with EMFObjectRole(container= bpmnModelAccess,type= BPMN_USER_TASK);
+        AccessAuthorization authorization with EMFObjectRole(container=accessControlModelAccess,type=ACCESS_CONTROL_AUTHORIZATION); 
+        create::_create(required String taskName, required String authorizationName) {
+           authorization = select unique AccessAuthorization from accessControlModelAccess where (selected.name == parameters.authorizationName);
+           task = select unique BPMNUserTask from bpmnModelAccess where (selected.name == parameters.taskName);
+        }
+
+       // --- iTrust security Rule15 ---
+       /*  when exist dependecy between Authorization in the AccessControl model with task in the BPMN model.The task must contain IntegrityACt annotation and it is preceeded with a logIn task */
+
+        public void iTrustSecurityRule15() {
+         boolean checksecurityAnnotationTask = container.container.checkSecurityAnnotationTask(task);
+         boolean checkLogInTask = container.container.checkLogInTask(task);
+         if (checksecurityAnnotationTask && checkLogInTask) {
+            log "[iTrust - SecurityRule 15] -> Security rule verified";
+         } 
+else {
+            log "[iTrust - SecurityRule 15] -> Security rule violated";
+         }
+        }
+
+         // --- iTrust security Rule16 ---
+         /*  when exist dependecy between Authorization in the AccessControl model with task in the BPMN model.The task must contain IntegrityACt annotation and it is preceeded with a logIn task */
+
+        public void iTrustSecurityRule16() {
+         boolean checksecurityAnnotationTask = container.container.checkSecurityAnnotationTask(task);
+         BPMNParticipant taskPoolContainer = container.container.getTaskPoolContainer(task);
+         AccessControlRole authorizationRoleContainer = container.container.getRoleAuthorizationContainer(authorization);
+         if (checksecurityAnnotationTask && taskPoolContainer.name == authorizationRoleContainer.nameRole) {
+           log "[iTrust - SecurityRule 16] -> Security rule verified"; 
+         }
+else {
+            log "[iTrust - SecurityRule 16] -> Security rule violated";
+         }
+        }
+        
+      }
+      
 		public concept OperationAuthorisationCorrespondence extends Correspondences {
 			DataOperation operation with EMFObjectRole(container=dataModelAccess,type=DATA_OPERATION);
 			AccessAuthorization authorization with EMFObjectRole(container=accessControlModelAccess,type=ACCESS_CONTROL_AUTHORIZATION);

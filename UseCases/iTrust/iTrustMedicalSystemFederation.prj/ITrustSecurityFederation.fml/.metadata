@@ -1,5 +1,5 @@
 #Metadata for directory D:\HeterogenousSecureModelsFederation\UseCases\iTrust\iTrustMedicalSystemFederation.prj\ITrustSecurityFederation.fml
-#Tue Apr 02 14:05:09 CEST 2024
+#Tue Apr 02 14:09:27 CEST 2024
 ITrustSecurityFederation.fml.uri=http\://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/ITrustSecurityFederation.fml
 ITrustSecurityFederation.fml.name=ITrustSecurityFederation
 ITrustSecurityFederation.fml.flexoConceptsList=Correspondences,Correspondences\#PoolArtifactCorrespondence,Correspondences\#MessageFlowCommunicationPathCorrespondence,Correspondences\#UserRoleCorrespondence,Correspondences\#PoolClassCorrespondence,Correspondences\#ClassArtifactCorrespondence,Correspondences\#ModelsCorrespondence,Correspondences\#OperationAuthorisationCorrespondence

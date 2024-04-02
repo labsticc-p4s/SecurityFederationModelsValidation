@@ -620,28 +620,28 @@ public model ITrustSecurityFederation {
 					log "[iTrust - SecurityRule 9] -> Security rule violated";
 				}
 			}
-
-        // --- iTrust security Rule14 --- 
-        /*  when two Pools in the BPMN model (that correspond to artifacts in the deployment model), Communicate with each other via MessageFlow that is linked to 
-       IntegrityMF, ConfidentialityMF or NonRepuMF.The dependency between the corresponding Artifact and other Artifact must be  with Integrity or secrecy  */
-       
+   
+           // --- iTrust security Rule14 --- 
+           /*  when two Pools in the BPMN model (that correspond to artifacts in the deployment model), Communicate with each other via MessageFlow that is linked to 
+          IntegrityMF, ConfidentialityMF or NonRepuMF.The dependency between the corresponding Artifact and other Artifact must be  with Integrity or secrecy  */
+          
         public void iTrustSecurityRule14() {
-         List<BPMNMessageFlow> messageFlowsPool = new ArrayList<BPMNMessageFlow>();
-         messageFlowsPool = container.container.getMessageFlows(pool);
-         List<BPMNMessageFlow> messageFlowsPoolWithFilter = new ArrayList<BPMNMessageFlow>();
-         messageFlowsPoolWithFilter = container.container.getMessageFlowsWithFilter(messageFlowsPool); 
-         for (BPMNMessageFlow itemMessageFlow : messageFlowsPoolWithFilter ) {
-           BPMNParticipant associatedPool = container.container.getAssociatedPool(itemMessageFlow,pool); 
-           DeploymentArtifact associatedArtifact = container.container.getArtifact(associatedPool);
-           boolean checkAssociationAnnotation = container.container.checkSecurityAnnotaionsOnAssociation(artifact,associatedArtifact);
-           if (checkAssociationAnnotation) {
-             log "[iTrust - SecurityRule 14] -> Security rule verified";
+            List<BPMNMessageFlow> messageFlowsPool = new ArrayList<BPMNMessageFlow>();
+            messageFlowsPool = container.container.getMessageFlows(pool);
+            List<BPMNMessageFlow> messageFlowsPoolWithFilter = new ArrayList<BPMNMessageFlow>();
+            messageFlowsPoolWithFilter = container.container.getMessageFlowsWithFilter(messageFlowsPool); 
+            for (BPMNMessageFlow itemMessageFlow : messageFlowsPoolWithFilter ) {
+              BPMNParticipant associatedPool = container.container.getAssociatedPool(itemMessageFlow,pool); 
+              DeploymentArtifact associatedArtifact = container.container.getArtifact(associatedPool);
+              boolean checkAssociationAnnotation = container.container.checkSecurityAnnotaionsOnAssociation(artifact,associatedArtifact);
+              if (checkAssociationAnnotation) {
+                log "[iTrust - SecurityRule 14] -> Security rule verified";
+               }
+               else {
+                  log "[iTrust - SecurityRule 14] -> Security rule violated";
+               }
             }
-            else {
-               log "[iTrust - SecurityRule 14] -> Security rule violated";
-            }
-         }
-        }
+           }
 		}
 		public concept MessageFlowCommunicationPathCorrespondence extends Correspondences {
 			BPMNMessageFlow messageFlow with EMFObjectRole(container=bpmnModelAccess,type=BPMN_MESSAGE_FLOW);

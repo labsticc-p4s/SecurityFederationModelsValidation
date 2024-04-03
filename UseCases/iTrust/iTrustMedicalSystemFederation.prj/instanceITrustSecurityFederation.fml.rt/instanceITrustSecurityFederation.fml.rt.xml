@@ -37,6 +37,14 @@
       <ConceptActorReference id="27" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/AccessControlModel/iTrustAccessControlModel.xmi#//@authorization.4" roleName="authorization" userID="CHA" flexoID="2552" />
       <ConceptActorReference id="28" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#UserTask_3" roleName="task" userID="CHA" flexoID="2553" />
     </EmbeddedFlexoConceptInstance>
+    <EmbeddedFlexoConceptInstance id="29" flexoConceptURI="http://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/ITrustSecurityFederation.fml#Correspondences#PoolClassCorrespondence" userID="CHA" flexoID="2556">
+      <ConceptActorReference id="30" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#Participant_3" roleName="pool" userID="CHA" flexoID="2557" />
+      <ConceptActorReference id="31" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DataModel/DataITrust.uml#_gR2bsLYPEe6JM9aBK8QXKg" roleName="class" userID="CHA" flexoID="2558" />
+    </EmbeddedFlexoConceptInstance>
+    <EmbeddedFlexoConceptInstance id="32" flexoConceptURI="http://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/ITrustSecurityFederation.fml#Correspondences#PoolClassCorrespondence" userID="CHA" flexoID="2559">
+      <ConceptActorReference id="33" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn#Participant_2" roleName="pool" userID="CHA" flexoID="2560" />
+      <ConceptActorReference id="34" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DataModel/DataITrust.uml#_PDjjsLYPEe6JM9aBK8QXKg" roleName="class" userID="CHA" flexoID="2561" />
+    </EmbeddedFlexoConceptInstance>
   </FlexoConceptInstance>
   <FlexoConceptInstance idref="2" />
   <FlexoConceptInstance idref="5" />
@@ -47,10 +55,12 @@
   <FlexoConceptInstance idref="20" />
   <FlexoConceptInstance idref="23" />
   <FlexoConceptInstance idref="26" />
-  <FlexoOntologyModelSlotInstance id="29" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn" modelSlotName="bpmnModelAccess" roleName="bpmnModelAccess" userID="CHA" flexoID="2" />
-  <FlexoOntologyModelSlotInstance id="30" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/ITrustDeployementModel.xmi" modelSlotName="deploymentModelAccess" roleName="deploymentModelAccess" userID="CHA" flexoID="3" />
-  <FlexoOntologyModelSlotInstance id="31" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DataModel/DataITrust.uml" modelSlotName="dataModelAccess" roleName="dataModelAccess" userID="CHA" flexoID="4" />
-  <FlexoOntologyModelSlotInstance id="32" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/AccessControlModel/iTrustAccessControlModel.xmi" modelSlotName="accessControlModelAccess" roleName="accessControlModelAccess" userID="CHA" flexoID="5" />
-  <ModelObjectActorReference id="33" objectReference="http://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/instanceiTrustSecurityFederation.fml.rt#CHA_2503" roleName="listInstancesMessageComm" userID="CHA" flexoID="2507" />
-  <ModelObjectActorReference id="34" objectReference="http://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/instanceiTrustSecurityFederation.fml.rt#CHA_2531" roleName="listInstancesMessageComm" userID="CHA" flexoID="2535" />
+  <FlexoConceptInstance idref="29" />
+  <FlexoConceptInstance idref="32" />
+  <FlexoOntologyModelSlotInstance id="35" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/AddNewPresecription1.bpmn" modelSlotName="bpmnModelAccess" roleName="bpmnModelAccess" userID="CHA" flexoID="2" />
+  <FlexoOntologyModelSlotInstance id="36" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/ITrustDeployementModel.xmi" modelSlotName="deploymentModelAccess" roleName="deploymentModelAccess" userID="CHA" flexoID="3" />
+  <FlexoOntologyModelSlotInstance id="37" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DataModel/DataITrust.uml" modelSlotName="dataModelAccess" roleName="dataModelAccess" userID="CHA" flexoID="4" />
+  <FlexoOntologyModelSlotInstance id="38" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/AccessControlModel/iTrustAccessControlModel.xmi" modelSlotName="accessControlModelAccess" roleName="accessControlModelAccess" userID="CHA" flexoID="5" />
+  <ModelObjectActorReference id="39" objectReference="http://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/instanceiTrustSecurityFederation.fml.rt#CHA_2503" roleName="listInstancesMessageComm" userID="CHA" flexoID="2507" />
+  <ModelObjectActorReference id="40" objectReference="http://www.openflexo.org/projects/2024/1/ITrustMedicalSystemFederation_1705933420738.prj/instanceiTrustSecurityFederation.fml.rt#CHA_2531" roleName="listInstancesMessageComm" userID="CHA" flexoID="2535" />
 </FMLRTVirtualModelInstance>

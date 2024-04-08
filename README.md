@@ -2,7 +2,10 @@
 
 ## Overview
 
-This Git repository encompasses OpenFlexo projects essential for federating models and implementing security rules to validate our methodology. It contains the required models and metamodels resources to facilitate the seamless execution of the security rule implementation process.
+This repository contains the source code and documentation for maintaining security consistency inter-model. Focusing on Model-Based Systems Engineering (MBSE), the project addresses the challenges associated with managing model evolution, especially concerning security. By leveraging the model federation paradigm, it enables the reification of dependencies between heterogeneous models and equips them with security rules to maintain security consistency across heterogeneous models .
+Through this project, we aim to provide a robust solution for managing model evolution, particularly addressing its impact on security consistency across inter-models.
+To validate our Proposal we rely on the Openflexo framework to create correspondences between heterogeneous models and implement the security rules. This Git repository contains the required models and metamodels resources to facilitate the seamless execution of the security rule.
+
 
 ## Table of Contents
 

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Package xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_0vMEAAOqEe-zx5jNEYN7-w" name="MessagingService">
+  <packagedElement xmi:type="uml:Model" xmi:id="_1eLmEAOsEe-zx5jNEYN7-w" name="InstantMessaging">
+    <packagedElement xmi:type="uml:Class" xmi:id="_UEJCwAOtEe-zx5jNEYN7-w" name="User">
+      <ownedAttribute xmi:id="_S2HegAOvEe-zx5jNEYN7-w" name="userPassword"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_WJBEkAOtEe-zx5jNEYN7-w" name="Instant Messager">
+      <elementImport xmi:id="_T4r9sAPOEe-zx5jNEYN7-w" alias="Critical" importedElement="_LipP4AO6Ee-zx5jNEYN7-w"/>
+      <ownedAttribute xmi:id="_bnXRsAOvEe-zx5jNEYN7-w" name="userId" type="_UEJCwAOtEe-zx5jNEYN7-w" subsettedProperty="_vHEakAPOEe-zx5jNEYN7-w" association="_e60CoAOzEe-zx5jNEYN7-w"/>
+      <ownedAttribute xmi:id="_jEXOwAOvEe-zx5jNEYN7-w" name="message" type="_jwGlUAOtEe-zx5jNEYN7-w" subsettedProperty="_vHEakAPOEe-zx5jNEYN7-w" association="_1SGzwAO-Ee-zx5jNEYN7-w"/>
+      <ownedAttribute xmi:id="_v8sMEAOvEe-zx5jNEYN7-w" name="userName"/>
+      <ownedOperation xmi:id="_3d0bMAOvEe-zx5jNEYN7-w" name="sendMessage">
+        <elementImport xmi:id="_rvdK8AeyEe-yje8T_o6_dQ" alias="abacRequire" importedElement="_hoo4gAedEe-yje8T_o6_dQ"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_6wAksAOvEe-zx5jNEYN7-w" name="receiveMessage">
+        <elementImport xmi:id="_qoPQwAedEe-yje8T_o6_dQ" alias="abacRequire" importedElement="_hoo4gAedEe-yje8T_o6_dQ"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Z0AIkAOtEe-zx5jNEYN7-w" name="Fowarder">
+      <elementImport xmi:id="__nCM8APOEe-zx5jNEYN7-w" alias="Critical" importedElement="_LipP4AO6Ee-zx5jNEYN7-w"/>
+      <ownedAttribute xmi:id="_OP8vMAOwEe-zx5jNEYN7-w" name="fowarderID" subsettedProperty="_xiiXcAPOEe-zx5jNEYN7-w" association="_e60CoAOzEe-zx5jNEYN7-w"/>
+      <ownedOperation xmi:id="_W7qiIAOwEe-zx5jNEYN7-w" name="isLoggedOn"/>
+      <ownedOperation xmi:id="_vNB0QAOwEe-zx5jNEYN7-w" name="fowarderMessage">
+        <ownedParameter xmi:id="_2_MJAAOwEe-zx5jNEYN7-w" name="message" type="_jwGlUAOtEe-zx5jNEYN7-w"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_jwGlUAOtEe-zx5jNEYN7-w" name="Message">
+      <elementImport xmi:id="_fGKGQAPPEe-zx5jNEYN7-w" alias="Critical" importedElement="_LipP4AO6Ee-zx5jNEYN7-w"/>
+      <ownedAttribute xmi:id="_tVSaEAOxEe-zx5jNEYN7-w" name="contents" subsettedProperty="_vHEakAPOEe-zx5jNEYN7-w" association="_1SGzwAO-Ee-zx5jNEYN7-w"/>
+      <ownedAttribute xmi:id="_yEPcgAOxEe-zx5jNEYN7-w" name="sender" type="_UEJCwAOtEe-zx5jNEYN7-w"/>
+      <ownedAttribute xmi:id="_10n94AOxEe-zx5jNEYN7-w" name="receiver" type="_UEJCwAOtEe-zx5jNEYN7-w"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_csWOsAOtEe-zx5jNEYN7-w" name="Notification">
+      <ownedAttribute xmi:id="_zcsAsAOyEe-zx5jNEYN7-w" name="notificationID"/>
+      <ownedAttribute xmi:id="_3QvhIAOyEe-zx5jNEYN7-w" name="userID"/>
+      <ownedAttribute xmi:id="_6eU3cAOyEe-zx5jNEYN7-w" name="messageID"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_e60CoAOzEe-zx5jNEYN7-w" name="associationInstantMessagerFowarder" redefinedClassifier="_Z0AIkAOtEe-zx5jNEYN7-w _WJBEkAOtEe-zx5jNEYN7-w" memberEnd="_OP8vMAOwEe-zx5jNEYN7-w _bnXRsAOvEe-zx5jNEYN7-w _ZQIfUAPVEe-zx5jNEYN7-w">
+      <ownedEnd xmi:id="_ZQIfUAPVEe-zx5jNEYN7-w" name="integrity" association="_e60CoAOzEe-zx5jNEYN7-w"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_1SGzwAO-Ee-zx5jNEYN7-w" name="associationInstantMessagerMessage" redefinedClassifier="_jwGlUAOtEe-zx5jNEYN7-w _WJBEkAOtEe-zx5jNEYN7-w" memberEnd="_jEXOwAOvEe-zx5jNEYN7-w _tVSaEAOxEe-zx5jNEYN7-w"/>
+    <profileApplication xmi:id="_651I4APMEe-zx5jNEYN7-w" appliedProfile="_mj1ngAPJEe-zx5jNEYN7-w" isStrict="true"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Profile" xmi:id="_mj1ngAPJEe-zx5jNEYN7-w" name="securityProfile">
+    <packagedElement xmi:type="uml:Stereotype" xmi:id="_AB3AMAOtEe-zx5jNEYN7-w" name="data security"/>
+    <packagedElement xmi:type="uml:Stereotype" xmi:id="_LipP4AO6Ee-zx5jNEYN7-w" name="Critical">
+      <ownedAttribute xmi:id="_vHEakAPOEe-zx5jNEYN7-w" name="integrity"/>
+      <ownedAttribute xmi:id="_xiiXcAPOEe-zx5jNEYN7-w" name="secrecy"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Stereotype" xmi:id="_hoo4gAedEe-yje8T_o6_dQ" name="abac">
+      <ownedAttribute xmi:id="_lfkt0AedEe-yje8T_o6_dQ" name="abacRequire"/>
+    </packagedElement>
+  </packagedElement>
+</uml:Package>

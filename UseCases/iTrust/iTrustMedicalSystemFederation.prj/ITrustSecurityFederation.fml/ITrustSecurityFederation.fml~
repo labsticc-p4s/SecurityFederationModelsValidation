@@ -818,13 +818,38 @@ public model ITrustSecurityFederation {
 				}
 			}
 
+        // --- iTrust security Rule17 --- 
+        /*  when two Pools in the BPMN model(that correspond to Classes in the data model), contains a DataObject that is linked to the security annotations. 
+        The Association between the classes corresponding to two Pools must be annotated with  Integrity or Secrecy  */
+        
         public void iTrustSecurityRule17() {
            List<BPMNFlowElements> listFlowElements = new ArrayList<BPMNFlowElements>();  
            listFlowElements = container.container.getFlowElementsOfPool(pool);
            boolean checkCofidentialDataObject = container.container.verifyDataObjectAnnotation(listFlowElements);
-         
+           List<BPMNMessageFlow> messageFlowsPool = new ArrayList<BPMNMessageFlow>();
+           messageFlowsPool = container.container.getMessageFlows(pool);
+           for (BPMNMessageFlow itemMessageFlow : messageFlowsPool ) {
+              BPMNParticipant associatedPool = container.container.getAssociatedPool(itemMessageFlow,pool);
+              DataClass associatedClass = container.container.getAssociatedClass(associatedPool);
+              if (associatedClass != null) {
+                  boolean checkAssociationSecurityAnnotation = container.container.checkSecurityAnnotaionsOnAssociation(class,associatedClass);
+                  if (checkAssociationSecurityAnnotation) {
+                     log "[iTrust - SecurityRule 18] -> Security rule verified";
+                  } 
+else {
+                     log "[iTrust - SecurityRule 18] -> Security rule violated";
+                  }
+                  } 
+else{
+                     log "[iTrust - SecurityRule 18] -> Security rule verified";
+                 }
+           }
+           
         }
 
+       // --- iTrust security Rule18 ---
+       /*  when two Pools in the BPMN model(that correspond to Classes in the data model), contains a MessageFlow that is linked to the security annotations. 
+        The Association between the classes corresponding to two Pools must be annotated with  Integrity or Secrecy  */
        public void iTrustSecurityRule18() {
            List<BPMNMessageFlow> messageFlowsPool = new ArrayList<BPMNMessageFlow>();
            messageFlowsPool = container.container.getMessageFlows(pool);
@@ -832,10 +857,8 @@ public model ITrustSecurityFederation {
            messageFlowsPoolWithFilter = container.container.getMessageFlowsWithFilter(messageFlowsPool);
            for (BPMNMessageFlow itemMessageFlow : messageFlowsPoolWithFilter ) {
               BPMNParticipant associatedPool = container.container.getAssociatedPool(itemMessageFlow,pool);
-              log associatedPool.toString;
               DataClass associatedClass = container.container.getAssociatedClass(associatedPool);
               if (associatedClass != null) {
-               log associatedClass.toString;
                boolean checkAssociationSecurityAnnotation = container.container.checkSecurityAnnotaionsOnAssociation(class,associatedClass);
                if (checkAssociationSecurityAnnotation) {
                   log "[iTrust - SecurityRule 18] -> Security rule verified";

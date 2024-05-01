@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FMLRTVirtualModelInstance id="0" virtualModelURI="http://www.openflexo.org/projects/2024/4/InstantMessagingServiceSystemFederation_1714143215414.prj/InstantMessagingSecurityFederation.fml" modelVersion="1.0" title="InstanceInstantMessagingSecurityFederation" version="0.1" flexoConceptURI="http://www.openflexo.org/projects/2024/4/InstantMessagingServiceSystemFederation_1714143215414.prj/InstantMessagingSecurityFederation.fml" userID="CHA" flexoID="1">
+  <FlexoConceptInstance id="1" flexoConceptURI="http://www.openflexo.org/projects/2024/4/InstantMessagingServiceSystemFederation_1714143215414.prj/InstantMessagingSecurityFederation.fml#ClassComponentCorrespondence" userID="CHA" flexoID="7">
+    <ConceptActorReference id="2" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DataModel/DataInstantMessagingService.uml#_WJBEkAOtEe-zx5jNEYN7-w" roleName="class" userID="CHA" flexoID="8" />
+    <ConceptActorReference id="3" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/DeploymentInstantMessagingService.uml#_8f8u8APIEe-zx5jNEYN7-w" roleName="component" userID="CHA" flexoID="9" />
+  </FlexoConceptInstance>
+  <FlexoConceptInstance id="4" flexoConceptURI="http://www.openflexo.org/projects/2024/4/InstantMessagingServiceSystemFederation_1714143215414.prj/InstantMessagingSecurityFederation.fml#AssociationCommunicationPathCorrespondence" userID="CHA" flexoID="10">
+    <ConceptActorReference id="5" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DataModel/DataInstantMessagingService.uml#_e60CoAOzEe-zx5jNEYN7-w" roleName="association" userID="CHA" flexoID="11" />
+    <ConceptActorReference id="6" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/DeploymentInstantMessagingService.uml#_ZE5GYAPaEe-zx5jNEYN7-w" roleName="communicationPath" userID="CHA" flexoID="12" />
+  </FlexoConceptInstance>
+  <FlexoConceptInstance id="7" flexoConceptURI="http://www.openflexo.org/projects/2024/4/InstantMessagingServiceSystemFederation_1714143215414.prj/InstantMessagingSecurityFederation.fml#TaskOperationCorrespondence" userID="CHA" flexoID="13">
+    <ConceptActorReference id="8" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/messagingServiceModel.bpmn#Task_4" roleName="task" userID="CHA" flexoID="14" />
+    <ConceptActorReference id="9" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DataModel/DataInstantMessagingService.uml#_6wAksAOvEe-zx5jNEYN7-w" roleName="operation" userID="CHA" flexoID="15" />
+  </FlexoConceptInstance>
+  <FlexoConceptInstance id="10" flexoConceptURI="http://www.openflexo.org/projects/2024/4/InstantMessagingServiceSystemFederation_1714143215414.prj/InstantMessagingSecurityFederation.fml#ClassPoolCorrespondence" userID="CHA" flexoID="17">
+    <ConceptActorReference id="11" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/messagingServiceModel.bpmn#Participant_2" roleName="pool" userID="CHA" flexoID="18" />
+    <ConceptActorReference id="12" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DataModel/DataInstantMessagingService.uml#_WJBEkAOtEe-zx5jNEYN7-w" roleName="class" userID="CHA" flexoID="19" />
+  </FlexoConceptInstance>
+  <FlexoConceptInstance id="13" flexoConceptURI="http://www.openflexo.org/projects/2024/4/InstantMessagingServiceSystemFederation_1714143215414.prj/InstantMessagingSecurityFederation.fml#PoolComponentCorrespondence" userID="CHA" flexoID="24">
+    <ConceptActorReference id="14" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/messagingServiceModel.bpmn#Participant_3" roleName="pool" userID="CHA" flexoID="25" />
+    <ConceptActorReference id="15" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/DeploymentInstantMessagingService.uml#_8f8u8APIEe-zx5jNEYN7-w" roleName="component" userID="CHA" flexoID="26" />
+  </FlexoConceptInstance>
+  <FlexoConceptInstance id="16" flexoConceptURI="http://www.openflexo.org/projects/2024/4/InstantMessagingServiceSystemFederation_1714143215414.prj/InstantMessagingSecurityFederation.fml#PoolComponentCorrespondence" userID="CHA" flexoID="27">
+    <ConceptActorReference id="17" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/DeploymentInstantMessagingService.uml#_4-4b8APIEe-zx5jNEYN7-w" roleName="component" userID="CHA" flexoID="28" />
+  </FlexoConceptInstance>
+  <FlexoConceptInstance id="18" flexoConceptURI="http://www.openflexo.org/projects/2024/4/InstantMessagingServiceSystemFederation_1714143215414.prj/InstantMessagingSecurityFederation.fml#PoolComponentCorrespondence" userID="CHA" flexoID="29">
+    <ConceptActorReference id="19" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/messagingServiceModel.bpmn#Participant_1" roleName="pool" userID="CHA" flexoID="30" />
+    <ConceptActorReference id="20" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/DeploymentInstantMessagingService.uml#_4-4b8APIEe-zx5jNEYN7-w" roleName="component" userID="CHA" flexoID="31" />
+  </FlexoConceptInstance>
+  <FlexoConceptInstance id="21" flexoConceptURI="http://www.openflexo.org/projects/2024/4/InstantMessagingServiceSystemFederation_1714143215414.prj/InstantMessagingSecurityFederation.fml#ClassComponentCorrespondence" userID="CHA" flexoID="32">
+    <ConceptActorReference id="22" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DataModel/DataInstantMessagingService.uml#_Z0AIkAOtEe-zx5jNEYN7-w" roleName="class" userID="CHA" flexoID="33" />
+    <ConceptActorReference id="23" conceptURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/DeploymentInstantMessagingService.uml#_4-4b8APIEe-zx5jNEYN7-w" roleName="component" userID="CHA" flexoID="34" />
+  </FlexoConceptInstance>
+  <FlexoOntologyModelSlotInstance id="24" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DeploymentModel/DeploymentInstantMessagingService.uml" modelSlotName="deploymentModelAccess" roleName="deploymentModelAccess" userID="CHA" flexoID="2" />
+  <FlexoOntologyModelSlotInstance id="25" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/DataModel/DataInstantMessagingService.uml" modelSlotName="dataModelAccess" roleName="dataModelAccess" userID="CHA" flexoID="3" />
+  <FlexoOntologyModelSlotInstance id="26" modelURI="file:/D:/HeterogenousSecureModelsFederation/Resources/Models/BPMNModel/messagingServiceModel.bpmn" modelSlotName="bpmnModelAccess" roleName="bpmnModelAccess" userID="CHA" flexoID="4" />
+</FMLRTVirtualModelInstance>

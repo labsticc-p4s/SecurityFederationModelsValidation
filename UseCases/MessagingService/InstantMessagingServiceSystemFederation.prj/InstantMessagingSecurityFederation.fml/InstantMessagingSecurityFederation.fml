@@ -1,0 +1,395 @@
+use org.openflexo.technologyadapter.emf.EMFModelSlot as EMF;
+
+import org.openflexo.technologyadapter.emf.model.EMFModel;
+import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
+import java.lang.String;
+
+import ["http://www.eclipse.org/uml2/5.0.0/UML"] as UML2;
+import ["http://www.eclipse.org/uml2/5.0.0/UML"] as UML22;
+import ["http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"] as BPMN21;
+
+import [UML2:"Class"] as DATA_CLASS;
+import [UML2:"Association"] as DATA_ASSOCIATION;
+import [UML2:"Operation"] as DATA_OPERATION;
+import [UML22:"Node"] as DEPLOYMENT_NODE;
+import [UML22:"Component"] as DEPLOYMENT_COMPONENT;
+import [UML22:"CommunicationPath"] as DEPLOYMENT_COMMUNICATION_PATH;
+
+import [BPMN21:"Participant"] as BPMN_PARTICIPANT;
+import [BPMN21:"MessageFlow"] as BPMN_MESSAGE_FLOW;
+import [BPMN21:"TextAnnotation"] as BPMN_TEXT_ANNOTATION;
+import [BPMN21:"Association"] as BPMN_ASSOCIATION;
+import [BPMN21:"Process"] as BPMN_PROCESS;
+import [BPMN21:"DataObject"] as BPMN_DATAOBJECT;
+import [BPMN21:"FlowElement"] as BPMN_FLOW_ELEMENTS;
+import [BPMN21:"Task"] as BPMN_TASK;
+import [BPMN21:"UserTask"] as BPMN_USER_TASK;
+import [BPMN21:"SequenceFlow"] as BPMN_SEQUENCE_FLOW;
+import [BPMN21:"StartEvent"] as BPMN_START_EVENT;
+
+typedef EMFObjectIndividualType(eClass=DATA_CLASS) as DataClass;
+typedef EMFObjectIndividualType(eClass=DATA_ASSOCIATION) as DataAssociation;
+typedef EMFObjectIndividualType(eClass=DEPLOYMENT_NODE) as DeployementNode;
+typedef EMFObjectIndividualType(eClass=DEPLOYMENT_COMPONENT) as DeployementComponent;
+typedef EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) as DeployementCommunicationPath; 
+typedef EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) as BPMNParticipant;
+typedef EMFObjectIndividualType(eClass=BPMN_MESSAGE_FLOW) as BPMNMessageFlow;
+typedef EMFObjectIndividualType(eClass=BPMN_TEXT_ANNOTATION) as BPMNTextAnnotation;
+typedef EMFObjectIndividualType(eClass=BPMN_ASSOCIATION) as BPMNAssociation;
+typedef EMFObjectIndividualType(eClass=BPMN_PROCESS) as BPMNProcess;
+typedef EMFObjectIndividualType(eClass=BPMN_FLOW_ELEMENTS) as BPMNFlowElements;
+typedef EMFObjectIndividualType(eClass=BPMN_DATAOBJECT) as BPMNDataObject;
+typedef EMFObjectIndividualType(eClass=BPMN_TASK) as BPMNTask;
+typedef EMFObjectIndividualType(eClass=BPMN_USER_TASK) as BPMNUserTask;
+typedef EMFObjectIndividualType(eClass=DATA_OPERATION) as DataOperation;
+typedef EMFObjectIndividualType(eClass=BPMN_SEQUENCE_FLOW) as BPMNSequenceFlow;
+typedef EMFObjectIndividualType(eClass=BPMN_START_EVENT) as BPMNStartEvent; 
+
+@URI("http://www.openflexo.org/projects/2024/4/InstantMessagingServiceSystemFederation_1714143215414.prj/InstantMessagingSecurityFederation.fml")
+@Author("chahr")
+public model InstantMessagingSecurityFederation {
+	EMFModel dataModelAccess with EMFModelSlot(metaModel=UML2,isRequired=true);
+	EMFModel deploymentModelAccess with EMFModelSlot(metaModel=UML2,isRequired=true);
+	EMFModel bpmnModelAccess with EMFModelSlot(metaModel=BPMN21,isRequired=true);
+
+
+  public create::createAccessObject(required Resource<EMFModel> bpmnModelResource, required Resource<EMFModel> deploymentModelResource, required Resource<EMFModel> dataModelResource) {
+      deploymentModelAccess = parameters.deploymentModelResource.resourceData;
+      dataModelAccess = parameters.dataModelResource.resourceData;
+      bpmnModelAccess = parameters.bpmnModelResource.resourceData;
+   }
+
+   
+  private boolean checkClassSecurityAnnotation(DataClass class) {
+   if (parameters.class.getValues("ownedElement").toString.contains("Critical")) {
+      return true;
+   } 
+else {
+      return false;
+      }  
+  }
+
+  private boolean checkExistingInstance(DataOperation operation) {
+   for (TaskOperationCorrespondence item : select TaskOperationCorrespondence from this ) {
+     if (item.operation == parameters.operation) {
+      return true;
+     }
+   }
+   return false;
+  }
+  
+  //Verify if the selected Operation is a part of the TaskOperationCorrespondence
+   private boolean checkExistingInstance1(String operation) { 
+   for (TaskOperationCorrespondence item : select TaskOperationCorrespondence from this ) {
+     if (item.operation.name == parameters.operation) {
+      return true;
+     }
+   }
+   return false;
+  }
+
+  // Verify if the Task is preceded by a logIn task or task startEvent preceded with logIn task 
+  private boolean checkLogInTaskPrecedence(BPMNTask task) {
+   for (BPMNSequenceFlow itemSequenceFlow : select BPMNSequenceFlow from bpmnModelAccess) {
+      if (itemSequenceFlow.targetRef == parameters.task) {
+        if (itemSequenceFlow.sourceRef instanceof BPMNTask && itemSequenceFlow.sourceRef.name == "logIn") {
+         return true; 
+        } 
+
+        if (itemSequenceFlow.sourceRef instanceof BPMNStartEvent) {
+         for (BPMNMessageFlow dataflow : select BPMNMessageFlow from bpmnModelAccess) {
+            if (dataflow.targetRef == itemSequenceFlow.sourceRef ) {
+              for (BPMNTask task : select BPMNTask from bpmnModelAccess ) {  // dataflow.sourceRef.name=="logIn"
+               if (task == dataflow.sourceRef && task.name == "logIn") {
+                  return true;
+               }
+              } 
+            }
+          }
+        }
+      }
+    }
+   return false;
+  }
+
+  // Get the Task that corresponds to the selected operation 
+  private BPMNTask getTask(String operation) {
+    for (TaskOperationCorrespondence item : select TaskOperationCorrespondence from this ) {
+     if (item.operation.name == parameters.operation) {
+      return item.task;
+     }
+   }
+  }
+
+   // Verify if the Association contains integrity security annotation
+
+   private boolean checkAssociationSecurityAnnotation(DataAssociation association) {
+     if (parameters.association.getValues("ownedElement").toString.contains("integrity")) {
+      return true;
+     }
+      return false;
+   }
+
+   // Verify if the communication Path has encrypted security annotation
+   private boolean checkCommunicationPathSecurityAnnotation(DeployementCommunicationPath commPath) {
+     if (parameters.commPath.getValues("ownedElement").toString.contains("encypted")) {
+      return true;
+     }
+      return false;
+   }
+
+   private DataClass getClass(String class) {
+     for (DataClass itemClass : select DataClass from dataModelAccess) {
+      if (itemClass.name == parameters.class) {
+         return itemClass;
+      }
+     }
+   }
+   
+   // Get the associated class 
+   private List<DataClass> getAssociatedClass(DataClass class) {
+      List<DataClass> associatedClasses = new ArrayList<DataClass>();
+      for (DataAssociation association : select DataAssociation from dataModelAccess ) {
+         if (association.getValues("redefinedClassifier").toString.contains(parameters.class.name)) {
+            for (Object itemClass : association.getValues("redefinedClassifier")) {
+               if (itemClass != parameters.class) {
+                 associatedClasses.add(this.getClass(itemClass.toString.substring(6)));  
+               }
+            }
+         }
+      }
+         
+      return associatedClasses;
+   }
+
+   // Get the FlowElements of a selected Pool
+   private List<BPMNFlowElements> getFlowElementsOfPool(BPMNParticipant pool) {
+      List<BPMNFlowElements> listFlowElements = new ArrayList<BPMNFlowElements>();
+      for (BPMNParticipant itemParticipant : select BPMNParticipant from bpmnModelAccess) {
+         if (itemParticipant == parameters.pool) {
+            for (BPMNFlowElements itemFlows : select BPMNFlowElements from bpmnModelAccess) {
+               if (itemParticipant.processRef.flowElements.contains(itemFlows) && itemFlows instanceof BPMNDataObject) {
+                  listFlowElements.add(itemFlows);
+               }
+            }
+         }
+      }
+      return listFlowElements;
+   }
+
+   private DeployementComponent getCorrespondingComponent(DataClass class) {
+      for (ClassComponentCorrespondence item : select ClassComponentCorrespondence from this ) {
+         if (item.class == parameters.class) {
+            return item.component;
+         }
+      }
+   }
+
+  private DeployementNode getNode(DeployementComponent component) {
+   for (DeployementNode itemNode : select DeployementNode from deploymentModelAccess) {
+      if (itemNode.getValues("ownedElement").toString.contains(parameters.component.name)) {
+         return itemNode;
+      }
+   }
+  }
+
+  private DeployementCommunicationPath getCommunicationPath(DeployementNode node1, DeployementNode node2) {
+   for (DeployementCommunicationPath itemCommPath : select DeployementCommunicationPath from deploymentModelAccess) {
+      if (itemCommPath.getValues("redefinedClassifier").toString.contains(parameters.node1.name) && itemCommPath.getValues("redefinedClassifier").toString.contains(parameters.node2.name)) {
+        return itemCommPath;
+      }
+   }
+  }
+
+ // Verify the security annotation on the Task
+ private boolean checkSecurityAnnotationTask(BPMNTask task) {
+         for (BPMNAssociation itemAssociation : select BPMNAssociation from bpmnModelAccess) {
+            for (BPMNTextAnnotation itemAnnotation : select BPMNTextAnnotation from bpmnModelAccess) {
+               if (itemAnnotation == itemAssociation.sourceRef && itemAssociation.targetRef == parameters.task) {
+                  if (itemAnnotation.text.contains("integrityAct")) {
+                     log itemAnnotation.toString;
+                     return true;
+                  }
+               }
+         }
+      }
+      return false;
+   }
+
+  // Verify the security annotation on the operation
+   private boolean checkOperationSecurityAnnotation(DataOperation operation) {
+      if (parameters.operation.getValues("ownedElement").toString.contains("abacRequire") && parameters.operation.getValues("member").toString.contains("Stereotype:abac")) {
+      return true;
+     }  
+      return false;
+   }
+
+ public concept ClassComponentCorrespondence {
+
+   DataClass class with EMFObjectRole(container=dataModelAccess, type= DATA_CLASS);
+   DeployementComponent component  with EMFObjectRole(container= deploymentModelAccess, type=DEPLOYMENT_COMPONENT);
+
+         // create the instance of the concept with the selected class and component
+         create::_create(required String nameClass, required String nameComponent) {
+            class = select unique DataClass from dataModelAccess where (selected.name == parameters.nameClass);
+            component = select unique DeployementComponent from deploymentModelAccess  where (selected.name == parameters.nameComponent); 
+         }
+
+         delete() {
+            delete class;
+            delete component;
+         }
+
+      public void instantMessagingSecurityRule4() {
+         List<DataClass> associatedClasses = new ArrayList<DataClass>();
+         boolean checkClassAnnotation = container.checkClassSecurityAnnotation(class);
+         DeployementNode containerNodeOfComponent = container.getNode(component);
+         if (checkClassAnnotation) {
+            associatedClasses = container.getAssociatedClass(class);
+            for (DataClass itemClassAssociated :associatedClasses ) {
+               boolean checkClassAssociatedAnnotation = container.checkClassSecurityAnnotation(itemClassAssociated);
+               if (checkClassAssociatedAnnotation) {
+                 DeployementComponent associatedComponent = container.getCorrespondingComponent(itemClassAssociated);
+                 if (associatedComponent != null) {
+                  DeployementNode containerNodeOfassociatedComponent = container.getNode(associatedComponent);
+                  DeployementCommunicationPath itemCommPath = container.getCommunicationPath(containerNodeOfComponent,containerNodeOfassociatedComponent);
+                  boolean checkCommunicationPathAnotation = container.checkCommunicationPathSecurityAnnotation(itemCommPath);
+                  if (checkCommunicationPathAnotation) {
+                    log "[InstantMessagingService - SecurityRule 4] -> Security rule not violated"; 
+                  }
+else {
+                    log "[InstantMessagingService - SecurityRule 4] -> Security rule violated";
+                  }
+                 }
+               } 
+            } 
+         } 
+      }
+ }
+ 
+
+ public concept ClassPoolCorrespondence {
+   DataClass class with EMFObjectRole(container=dataModelAccess, type= DATA_CLASS);
+   BPMNParticipant pool with EMFObjectRole(container=bpmnModelAccess,type=BPMN_PARTICIPANT);
+
+   create::_create(required String poolName, required String className) {
+            pool = select unique BPMNParticipant from bpmnModelAccess where (selected.name == parameters.poolName);
+            class = select unique DataClass from dataModelAccess where (selected.name == parameters.className);
+         }
+
+     public void instantMessagingSecurityRule1() {
+       boolean checkClassAnnotation = container.checkClassSecurityAnnotation(class);
+       if (checkClassAnnotation) {
+         for (Object operation : class.getValues("ownedOperation")) { // get the DataOperation type
+           boolean checkExistingInstanceOperation = container.checkExistingInstance1(operation.toString.substring(10));
+           if (checkExistingInstanceOperation) {
+            BPMNTask task = container.getTask(operation.toString.substring(10));
+            boolean checklogInTask = container.checkLogInTaskPrecedence(task);
+            if (checklogInTask) {
+              log "[InstantMessagingService - SecurityRule 1] -> Security rule not violated"; 
+            }
+else {
+              log "[InstantMessagingService - SecurityRule 1] -> Security rule violated"; 
+            }
+            
+           }
+         }
+         
+       }
+     }
+
+	delete() {
+		delete class;
+		delete pool;
+	}
+   
+ }
+	
+   
+ 
+
+
+ public concept AssociationCommunicationPathCorrespondence {
+
+
+   DataAssociation association with EMFObjectRole(container=dataModelAccess, type= DATA_ASSOCIATION);
+   DeployementCommunicationPath communicationPath  with EMFObjectRole(container= deploymentModelAccess, type=DEPLOYMENT_COMMUNICATION_PATH);
+
+    // create the instance of the concept with the selected class and component
+         create::_create(required String nameAssociation, required String nameCommPath) {
+            association = select unique DataAssociation from dataModelAccess  where (selected.name == parameters.nameAssociation);
+            communicationPath = select unique DeployementCommunicationPath from deploymentModelAccess  where (selected.name == parameters.nameCommPath);
+         }
+
+    public void instantMessagingSecurityRule2() {
+     boolean checkAssociationAnnotation = container.checkAssociationSecurityAnnotation(association);
+     boolean checkCommunicationPathAnotation = container.checkCommunicationPathSecurityAnnotation(communicationPath);
+
+     if (checkAssociationAnnotation && checkCommunicationPathAnotation) {
+      log "[InstantMessagingService - SecurityRule 2] -> Security rule not violated"; 
+     } 
+else{
+      log "[InstantMessagingService - SecurityRule 2] -> Security rule violated";
+     }
+    }
+   
+   
+ }
+
+ public concept PoolComponentCorrespondence {
+
+   BPMNParticipant pool with EMFObjectRole(container=bpmnModelAccess,type=BPMN_PARTICIPANT);
+   DeployementComponent component  with EMFObjectRole(container= deploymentModelAccess, type=DEPLOYMENT_COMPONENT);
+
+
+   create::_create(required String namePool, required String nameComponent) {
+     pool = select unique BPMNParticipant from bpmnModelAccess where (selected.name == parameters.namePool);
+     component = select unique DeployementComponent from deploymentModelAccess  where (selected.name == parameters.nameComponent);
+   }
+
+   public void instantMessagingSecurityRule3() {
+      boolean checkConfidentialData = false;
+      List<BPMNFlowElements> flowElements = new ArrayList<BPMNFlowElements>(); 
+      flowElements = container.getFlowElementsOfPool(pool);
+      log flowElements.toString;
+      
+      
+   }
+
+	delete() {
+		delete pool;
+		delete component;
+	}
+
+   
+   
+   
+ }
+
+ public concept TaskOperationCorrespondence {
+   BPMNTask task with EMFObjectRole(container=bpmnModelAccess,type=BPMN_TASK);
+   DataOperation operation with EMFObjectRole(container=dataModelAccess,type= DATA_OPERATION);
+
+   create::_create(required String nameTask, required String nameOperation) {
+      task = select unique BPMNTask from bpmnModelAccess where (selected.name == parameters.nameTask);
+      operation = select unique DataOperation from dataModelAccess  where (selected.name == parameters.nameOperation);
+      
+   }
+
+   public void instantMessagingSecurityRule5() {
+       boolean checkTaskAnnotation = container.checkSecurityAnnotationTask(task);
+       boolean checkOperationAnnotation = container.checkOperationSecurityAnnotation(operation);
+       if (checkTaskAnnotation && checkOperationAnnotation) {
+         log "[InstantMessagingService - SecurityRule5] -> Security rule not violated"; 
+       }
+else {
+         log "[InstantMessagingService - SecurityRule5] -> Security rule violated";
+       }
+   }
+   
+ }
+ 
+
+
+   
+}

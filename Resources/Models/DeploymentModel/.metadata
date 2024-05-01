@@ -1,5 +1,6 @@
 #Metadata for directory D:\HeterogenousSecureModelsFederation\Resources\Models\DeploymentModel
-#Wed Apr 03 15:10:27 CEST 2024
+#Wed May 01 14:18:53 CEST 2024
 DeploymentFlightPlanNegociation.uml.rootNamespace=http\://www.eclipse.org/uml2/5.0.0/UML
+DeploymentInstantMessagingService.uml.rootNamespace=http\://www.eclipse.org/uml2/5.0.0/UML
 DeploymentMessangingService.uml.rootNamespace=http\://www.eclipse.org/uml2/5.0.0/UML
 ITrustDeployementModel.xmi.rootNamespace=http\://www.example.org/deployementEcoreMetaModel

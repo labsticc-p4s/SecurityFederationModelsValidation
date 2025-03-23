@@ -1,0 +1,50 @@
+
+post{
+
+//self.isNestedElementOfClassUser().println();
+//self.owner != null or not self.owner.exists(parentClass | parentClass.isParentUser()).println();
+}
+context DataITrust!Class {
+
+    // Check that each Class User have a correspondence Role in the AccessControl model
+    constraint EachClassUserCorrespondToRole {
+
+        // verify whether a Class user is contained in the MatchTrace
+        check :   not self.isNestedElementOfClassUser2() or matchTrace.matches.exists(t | t.left = self or t.right = self) 
+        message: "security rule violated " + self.qualifiedName  + " Match trace has not instance containning " + self.name+ " and corresponding Role"
+    }
+    
+  
+}
+
+// Verify wether the nested class is named User
+
+operation DataITrust!Class isNestedElementOfClassUser() : Boolean {
+	 return  self.name <> "User" ;
+  
+}
+
+operation DataITrust!Class isParentUser() : Boolean {
+	 return self.owner.name = "User" ; //t.owner.name = "User" or self.name <> "User" ;
+	 	   
+}
+
+// Verify wether each user in data model has a corresponding element in the access control model 
+
+operation DataITrust!Class isNestedElementOfClassUser2() : Boolean {
+	 return (self.name <> "User" and self.owner.name = "User") or (  self.owner.name <> "iTrust" and self.owner.isNestedElementOfClassUser2()); //( self.exists(c | c.isParentUser())->size() = 0); //and ((self.owner <> null or self.owner.isParentUser()));
+  
+}
+
+// Verify wether each user in data model has a corresponding element in the access control model 
+
+operation DataITrust!Class isNestedElementOfClassUser3() : Boolean {
+	 return (self.name <> "User" and self.owner.name = "User") or (  self.owner.isTypeOf(Model) and self.owner.isNestedElementOfClassUser3()); //( self.exists(c | c.isParentUser())->size() = 0); //and ((self.owner <> null or self.owner.isParentUser()));
+  
+}
+
+// Check if a cless in data model is User class
+operation String  isSubStringUser() : Boolean {
+	 return  self.isSubstringOf("iTrust::User::") or not self.matches("iTrust::User") ;
+  
+}

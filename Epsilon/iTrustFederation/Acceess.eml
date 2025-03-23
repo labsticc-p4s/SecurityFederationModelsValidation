@@ -1,0 +1,43 @@
+/*
+Print all the correspondneces (Matched element saved in the matchTrace)
+*/
+
+post {
+  for (m in System.context.matchTrace.matches) {
+    (m.left + " <-> " + m.right).println();
+  }
+}
+
+
+rule MergeModel
+	merge l :  DataITrust!Model with r : iTrustAccessControlModel!AccessControlModel into t : Target!Model {
+	
+	t.name = l.name;
+	
+}
+
+rule CopyModel
+	transform s : DataITrust!Model to t : Target!Model {
+	t.name = s.name;
+	t.contents::= s.member;
+	
+}
+
+rule MergeClass
+	merge l : DataITrust!Class with r : iTrustAccessControlModel!Role  into t : Target!Class {
+	
+	t.name = l.name;
+}
+
+rule MergeOperations
+	merge l : DataITrust!Operation with r : iTrustAccessControlModel!Authorization  into t : Target!Class {
+	t.name = l.name;
+	t.operations ::= l.name;
+}
+
+
+//rule CopyClass
+	//transform s : Source!Class to t : Target!Class {
+	
+	//t.name = s.name;
+//}

@@ -1,0 +1,55 @@
+<project default="main">
+		
+	<target name="loadModels">
+		<epsilon.emf.register file="AccessControlMetamodel.ecore"/>
+		
+		<epsilon.emf.loadModel name="iTrustAccessControlModel"
+	                                   modelFile="iTrustAccessControlModel.model"
+	                                   metamodelUri="AccessControlMetamodel"
+	                                   read="true" store="false" />
+		
+		<epsilon.emf.register file="UmlMetaModel.ecore"/>
+		
+		<epsilon.loadModel name="DataITrust" type="UML" impl="org.eclipse.epsilon.emc.uml.UmlModel">
+		<parameter name="modelFile" value="/iTrustFederation/DataITrust.uml"/>
+		<parameter name="readOnLoad" value="true"/>
+		</epsilon.loadModel>
+		
+			<epsilon.emf.loadModel name="Target"
+	                                       modelFile="Target.model"
+	                                       metamodelUri="UmlMetaModel"
+	                                       read="false" store="true" />
+			
+		</target>
+	
+	<target name="compare" depends = "loadModels">
+		<epsilon.ecl src="AccessDataMatch.ecl" 
+		exportmatchtrace="matchTrace">
+				<model ref="iTrustAccessControlModel" alias="Source"/>
+				<model ref="DataITrust" alias="Source"/>
+		</epsilon.ecl>
+	</target>
+	
+	<target name="merge" depends = "compare">
+		<epsilon.eml src="Acceess.eml"
+			usematchtrace="matchTrace">
+			<model ref="iTrustAccessControlModel"/>
+			<model ref="DataITrust" alias="Source"/>
+			<model ref="Target"/>
+		</epsilon.eml>
+	</target>
+	
+	<target name="validate" depends="compare">
+			<epsilon.evl src="securityRulesValidation.evl">
+				<model ref="iTrustAccessControlModel"/>
+				<model ref="DataITrust"/>
+				<uses ref="matchTrace"/>
+			</epsilon.evl>
+		</target>
+	
+	
+
+	
+	<target name="main" depends="loadModels,compare, merge,validate">
+	</target>
+</project>

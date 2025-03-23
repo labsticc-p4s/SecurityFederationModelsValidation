@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_j-5xsLYOEe6JM9aBK8QXKg" name="iTrust">
+  <packagedElement xsi:type="uml:Class" xmi:id="_PDjjsLYPEe6JM9aBK8QXKg" name="User" isAbstract="true">
+    <nestedClassifier xsi:type="uml:Class" xmi:id="_TeNxILYPEe6JM9aBK8QXKg" name="Doctor">
+      <nestedClassifier xsi:type="uml:Class" xmi:id="_ws3JoL4zEe6GGffmtGz0Ag" name="Stagiare" redefinedClassifier="_PDjjsLYPEe6JM9aBK8QXKg"/>
+      <nestedClassifier xsi:type="uml:Class" xmi:id="_CH1ywL40Ee6GGffmtGz0Ag" name="Specialiste" redefinedClassifier="_PDjjsLYPEe6JM9aBK8QXKg"/>
+    </nestedClassifier>
+    <nestedClassifier xsi:type="uml:Class" xmi:id="_V16oULYPEe6JM9aBK8QXKg" name="Patient"/>
+    <nestedClassifier xsi:type="uml:Class" xmi:id="_aSrukLYPEe6JM9aBK8QXKg" name="Admin"/>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Class" xmi:id="_gR2bsLYPEe6JM9aBK8QXKg" name="Prescription">
+    <ownedOperation xmi:id="_5r_lsPf4Ee62rYU9p8CznQ" name="editPrescription"/>
+    <nestedClassifier xsi:type="uml:Stereotype" xmi:id="_aqGosLYSEe6JM9aBK8QXKg" name="Critical"/>
+  </packagedElement>
+  <packagedElement xsi:type="uml:AssociationClass" xmi:id="_5bSTYLYREe6JM9aBK8QXKg" name="association" redefinedClassifier="_gR2bsLYPEe6JM9aBK8QXKg _TeNxILYPEe6JM9aBK8QXKg"/>
+</uml:Model>

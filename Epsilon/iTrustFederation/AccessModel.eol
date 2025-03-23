@@ -1,0 +1,28 @@
+/*
+* Select all class named User  in the data model and print their nested
+*/
+
+for (element in DataClass!Class.all) {
+	if(element.name == "User"){
+	 element.nestedClassifier.println();
+	 "-----".println();
+			for (ee in element.nestedClassifier.nestedClassifier) {
+			if(ee.isEmpty() == false){
+				ee.name.println();
+			}
+			
+				
+			}
+	}
+}
+
+/*
+* Print all the the roles in the access control model
+*/
+
+"++++++++++".println();
+
+for (role in AccessControl!Role.all) {
+ role.nameRole.println();
+}
+

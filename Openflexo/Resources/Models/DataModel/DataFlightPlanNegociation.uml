@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_oqR_UL9cEe6GGffmtGz0Ag" name="FlightPlanModel">
+  <packagedElement xmi:type="uml:Class" xmi:id="_4SRm4L9nEe6GGffmtGz0Ag" name="RBAC">
+    <elementImport xmi:id="_RxAZIL9qEe6GGffmtGz0Ag" alias="abac" importedElement="_boXf0L9qEe6GGffmtGz0Ag">
+      <ownedComment xmi:id="_tBUvsL9qEe6GGffmtGz0Ag" annotatedElement="_lZXN4L9sEe6GGffmtGz0Ag">
+        <body>Airplane, LocalAuthority</body>
+      </ownedComment>
+      <ownedComment xmi:id="_R4AcML9uEe6GGffmtGz0Ag" annotatedElement="_pu0LML9sEe6GGffmtGz0Ag">
+        <body>Airplane, readFlightPlan</body>
+      </ownedComment>
+      <ownedComment xmi:id="_DmC9AL9vEe6GGffmtGz0Ag" annotatedElement="_pu0LML9sEe6GGffmtGz0Ag">
+        <body>Airplane, modifyFlightPlan</body>
+      </ownedComment>
+    </elementImport>
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_ADdEML9oEe6GGffmtGz0Ag" name="Airplane">
+      <elementImport xmi:id="_o_Lv8L9qEe6GGffmtGz0Ag" alias="critical" importedElement="_KArQYL9qEe6GGffmtGz0Ag">
+        <ownedComment xmi:id="_2NGJcL9vEe6GGffmtGz0Ag" annotatedElement="_SiCbML9vEe6GGffmtGz0Ag">
+          <body>NotifyLocalAuthority</body>
+        </ownedComment>
+        <ownedComment xmi:id="_BEXN8L9wEe6GGffmtGz0Ag" annotatedElement="_VSFg8L9vEe6GGffmtGz0Ag">
+          <body>NotifyLocalAuthority</body>
+        </ownedComment>
+      </elementImport>
+      <ownedOperation xmi:id="_4JNVAL9oEe6GGffmtGz0Ag" name="NegociateFlightPlan"/>
+      <ownedOperation xmi:id="_8zpD0L9oEe6GGffmtGz0Ag" name="TakeOff"/>
+      <ownedOperation xmi:id="__0IZUL9oEe6GGffmtGz0Ag" name="NotifyLocalAuthority">
+        <elementImport xmi:id="_0BgYcL9rEe6GGffmtGz0Ag" alias="abacRequire" importedElement="_v-MUAL9rEe6GGffmtGz0Ag">
+          <ownedComment xmi:id="_q-IWoL9vEe6GGffmtGz0Ag" annotatedElement="_pu0LML9sEe6GGffmtGz0Ag">
+            <body>readFlightPlan , modifyFlightPlan</body>
+          </ownedComment>
+        </elementImport>
+        <ownedParameter xmi:id="_Et8n8L9pEe6GGffmtGz0Ag" name="flightPlane" type="_WiMiIL9oEe6GGffmtGz0Ag" direction="out"/>
+        <ownedParameter xmi:id="_MMQMkL9pEe6GGffmtGz0Ag" name="obj" type="_P6E-oL9oEe6GGffmtGz0Ag"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_0Qzt8Ad8EfC7Ir1GZieanw" name="elaborateRBT"/>
+      <ownedOperation xmi:id="_4fyP0Ad8EfC7Ir1GZieanw" name="retreiveMeteoInfo"/>
+      <ownedOperation xmi:id="_8q8BoAd8EfC7Ir1GZieanw" name="sendRequestRBT"/>
+      <ownedOperation xmi:id="_BR4-oAd9EfC7Ir1GZieanw" name="receiveRBT"/>
+      <ownedOperation xmi:id="_FMwRsAd9EfC7Ir1GZieanw" name="generateNewRBT">
+        <ownedParameter xmi:id="_JnbtQAd9EfC7Ir1GZieanw" name="obj " type="_X-vxEAd9EfC7Ir1GZieanw"/>
+        <ownedParameter xmi:id="_0fWDwAd9EfC7Ir1GZieanw" name="obj2" type="_93fe4Ad9EfC7Ir1GZieanw"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_JAZF8Ad-EfC7Ir1GZieanw" name="requestPermission">
+        <elementImport xmi:id="_lh1GIAd-EfC7Ir1GZieanw" alias="abacRequire" importedElement="_v-MUAL9rEe6GGffmtGz0Ag">
+          <ownedComment xmi:id="_u3sCQAd-EfC7Ir1GZieanw" annotatedElement="_lZXN4L9sEe6GGffmtGz0Ag">
+            <body>Airplane</body>
+          </ownedComment>
+          <ownedComment xmi:id="_3H0scAd-EfC7Ir1GZieanw" annotatedElement="_pu0LML9sEe6GGffmtGz0Ag">
+            <body>ReadIDinformation</body>
+          </ownedComment>
+        </elementImport>
+        <ownedParameter xmi:id="_NDGGYAd-EfC7Ir1GZieanw" name="obj" type="_cezb4Ad9EfC7Ir1GZieanw"/>
+        <ownedParameter xmi:id="_RozGMAd-EfC7Ir1GZieanw" name="FOIDinfo" type="_Y_jRUAd-EfC7Ir1GZieanw"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_bfMHEAd_EfC7Ir1GZieanw" name="sendRBT">
+        <elementImport xmi:id="_n192gAd_EfC7Ir1GZieanw" alias="abacRequire" importedElement="_v-MUAL9rEe6GGffmtGz0Ag">
+          <ownedComment xmi:id="_thrcIAd_EfC7Ir1GZieanw" annotatedElement="_lZXN4L9sEe6GGffmtGz0Ag">
+            <body>Airplaine</body>
+          </ownedComment>
+          <ownedComment xmi:id="_yMdJMAd_EfC7Ir1GZieanw" annotatedElement="_pu0LML9sEe6GGffmtGz0Ag">
+            <body>sendRBT,ReadRBT,ModifyRBT</body>
+          </ownedComment>
+        </elementImport>
+        <ownedParameter xmi:id="_eFI1oAd_EfC7Ir1GZieanw" name="obj" type="_93fe4Ad9EfC7Ir1GZieanw"/>
+        <ownedParameter xmi:id="_jaXN4Ad_EfC7Ir1GZieanw" name="mess" type="_Y_jRUAd-EfC7Ir1GZieanw"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_8zziYAd_EfC7Ir1GZieanw" name="sendCompleteIDInformation">
+        <elementImport xmi:id="_HmtEQAeAEfC7Ir1GZieanw" alias="abacRequire" importedElement="_v-MUAL9rEe6GGffmtGz0Ag">
+          <ownedComment xmi:id="_KvfaIAeAEfC7Ir1GZieanw" annotatedElement="_lZXN4L9sEe6GGffmtGz0Ag">
+            <body>Airplaine</body>
+          </ownedComment>
+          <ownedComment xmi:id="_O2CYwAeAEfC7Ir1GZieanw" annotatedElement="_pu0LML9sEe6GGffmtGz0Ag">
+            <body>ReadIDinformation</body>
+          </ownedComment>
+        </elementImport>
+        <ownedParameter xmi:id="_CUEtAAeAEfC7Ir1GZieanw" name="FoIDinfo" type="_Y_jRUAd-EfC7Ir1GZieanw"/>
+      </ownedOperation>
+    </nestedClassifier>
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_Gvk98L9oEe6GGffmtGz0Ag" name="ASTU1">
+      <elementImport xmi:id="_KLNdsL9wEe6GGffmtGz0Ag" alias="critical" importedElement="_KArQYL9qEe6GGffmtGz0Ag">
+        <ownedComment xmi:id="_OdhncL9wEe6GGffmtGz0Ag" annotatedElement="_SiCbML9vEe6GGffmtGz0Ag">
+          <body>NotifyLocalAuthority</body>
+        </ownedComment>
+        <ownedComment xmi:id="_U-QJgL9wEe6GGffmtGz0Ag" annotatedElement="_VSFg8L9vEe6GGffmtGz0Ag">
+          <body>NotifyLocalAuthority</body>
+        </ownedComment>
+      </elementImport>
+      <ownedOperation xmi:id="_boYjYL9pEe6GGffmtGz0Ag" name="sendApprovalToASTU2">
+        <elementImport xmi:id="_DGmgsAeBEfC7Ir1GZieanw" alias="abacRequire" importedElement="_v-MUAL9rEe6GGffmtGz0Ag">
+          <ownedComment xmi:id="_IiYz8AeBEfC7Ir1GZieanw" annotatedElement="_lZXN4L9sEe6GGffmtGz0Ag">
+            <body>ASTU1</body>
+          </ownedComment>
+          <ownedComment xmi:id="_PzwIwAeBEfC7Ir1GZieanw" annotatedElement="_pu0LML9sEe6GGffmtGz0Ag">
+            <body>sendApproval</body>
+          </ownedComment>
+        </elementImport>
+        <ownedParameter xmi:id="_fqtJUL9pEe6GGffmtGz0Ag" name="flightPlan" type="_WiMiIL9oEe6GGffmtGz0Ag"/>
+        <ownedParameter xmi:id="_k0gUsL9pEe6GGffmtGz0Ag" name="obj" type="_A2C6sAd-EfC7Ir1GZieanw" direction="out"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_uWVQQL9pEe6GGffmtGz0Ag" name="sendApprovalToFOM">
+        <elementImport xmi:id="_54kScL9rEe6GGffmtGz0Ag" alias="abacRequire" importedElement="_v-MUAL9rEe6GGffmtGz0Ag">
+          <ownedComment xmi:id="_gnAKwL9vEe6GGffmtGz0Ag" annotatedElement="_pu0LML9sEe6GGffmtGz0Ag">
+            <body>sendApproval</body>
+          </ownedComment>
+        </elementImport>
+        <ownedParameter xmi:id="_yT88YL9pEe6GGffmtGz0Ag" name="obj" type="_A2C6sAd-EfC7Ir1GZieanw"/>
+        <ownedParameter xmi:id="_y6ZiYAeBEfC7Ir1GZieanw" name="flightPlan" type="_Y_jRUAd-EfC7Ir1GZieanw"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_-1WRcAeBEfC7Ir1GZieanw" name="sendRBTtOFOM"/>
+      <ownedOperation xmi:id="_FFTzoAeCEfC7Ir1GZieanw" name="generateRBTapproval">
+        <ownedParameter xmi:id="_KdhOcAeCEfC7Ir1GZieanw" name="obj" type="_A2C6sAd-EfC7Ir1GZieanw"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_R2oKAAeCEfC7Ir1GZieanw" name="sendReportConflicts">
+        <elementImport xmi:id="_cdKD0AeCEfC7Ir1GZieanw" alias="abacRequire" importedElement="_v-MUAL9rEe6GGffmtGz0Ag">
+          <ownedComment xmi:id="_foKnQAeCEfC7Ir1GZieanw" annotatedElement="_lZXN4L9sEe6GGffmtGz0Ag">
+            <body>ASTU1</body>
+          </ownedComment>
+          <ownedComment xmi:id="_kmOcsAeCEfC7Ir1GZieanw" annotatedElement="_pu0LML9sEe6GGffmtGz0Ag">
+            <body>sendReportConflict</body>
+          </ownedComment>
+        </elementImport>
+        <ownedParameter xmi:id="_WFzgMAeCEfC7Ir1GZieanw" name="conflict" type="_Y_jRUAd-EfC7Ir1GZieanw"/>
+      </ownedOperation>
+    </nestedClassifier>
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_x1q5gAeCEfC7Ir1GZieanw" name="ASTU2">
+      <elementImport xmi:id="_W_d2oAeDEfC7Ir1GZieanw" alias="critical" importedElement="_KArQYL9qEe6GGffmtGz0Ag"/>
+      <ownedOperation xmi:id="_0wtuUAeCEfC7Ir1GZieanw" name="sendConstraintsList">
+        <elementImport xmi:id="_EyaQUAeDEfC7Ir1GZieanw" alias="abacRequire" importedElement="_v-MUAL9rEe6GGffmtGz0Ag">
+          <ownedComment xmi:id="_LezP0AeDEfC7Ir1GZieanw" annotatedElement="_lZXN4L9sEe6GGffmtGz0Ag">
+            <body>ASTU2</body>
+          </ownedComment>
+          <ownedComment xmi:id="_QFo4EAeDEfC7Ir1GZieanw" annotatedElement="_pu0LML9sEe6GGffmtGz0Ag">
+            <body>sendConflict</body>
+          </ownedComment>
+        </elementImport>
+        <ownedParameter xmi:id="_5WF-AAeCEfC7Ir1GZieanw" name="obj" type="_X-vxEAd9EfC7Ir1GZieanw"/>
+        <ownedParameter xmi:id="__8MIQAeCEfC7Ir1GZieanw" name="constraint" type="_Y_jRUAd-EfC7Ir1GZieanw"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_gTPIEAeDEfC7Ir1GZieanw" name="receiveApproval">
+        <ownedParameter xmi:id="_lDrYQAeDEfC7Ir1GZieanw" name="obj" type="_A2C6sAd-EfC7Ir1GZieanw"/>
+        <ownedParameter xmi:id="_qZV1YAeDEfC7Ir1GZieanw" name="obj2" type="_WiMiIL9oEe6GGffmtGz0Ag"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_vHIaMAeDEfC7Ir1GZieanw" name="analyzeRBT"/>
+    </nestedClassifier>
+    <nestedClassifier xmi:type="uml:Association" xmi:id="_2lY7gAeDEfC7Ir1GZieanw" name="AssoASTU1ASTU2" redefinedClassifier="_Gvk98L9oEe6GGffmtGz0Ag _x1q5gAeCEfC7Ir1GZieanw" memberEnd="_FCO_kAeEEfC7Ir1GZieanw _IsqC4AeEEfC7Ir1GZieanw" navigableOwnedEnd="_FCO_kAeEEfC7Ir1GZieanw _IsqC4AeEEfC7Ir1GZieanw">
+      <ownedEnd xmi:id="_FCO_kAeEEfC7Ir1GZieanw" name="integrity" association="_2lY7gAeDEfC7Ir1GZieanw"/>
+      <ownedEnd xmi:id="_IsqC4AeEEfC7Ir1GZieanw" name="secrecy" association="_2lY7gAeDEfC7Ir1GZieanw"/>
+    </nestedClassifier>
+    <nestedClassifier xmi:type="uml:Association" xmi:id="_bKhP4AeFEfC7Ir1GZieanw" name="AssoASTU2Airplane" memberEnd="_mz2qgAeFEfC7Ir1GZieanw _pfOEkAeFEfC7Ir1GZieanw" navigableOwnedEnd="_mz2qgAeFEfC7Ir1GZieanw _pfOEkAeFEfC7Ir1GZieanw">
+      <ownedEnd xmi:id="_mz2qgAeFEfC7Ir1GZieanw" name="integrity" association="_bKhP4AeFEfC7Ir1GZieanw"/>
+      <ownedEnd xmi:id="_pfOEkAeFEfC7Ir1GZieanw" name="secrecy" association="_bKhP4AeFEfC7Ir1GZieanw"/>
+    </nestedClassifier>
+    <nestedClassifier xmi:type="uml:Association" xmi:id="_DR8tkL91Ee6GGffmtGz0Ag" name="AssoASTU1Airplane" redefinedClassifier="_Gvk98L9oEe6GGffmtGz0Ag _ADdEML9oEe6GGffmtGz0Ag" memberEnd="_VSFg8L9vEe6GGffmtGz0Ag _SiCbML9vEe6GGffmtGz0Ag" navigableOwnedEnd="_VSFg8L9vEe6GGffmtGz0Ag _SiCbML9vEe6GGffmtGz0Ag">
+      <ownedEnd xmi:id="_VSFg8L9vEe6GGffmtGz0Ag" name="integrity" association="_DR8tkL91Ee6GGffmtGz0Ag"/>
+      <ownedEnd xmi:id="_SiCbML9vEe6GGffmtGz0Ag" name="secrecy" association="_DR8tkL91Ee6GGffmtGz0Ag"/>
+    </nestedClassifier>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_M-O4kL9oEe6GGffmtGz0Ag" name="Data">
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_P6E-oL9oEe6GGffmtGz0Ag" name="Plan">
+      <ownedAttribute xmi:id="_AATxEAd0EfC7Ir1GZieanw" name="planID"/>
+    </nestedClassifier>
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_R4o9EL9oEe6GGffmtGz0Ag" name="FlightPlan">
+      <ownedAttribute xmi:id="_DklJEAd0EfC7Ir1GZieanw" name="flightPlanID"/>
+    </nestedClassifier>
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_WiMiIL9oEe6GGffmtGz0Ag" name="Message">
+      <ownedAttribute xmi:id="_IjnO4Ad0EfC7Ir1GZieanw" name="messageID"/>
+    </nestedClassifier>
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_X-vxEAd9EfC7Ir1GZieanw" name="RBTconflict"/>
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_cezb4Ad9EfC7Ir1GZieanw" name="PartialIDInfo"/>
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_93fe4Ad9EfC7Ir1GZieanw" name="RBT"/>
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_A2C6sAd-EfC7Ir1GZieanw" name="RBTapproval"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_f7iQEL9oEe6GGffmtGz0Ag" name="secureDependency"/>
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_boXf0L9qEe6GGffmtGz0Ag" name="abac">
+    <ownedAttribute xmi:id="_lZXN4L9sEe6GGffmtGz0Ag" name="role"/>
+    <ownedAttribute xmi:id="_pu0LML9sEe6GGffmtGz0Ag" name="right"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_KArQYL9qEe6GGffmtGz0Ag" name="critical"/>
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_v-MUAL9rEe6GGffmtGz0Ag" name="abacRequire" redefinedClassifier="_boXf0L9qEe6GGffmtGz0Ag"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_zhI8sL9zEe6GGffmtGz0Ag" name="AssoPlanAirplaine" redefinedClassifier="_P6E-oL9oEe6GGffmtGz0Ag _ADdEML9oEe6GGffmtGz0Ag"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_C-2A0L90Ee6GGffmtGz0Ag" name="AssoFloghtPlanLocalAuthority" redefinedClassifier="_R4o9EL9oEe6GGffmtGz0Ag _Gvk98L9oEe6GGffmtGz0Ag"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_PsuBoL90Ee6GGffmtGz0Ag" name="AssoMessageASTU1" redefinedClassifier="_Gvk98L9oEe6GGffmtGz0Ag _WiMiIL9oEe6GGffmtGz0Ag"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_tk2H8L90Ee6GGffmtGz0Ag" name="AssoMessageAirplane" redefinedClassifier="_WiMiIL9oEe6GGffmtGz0Ag _ADdEML9oEe6GGffmtGz0Ag"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Y_jRUAd-EfC7Ir1GZieanw" name="Message">
+    <ownedAttribute xmi:id="_bk4U0Ad-EfC7Ir1GZieanw" name="messageID"/>
+  </packagedElement>
+</uml:Model>

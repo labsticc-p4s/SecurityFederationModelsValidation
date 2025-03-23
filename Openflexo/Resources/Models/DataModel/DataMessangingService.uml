@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Package xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_skIvYL6kEe6GGffmtGz0Ag">
+  <packagedElement xmi:type="uml:Model" xmi:id="_0KNI4L6kEe6GGffmtGz0Ag" name="Instant Messanging">
+    <packagedElement xmi:type="uml:Stereotype" xmi:id="_7NxSQL6kEe6GGffmtGz0Ag" name="secure data"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_CHh_YL6lEe6GGffmtGz0Ag" name="Instant Messager">
+      <ownedAttribute xmi:id="_zSyjQL6lEe6GGffmtGz0Ag" name="nickname" association="_TtE5wL6lEe6GGffmtGz0Ag"/>
+      <ownedAttribute xmi:id="_332C0L6lEe6GGffmtGz0Ag" name="channelServer" type="_dv9AgAcWEfC7Ir1GZieanw"/>
+      <ownedOperation xmi:id="_urKbYL6mEe6GGffmtGz0Ag" name="sendMessage">
+        <ownedParameter xmi:id="_Q7RlYAccEfC7Ir1GZieanw" name="user" type="_2ZydAAcWEfC7Ir1GZieanw"/>
+        <ownedParameter xmi:id="_VP3AAAccEfC7Ir1GZieanw" name="channel" type="_dv9AgAcWEfC7Ir1GZieanw"/>
+        <ownedParameter xmi:id="_X5rh8AccEfC7Ir1GZieanw" name="content"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_x31LsL6mEe6GGffmtGz0Ag" name="createChannel"/>
+      <nestedClassifier xmi:type="uml:Stereotype" xmi:id="_4SpTAL6mEe6GGffmtGz0Ag" name="Critical">
+        <ownedAttribute xmi:id="_D-He0L6rEe6GGffmtGz0Ag" name="integrity" subsettedProperty="_zSyjQL6lEe6GGffmtGz0Ag _332C0L6lEe6GGffmtGz0Ag"/>
+      </nestedClassifier>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_NyLooL6lEe6GGffmtGz0Ag" name="Fowarder">
+      <ownedAttribute xmi:id="_80F6YL6lEe6GGffmtGz0Ag" name="FowarderID"/>
+      <ownedOperation xmi:id="_DiNYML6mEe6GGffmtGz0Ag" name="forwardMessage">
+        <ownedParameter xmi:id="_OC6W0L6mEe6GGffmtGz0Ag" name="message" type="_wsyTYAcVEfC7Ir1GZieanw"/>
+        <ownedParameter xmi:id="_JIbJkAcbEfC7Ir1GZieanw" name="user" type="_2ZydAAcWEfC7Ir1GZieanw"/>
+        <ownedParameter xmi:id="_Nz2W4AcbEfC7Ir1GZieanw" name="channel" type="_dv9AgAcWEfC7Ir1GZieanw"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_XJoqwL6mEe6GGffmtGz0Ag" name="isChannelOpen">
+        <ownedParameter xmi:id="_tXiAEAcbEfC7Ir1GZieanw" name="channel" type="_dv9AgAcWEfC7Ir1GZieanw"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_1pLtMAcbEfC7Ir1GZieanw" name="verifyUserInChannel">
+        <ownedParameter xmi:id="_6-m5wAcbEfC7Ir1GZieanw" name="user" type="_2ZydAAcWEfC7Ir1GZieanw"/>
+        <ownedParameter xmi:id="_9TK9YAcbEfC7Ir1GZieanw" name="channel" type="_dv9AgAcWEfC7Ir1GZieanw"/>
+      </ownedOperation>
+      <nestedClassifier xmi:type="uml:Stereotype" xmi:id="_77__UL6mEe6GGffmtGz0Ag" name="Critical">
+        <ownedAttribute xmi:id="_Ozfs8L6rEe6GGffmtGz0Ag" name="secrecy" subsettedProperty="_80F6YL6lEe6GGffmtGz0Ag"/>
+        <ownedAttribute xmi:id="_UjShUL6rEe6GGffmtGz0Ag" name="integrity"/>
+      </nestedClassifier>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_TtE5wL6lEe6GGffmtGz0Ag" name="AssoInstantFowarder" redefinedClassifier="_CHh_YL6lEe6GGffmtGz0Ag _NyLooL6lEe6GGffmtGz0Ag" memberEnd="_zSyjQL6lEe6GGffmtGz0Ag _7_t8sL7dEe6GGffmtGz0Ag" navigableOwnedEnd="_7_t8sL7dEe6GGffmtGz0Ag">
+      <ownedEnd xmi:id="_7_t8sL7dEe6GGffmtGz0Ag" name="integrity" association="_TtE5wL6lEe6GGffmtGz0Ag"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_wsyTYAcVEfC7Ir1GZieanw" name="Message">
+      <ownedAttribute xmi:id="_1N8xcAcVEfC7Ir1GZieanw" name="messageID">
+        <ownedComment xmi:id="_mn1eMAd5EfC7Ir1GZieanw" annotatedElement="_FTVccAcdEfC7Ir1GZieanw">
+          <body>secrecy</body>
+        </ownedComment>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_A-g1cAcWEfC7Ir1GZieanw" name="content"/>
+      <ownedAttribute xmi:id="_UotvMAcWEfC7Ir1GZieanw" name="timestamp"/>
+      <nestedClassifier xmi:type="uml:Stereotype" xmi:id="_nvI-wAccEfC7Ir1GZieanw" name="Critical">
+        <ownedAttribute xmi:id="_FTVccAcdEfC7Ir1GZieanw" name="secrecy"/>
+      </nestedClassifier>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_dv9AgAcWEfC7Ir1GZieanw" name="Channel">
+      <ownedAttribute xmi:id="_k5JQwAcWEfC7Ir1GZieanw" name="channelID"/>
+      <ownedOperation xmi:id="_nBak0AcWEfC7Ir1GZieanw" name="addUser">
+        <ownedParameter xmi:id="_xFG3UAcWEfC7Ir1GZieanw" name="user" type="_2ZydAAcWEfC7Ir1GZieanw"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_7tl48AcWEfC7Ir1GZieanw" name="removeUser">
+        <ownedParameter xmi:id="__x3msAcWEfC7Ir1GZieanw" name="user" type="_2ZydAAcWEfC7Ir1GZieanw"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_FfB90AcXEfC7Ir1GZieanw" name="broadcastMessage">
+        <ownedParameter xmi:id="_Ki6HYAcXEfC7Ir1GZieanw" name="message" type="_wsyTYAcVEfC7Ir1GZieanw"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_2ZydAAcWEfC7Ir1GZieanw" name="User">
+      <ownedAttribute xmi:id="_rdJ64AcXEfC7Ir1GZieanw" name="userID"/>
+      <ownedAttribute xmi:id="_vvujUAcXEfC7Ir1GZieanw" name="pwd">
+        <ownedComment xmi:id="_EMXvkAd5EfC7Ir1GZieanw" annotatedElement="_vvujUAcXEfC7Ir1GZieanw">
+          <body>secrecy</body>
+        </ownedComment>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_xsM3EAcXEfC7Ir1GZieanw" name="username"/>
+      <ownedAttribute xmi:id="_1ceDsAcXEfC7Ir1GZieanw" name="isLoggingIn"/>
+      <ownedOperation xmi:id="_7C6HwAcXEfC7Ir1GZieanw" name="logIn"/>
+      <ownedOperation xmi:id="_88kYEAcXEfC7Ir1GZieanw" name="logOut"/>
+      <ownedOperation xmi:id="_DgHkoAcYEfC7Ir1GZieanw" name="joinChennel">
+        <ownedParameter xmi:id="_FrTCwAcYEfC7Ir1GZieanw" name="channel" type="_dv9AgAcWEfC7Ir1GZieanw"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_Li-AwAcYEfC7Ir1GZieanw" name="sendMessage">
+        <elementImport xmi:id="_WuCJYAd4EfC7Ir1GZieanw" alias="abacRequire" importedElement="_LK7SkAd4EfC7Ir1GZieanw"/>
+        <ownedParameter xmi:id="_eIiNsAcYEfC7Ir1GZieanw" name="channel" type="_dv9AgAcWEfC7Ir1GZieanw"/>
+        <ownedParameter xmi:id="_jYXIkAcYEfC7Ir1GZieanw" name="content"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_wtr5AAcaEfC7Ir1GZieanw" name="receiveMessage">
+        <elementImport xmi:id="_hhV68Ad4EfC7Ir1GZieanw" alias="abacRequire" importedElement="_LK7SkAd4EfC7Ir1GZieanw"/>
+        <ownedParameter xmi:id="_0GMs8AcaEfC7Ir1GZieanw" name="message" type="_wsyTYAcVEfC7Ir1GZieanw"/>
+      </ownedOperation>
+      <nestedClassifier xmi:type="uml:Stereotype" xmi:id="_Ui7MEAcdEfC7Ir1GZieanw" name="Critical">
+        <ownedAttribute xmi:id="_seJmwAd4EfC7Ir1GZieanw" name="integrity"/>
+        <ownedAttribute xmi:id="_uwrDAAd4EfC7Ir1GZieanw" name="secrecy"/>
+      </nestedClassifier>
+      <nestedClassifier xmi:type="uml:Stereotype" xmi:id="_LK7SkAd4EfC7Ir1GZieanw" name="abacRequire">
+        <ownedAttribute xmi:id="_Qmm4IAd4EfC7Ir1GZieanw" name="role"/>
+        <ownedAttribute xmi:id="_TBQVoAd4EfC7Ir1GZieanw" name="right"/>
+      </nestedClassifier>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_fotNsAcdEfC7Ir1GZieanw" name="AsoUserChannel" redefinedClassifier="_2ZydAAcWEfC7Ir1GZieanw _dv9AgAcWEfC7Ir1GZieanw" memberEnd="_AWq4sAceEfC7Ir1GZieanw _M7H3wAceEfC7Ir1GZieanw">
+      <ownedEnd xmi:id="_AWq4sAceEfC7Ir1GZieanw" name="secrecy" association="_fotNsAcdEfC7Ir1GZieanw"/>
+      <ownedEnd xmi:id="_M7H3wAceEfC7Ir1GZieanw" name="integrity" association="_fotNsAcdEfC7Ir1GZieanw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_EGiX4Ad6EfC7Ir1GZieanw" name="AssoInstantMessChannel" redefinedClassifier="_dv9AgAcWEfC7Ir1GZieanw _CHh_YL6lEe6GGffmtGz0Ag"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="_aXxlUAd6EfC7Ir1GZieanw" name="AssoUserInstantMess" redefinedClassifier="_2ZydAAcWEfC7Ir1GZieanw _CHh_YL6lEe6GGffmtGz0Ag" memberEnd="_f5NNkAd6EfC7Ir1GZieanw _zYyywAd6EfC7Ir1GZieanw" navigableOwnedEnd="_zYyywAd6EfC7Ir1GZieanw">
+      <ownedEnd xmi:id="_f5NNkAd6EfC7Ir1GZieanw" name="send" association="_aXxlUAd6EfC7Ir1GZieanw">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_oldzEAd6EfC7Ir1GZieanw" value="*"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_zYyywAd6EfC7Ir1GZieanw" name="secrecy" association="_aXxlUAd6EfC7Ir1GZieanw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_7xY1YAd6EfC7Ir1GZieanw" name="AssoUserMessage" redefinedClassifier="_2ZydAAcWEfC7Ir1GZieanw _wsyTYAcVEfC7Ir1GZieanw"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="_HlcSQAd7EfC7Ir1GZieanw" name="AssoChannelFowarder" redefinedClassifier="_dv9AgAcWEfC7Ir1GZieanw _NyLooL6lEe6GGffmtGz0Ag"/>
+  </packagedElement>
+</uml:Package>

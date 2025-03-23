@@ -1,0 +1,52 @@
+
+
+post {
+  for (m in System.context.matchTrace.matches) {
+    (m.left + " <-> " + m.right).println();
+  }
+}
+
+/*rule MergePackage
+	merge l :  DataMessangingService!Package with r : DeploymentMessangingService!Package into t : Target!Package {
+	
+	t.name = l.name;
+	
+}*/
+/*rule MergeModel
+	merge l :  DataMessangingService!Model with r : DeploymentMessangingService!Model into t : Target!Model {
+	
+	t.name = l.name;
+	
+}
+
+rule CopyPackage
+	transform s : DataMessangingService!Package to t : Target!Package {
+	t.name = s.name;
+	
+}
+
+rule CopyModel
+	transform s : DataMessangingService!Model to t : Target!Model {
+	t.name = s.name;
+	//t.contents::= s.member;
+	
+}
+
+rule MergeClass
+	merge l : DataMessangingService!Class with r : DeploymentMessangingService!Component  into t : Target!Class {
+	
+	t.name = l.name;
+}
+
+rule MergeLinks
+	merge l : DataMessangingService!Association with r : DeploymentMessangingService!CommunicationPath into t : Target!Class {
+	t.name = l.name;
+	//t.NavigableOwnedEnd ::= l.NavigableOwnedEnd;
+}*/
+
+
+//rule CopyClass
+	//transform s : Source!Class to t : Target!Class {
+	
+	//t.name = s.name;
+//}

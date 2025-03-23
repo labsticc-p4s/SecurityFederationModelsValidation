@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:UmlMetaModel="UmlMetaModel">
+  <UmlMetaModel:Model name="Instant Messanging"/>
+  <UmlMetaModel:Class name="Instant Messager"/>
+  <UmlMetaModel:Class name="Fowarder"/>
+  <UmlMetaModel:Class name="InstantMessagerFowarder"/>
+</xmi:XMI>

@@ -1,0 +1,43 @@
+
+post{
+ 
+}
+context DataMessangingService!Association {
+
+    // Check that if the association element in Data model contains a integrity security annotation, the communicationPath must contains encrypted annotation
+    constraint CheckSecurityAnnotations {
+
+        // verify whether the correspondence Assocciation and Communication Path is contained in the MatchTrace
+        check :  self.hasSecurityAnnotation1() //or matchTrace.matches.exists(t | t.left = self or t.right = self) 
+        message: "security rule violated " + self.navigableOwnedEnd.name + " Association has an integrity annotation  and the communicationPath has no encrpted annotation"
+    }
+    
+    constraint CheckSecurityAnnotations1 {
+
+        // verify whether a Class user is contained in the MatchTrace
+        check : ( matchTrace.matches.exists(t | t.left = self or t.right = self) and self.navigableOwnedEnd[0].name= "integrity")and (DeploymentMessangingService!CommunicationPath.all.select(t|t.navigableOwnedEnd[0].name = "internet" and matchTrace.matches.exists(e | e.left = t or e.right = t )).size() > 0)
+        message:  "security annotations violated because the"+ self.name+ "has not similaire security Annotation with communication Path "+ self.navigableOwnedEnd.name + " and the communicationpath "+ self.name + " " + self.hasSecurityAnnotation1().println
+    }
+}
+
+operation DataMessangingService!Association hasSecurityAnnotation1() : Boolean {
+	 return self.navigableOwnedEnd.name= "integrity"; 
+  
+}
+context DeploymentMessangingService!CommunicationPath {
+
+    // Check that each Class User have a correspondence Role in the AccessControl model
+    constraint CheckSecurityAnnotations2 {
+
+        // verify whether a Class user is contained in the MatchTrace
+        check : ( matchTrace.matches.exists(t | t.left = self or t.right = self) and self.navigableOwnedEnd[0].name= "encypted")and (DataMessangingService!Association.all.select(t|t.navigableOwnedEnd[0].name = "integrity" and matchTrace.matches.exists(e | e.left = t or e.right = t )).size() > 0)
+        message:  "security annotations violated because the " + self.navigableOwnedEnd.name + " Security annotation " + self.name 
+    }
+}
+
+
+operation DeploymentMessangingService!CommunicationPath hasSecurityAnnotationCommPath() : String {
+	 return  self.navigableOwnedEnd.name;
+  
+}
+

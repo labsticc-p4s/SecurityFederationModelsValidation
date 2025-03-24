@@ -1,9 +1,9 @@
-#Metadata for directory D:\HeterogenousSecureModelsFederation\UseCases\HolidayBooking\HlidayBookingFederation1.prj\HolidayBookingSecurityFederation.fml
-#Thu Mar 28 13:04:41 GMT+01:00 2024
+#Metadata for directory D:\HeterogenousSecureModelsFederation\Openflexo\UseCases\HolidayBooking\HlidayBookingFederation1.prj\HolidayBookingSecurityFederation.fml
+#Mon Mar 24 00:57:23 CET 2025
 HolidayBookingSecurityFederation.fml.dependenciesList=http\://www.example.org/metamodelProject/Metamodel/SOAMLmetaModel,http\://www.example.org/metamodelProject/Metamodel/WSDLmetaModel,http\://www.omg.org/spec/BPMN/20100524/MODEL-XMI
 HolidayBookingSecurityFederation.fml.requiredModelSlotList=org.openflexo.technologyadapter.emf.EMFModelSlot,org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstanceModelSlot
 HolidayBookingSecurityFederation.fml.virtualModelClassName=org.openflexo.foundation.fml.VirtualModel
 HolidayBookingSecurityFederation.fml.uri=http\://www.openflexo.org/projects/2024/2/HlidayBookingFederation1_1708967384458.prj/HolidayBookingSecurityFederation.fml
 HolidayBookingSecurityFederation.fml.flexoConceptsList=Correspondences,Correspondences\#PoolParticipantCorrespondence,Correspondences\#DataObjectMessageCorrespondence,Correspondences\#OperationsCorrespondece
-HolidayBookingSecurityFederation.fml.name=HolidayBookingSecurityFederation
 HolidayBookingSecurityFederation.fml.version=0.1
+HolidayBookingSecurityFederation.fml.name=HolidayBookingSecurityFederation

@@ -1,7 +1,7 @@
-#Metadata for directory D:\HeterogenousSecureModelsFederation\UseCases\MessagingService\InstantMessagingServiceSystemFederation.prj\InstantMessagingSecurityFederation.fml
-#Thu May 02 23:55:48 CEST 2024
-InstantMessagingSecurityFederation.fml.name=InstantMessagingSecurityFederation
+#Metadata for directory D:\HeterogenousSecureModelsFederation\Openflexo\UseCases\MessagingService\InstantMessagingServiceSystemFederation.prj\InstantMessagingSecurityFederation.fml
+#Sun Mar 23 22:53:50 CET 2025
 InstantMessagingSecurityFederation.fml.virtualModelClassName=org.openflexo.foundation.fml.VirtualModel
+InstantMessagingSecurityFederation.fml.name=InstantMessagingSecurityFederation
 InstantMessagingSecurityFederation.fml.dependenciesList=http\://www.eclipse.org/uml2/5.0.0/UML,http\://www.eclipse.org/uml2/5.0.0/UML,http\://www.omg.org/spec/BPMN/20100524/MODEL-XMI
 InstantMessagingSecurityFederation.fml.version=0.1
 InstantMessagingSecurityFederation.fml.flexoConceptsList=ClassComponentCorrespondence,ClassPoolCorrespondence,AssociationCommunicationPathCorrespondence,PoolComponentCorrespondence,TaskOperationCorrespondence

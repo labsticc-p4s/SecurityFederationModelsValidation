@@ -1,5 +1,6 @@
-#Metadata for directory D:\HeterogenousSecureModelsFederation\Resources\Models\DataModel
-#Wed Jul 24 07:15:48 CEST 2024
+#Metadata for directory D:\HeterogenousSecureModelsFederation\Openflexo\Resources\Models\DataModel
+#Sun Mar 23 22:40:05 CET 2025
+SecureDataITrust.uml.rootNamespace=http\://www.eclipse.org/uml2/5.0.0/UML
 DataFlightPlanNegociation.uml.rootNamespace=http\://www.eclipse.org/uml2/5.0.0/UML
 DataMessangingService.uml.rootNamespace=http\://www.eclipse.org/uml2/5.0.0/UML
 DataITrust.uml.rootNamespace=http\://www.eclipse.org/uml2/5.0.0/UML

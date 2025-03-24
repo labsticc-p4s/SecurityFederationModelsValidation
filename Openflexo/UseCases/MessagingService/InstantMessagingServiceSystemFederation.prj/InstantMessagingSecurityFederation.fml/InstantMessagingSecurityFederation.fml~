@@ -1,19 +1,18 @@
 use org.openflexo.technologyadapter.emf.EMFModelSlot as EMF;
-
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 import java.lang.String;
 
 import ["http://www.eclipse.org/uml2/5.0.0/UML"] as UML2;
-import ["http://www.eclipse.org/uml2/5.0.0/UML"] as UML22;
+//import ["http://www.eclipse.org/uml2/5.0.0/UML"] as UML22;
 import ["http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"] as BPMN21;
 
 import [UML2:"Class"] as DATA_CLASS;
 import [UML2:"Association"] as DATA_ASSOCIATION;
 import [UML2:"Operation"] as DATA_OPERATION;
-import [UML22:"Node"] as DEPLOYMENT_NODE;
-import [UML22:"Component"] as DEPLOYMENT_COMPONENT;
-import [UML22:"CommunicationPath"] as DEPLOYMENT_COMMUNICATION_PATH;
+import [UML2:"Node"] as DEPLOYMENT_NODE;
+import [UML2:"Component"] as DEPLOYMENT_COMPONENT;
+import [UML2:"CommunicationPath"] as DEPLOYMENT_COMMUNICATION_PATH;
 
 import [BPMN21:"Participant"] as BPMN_PARTICIPANT;
 import [BPMN21:"MessageFlow"] as BPMN_MESSAGE_FLOW;
@@ -224,6 +223,9 @@ else {
       return false;
    }
 
+	delete() {
+	}
+
  public concept ClassComponentCorrespondence {
 
    DataClass class with EMFObjectRole(container=dataModelAccess, type= DATA_CLASS);
@@ -390,6 +392,10 @@ else {
  }
  
 
+ public concept ClassDataObjectCorrespondence {
+   
+   
+ }
 
    
 }

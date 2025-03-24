@@ -59,14 +59,14 @@ public model InstantMessagingSecurityFederation {
    }
 
    
-  private boolean checkClassSecurityAnnotation(DataClass class) {
-   if (parameters.class.getValues("ownedElement").toString.contains("Critical")) {
-      return true;
-   } 
-else {
-      return false;
-      }  
-  }
+   private boolean checkClassSecurityAnnotation(DataClass class) {
+      if (parameters.class.getValues("ownedElement").toString.contains("Critical")) {
+         return true;
+      } 
+   else {
+         return false;
+         }  
+   }
 
   private boolean checkExistingInstance(DataOperation operation) {
    for (TaskOperationCorrespondence item : select TaskOperationCorrespondence from this ) {
@@ -76,6 +76,52 @@ else {
    }
    return false;
   }
+
+
+   	// Verify the security annotations of a DataObject included in the FlowElements 
+	private boolean verifyDataObjectAnnotation(BPMNDataObject dataObject) {
+			for (BPMNAssociation itemAsso : select BPMNAssociation from bpmnModelAccess) {
+				for (BPMNTextAnnotation itemAnnota : select BPMNTextAnnotation from bpmnModelAccess) {
+					if (dataObject == itemAsso.sourceRef && itemAnnota == itemAsso.targetRef) {
+						if (itemAnnota.text.contains("IntegrityDo") || itemAnnota.text.contains("ConfidentialityDo") || itemAnnota.text.contains("PrivacyDo")) {
+							return true;
+						}
+					}
+				}
+			}
+		
+		return false;
+	}
+
+   	private List<BPMNFlowElements> getFlowElementOfPool(BPMNParticipant pool) {
+		List<BPMNFlowElements> listFlowElements = new ArrayList<BPMNFlowElements>();
+		for (BPMNParticipant itemParticipant : select BPMNParticipant from bpmnModelAccess) {
+			if (itemParticipant == parameters.pool) {
+				for (BPMNFlowElements itemFlows : select BPMNFlowElements from bpmnModelAccess) {
+					if (itemParticipant.processRef.flowElements.contains(itemFlows)) {
+						listFlowElements.add(itemFlows);
+					}
+				}
+			}
+		}
+		return listFlowElements;
+	}
+
+	// Verify the security annotations of a DataObject included in the FlowElements 
+	private boolean verifyDataObjectAnnotationFlow(List<BPMNFlowElements> listFlowElements) {
+		for (BPMNFlowElements itemFlowElements : parameters.listFlowElements) {
+			for (BPMNAssociation itemAsso : select BPMNAssociation from bpmnModelAccess) {
+				for (BPMNTextAnnotation itemAnnota : select BPMNTextAnnotation from bpmnModelAccess) {
+					if (itemFlowElements == itemAsso.sourceRef && itemAnnota == itemAsso.targetRef) {
+						if (itemAnnota.text.contains("IntegrityDo") || itemAnnota.text.contains("ConfidentialityDo") || itemAnnota.text.contains("PrivacyDo")) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
   
   //Verify if the selected Operation is a part of the TaskOperationCorrespondence
    private boolean checkExistingInstance1(String operation) { 
@@ -227,206 +273,205 @@ else {
 	}
 
  public concept ClassComponentCorrespondence {
-
-   DataClass class with EMFObjectRole(container=dataModelAccess, type= DATA_CLASS);
-   DeployementComponent component  with EMFObjectRole(container= deploymentModelAccess, type=DEPLOYMENT_COMPONENT);
-
-         // create the instance of the concept with the selected class and component
-         create::_create(required String nameClass, required String nameComponent) {
-            class = select unique DataClass from dataModelAccess where (selected.name == parameters.nameClass);
-            component = select unique DeployementComponent from deploymentModelAccess  where (selected.name == parameters.nameComponent); 
-         }
-
-         delete() {
-            delete class;
-            delete component;
-         }
-
-      public void instantMessagingSecurityRule4() {
-         List<DataClass> associatedClasses = new ArrayList<DataClass>();
-         boolean checkClassAnnotation = container.checkClassSecurityAnnotation(class);
-         DeployementNode containerNodeOfComponent = container.getNode(component);
-         if (checkClassAnnotation) {
-            associatedClasses = container.getAssociatedClass(class);
-            for (DataClass itemClassAssociated :associatedClasses ) {
-               boolean checkClassAssociatedAnnotation = container.checkClassSecurityAnnotation(itemClassAssociated);
-               if (checkClassAssociatedAnnotation) {
-                 DeployementComponent associatedComponent = container.getCorrespondingComponent(itemClassAssociated);
-                 if (associatedComponent != null) {
-                  DeployementNode containerNodeOfassociatedComponent = container.getNode(associatedComponent);
-                  DeployementCommunicationPath itemCommPath = container.getCommunicationPath(containerNodeOfComponent,containerNodeOfassociatedComponent);
-                  boolean checkCommunicationPathAnotation = container.checkCommunicationPathSecurityAnnotation(itemCommPath);
-                  if (checkCommunicationPathAnotation) {
-                    log "[InstantMessagingService - SecurityRule 4] -> Security rule not violated"; 
-                  }
-else {
-                    log "[InstantMessagingService - SecurityRule 4] -> Security rule violated";
-                  }
-                 }
-               } 
-            } 
-         } 
-      }
- }
- 
-
- public concept ClassPoolCorrespondence {
-   DataClass class with EMFObjectRole(container=dataModelAccess, type= DATA_CLASS);
-   BPMNParticipant pool with EMFObjectRole(container=bpmnModelAccess,type=BPMN_PARTICIPANT);
-
-   create::_create(required String poolName, required String className) {
-            pool = select unique BPMNParticipant from bpmnModelAccess where (selected.name == parameters.poolName);
-            class = select unique DataClass from dataModelAccess where (selected.name == parameters.className);
-         }
-
-     public void instantMessagingSecurityRule1() {
-       boolean checkClassAnnotation = container.checkClassSecurityAnnotation(class);
-       if (checkClassAnnotation) {
-         for (Object operation : class.getValues("ownedOperation")) { // get the DataOperation type
-           boolean checkExistingInstanceOperation = container.checkExistingInstance1(operation.toString.substring(10));
-           if (checkExistingInstanceOperation) {
-            BPMNTask task = container.getTask(operation.toString.substring(10));
-            boolean checklogInTask = container.checkLogInTaskPrecedence(task);
-            if (checklogInTask) {
-              log "[InstantMessagingService - SecurityRule 1] -> Security rule not violated"; 
-            }
-else {
-              log "[InstantMessagingService - SecurityRule 1] -> Security rule violated"; 
-            }
-            
-           }
-         }
-         
-       }
-     }
-
-	delete() {
-		delete class;
-		delete pool;
-	}
-   
- }
-	
-   
- 
-
-
- public concept AssociationCommunicationPathCorrespondence {
-
-
-   DataAssociation association with EMFObjectRole(container=dataModelAccess, type= DATA_ASSOCIATION);
-   DeployementCommunicationPath communicationPath  with EMFObjectRole(container= deploymentModelAccess, type=DEPLOYMENT_COMMUNICATION_PATH);
+    DataClass class with EMFObjectRole(container=dataModelAccess, type=DATA_CLASS);
+    DeployementComponent component with EMFObjectRole(container=deploymentModelAccess, type=DEPLOYMENT_COMPONENT);
 
     // create the instance of the concept with the selected class and component
-         create::_create(required String nameAssociation, required String nameCommPath) {
-            association = select unique DataAssociation from dataModelAccess  where (selected.name == parameters.nameAssociation);
-            communicationPath = select unique DeployementCommunicationPath from deploymentModelAccess  where (selected.name == parameters.nameCommPath);
-         }
+    create::_create(required String nameClass, required String nameComponent) {
+        class = select unique DataClass from dataModelAccess where (selected.name == parameters.nameClass);
+        component = select unique DeployementComponent from deploymentModelAccess where (selected.name == parameters.nameComponent); 
+    }
+
+    delete() {
+        delete class;
+        delete component;
+    }
+
+    // --- InstantMessaging security Rule 4 ---
+    public void instantMessagingSecurityRule4() {
+        List<DataClass> associatedClasses = new ArrayList<DataClass>();
+        boolean checkClassAnnotation = container.checkClassSecurityAnnotation(class);
+        DeployementNode containerNodeOfComponent = container.getNode(component);
+        
+        if (checkClassAnnotation) {
+            associatedClasses = container.getAssociatedClass(class);
+            for (DataClass itemClassAssociated : associatedClasses) {
+                boolean checkClassAssociatedAnnotation = container.checkClassSecurityAnnotation(itemClassAssociated);
+                if (checkClassAssociatedAnnotation) {
+                    DeployementComponent associatedComponent = container.getCorrespondingComponent(itemClassAssociated);
+                    if (associatedComponent != null) {
+                        DeployementNode containerNodeOfassociatedComponent = container.getNode(associatedComponent);
+                        DeployementCommunicationPath itemCommPath = container.getCommunicationPath(containerNodeOfComponent, containerNodeOfassociatedComponent);
+                        boolean checkCommunicationPathAnotation = container.checkCommunicationPathSecurityAnnotation(itemCommPath);
+                        
+                        if (checkCommunicationPathAnotation) {
+                            log "[InstantMessagingService - SecurityRule 4] -> Security rule not violated"; 
+                        } else {
+                            log "[InstantMessagingService - SecurityRule 4] -> Security rule violated";
+                        }
+                    }
+                } 
+            } 
+        } 
+    }
+}
+
+public concept ClassPoolCorrespondence {
+    DataClass class with EMFObjectRole(container=dataModelAccess, type=DATA_CLASS);
+    BPMNParticipant pool with EMFObjectRole(container=bpmnModelAccess, type=BPMN_PARTICIPANT);
+
+    create::_create(required String poolName, required String className) {
+        pool = select unique BPMNParticipant from bpmnModelAccess where (selected.name == parameters.poolName);
+        class = select unique DataClass from dataModelAccess where (selected.name == parameters.className);
+    }
+
+    // --- InstantMessaging security Rule 1 ---
+    /*   when the Class in the data model (that corresponds to Pool in the BPMN model), Contains security annotation “ critical”
+    If the pool contains a task wihth security annotation, the task must be preceeded with LogIn Task. This securityRule is attached to the concept PoolClassCorrespondece*/
+
+    public void instantMessagingSecurityRule1() {
+        boolean checkClassAnnotation = container.checkClassSecurityAnnotation(class);
+        if (checkClassAnnotation) {
+            for (Object operation : class.getValues("ownedOperation")) { // get the DataOperation type
+                boolean checkExistingInstanceOperation = container.checkExistingInstance1(operation.toString.substring(10));
+                if (checkExistingInstanceOperation) {
+                    BPMNTask task = container.getTask(operation.toString.substring(10));
+                    boolean checklogInTask = container.checkLogInTaskPrecedence(task);
+                    if (checklogInTask) {
+                        log "[InstantMessagingService - SecurityRule 1] -> Security rule not violated"; 
+                    } else {
+                        log "[InstantMessagingService - SecurityRule 1] -> Security rule violated"; 
+                    }
+                }
+            }
+        }
+    }
+
+    delete() {
+        delete class;
+        delete pool;
+    }
+}
+
+public concept AssociationCommunicationPathCorrespondence {
+    DataAssociation association with EMFObjectRole(container=dataModelAccess, type=DATA_ASSOCIATION);
+    DeployementCommunicationPath communicationPath with EMFObjectRole(container=deploymentModelAccess, type=DEPLOYMENT_COMMUNICATION_PATH);
+
+    // create the instance of the concept with the selected class and component
+    create::_create(required String nameAssociation, required String nameCommPath) {
+        association = select unique DataAssociation from dataModelAccess where (selected.name == parameters.nameAssociation);
+        communicationPath = select unique DeployementCommunicationPath from deploymentModelAccess where (selected.name == parameters.nameCommPath);
+    }
+
+    // --- InstantMessaging security Rule 2 ---
+    /* if the an association in the data model (corresponding to communicationPath un the deployement model model), contain an element with security annotation,the CommunicationPath between nodes in the deployment model must contain
+      a corresponding security annotation. This rule is added to the concept AssociationCommunPathCorrespondences.*/
 
     public void instantMessagingSecurityRule2() {
-     boolean checkAssociationAnnotation = container.checkAssociationSecurityAnnotation(association);
-     boolean checkCommunicationPathAnotation = container.checkCommunicationPathSecurityAnnotation(communicationPath);
+        boolean checkAssociationAnnotation = container.checkAssociationSecurityAnnotation(association);
+        boolean checkCommunicationPathAnotation = container.checkCommunicationPathSecurityAnnotation(communicationPath);
 
-     if (checkAssociationAnnotation && checkCommunicationPathAnotation) {
-      log "[InstantMessagingService - SecurityRule 2] -> Security rule not violated"; 
-     } 
-else{
-      log "[InstantMessagingService - SecurityRule 2] -> Security rule violated";
-     }
+        if (checkAssociationAnnotation && checkCommunicationPathAnotation) {
+            log "[InstantMessagingService - SecurityRule 2] -> Security rule not violated"; 
+        } else {
+            log "[InstantMessagingService - SecurityRule 2] -> Security rule violated";
+        }
     }
-   
-   
- }
+}
 
- public concept PoolComponentCorrespondence {
+public concept PoolComponentCorrespondence {
+    BPMNParticipant pool with EMFObjectRole(container=bpmnModelAccess, type=BPMN_PARTICIPANT);
+    DeployementComponent component with EMFObjectRole(container=deploymentModelAccess, type=DEPLOYMENT_COMPONENT);
 
-   BPMNParticipant pool with EMFObjectRole(container=bpmnModelAccess,type=BPMN_PARTICIPANT);
-   DeployementComponent component  with EMFObjectRole(container= deploymentModelAccess, type=DEPLOYMENT_COMPONENT);
+    create::_create(required String namePool, required String nameComponent) {
+        pool = select unique BPMNParticipant from bpmnModelAccess where (selected.name == parameters.namePool);
+        component = select unique DeployementComponent from deploymentModelAccess where (selected.name == parameters.nameComponent);
+    }
 
+    // --- InstantMessaging security Rule 3 ---
+    /* if the a pools in the BPMN model (corresponding to Node un the deployement model model), while the Pool contain an element with security annotation,the CommunicationPath between nodes in the deployment model must contain
+      a corresponding security annotation. This rule is added to the concept PoolcomponeentCorrespondences.*/
 
-   create::_create(required String namePool, required String nameComponent) {
-     pool = select unique BPMNParticipant from bpmnModelAccess where (selected.name == parameters.namePool);
-     component = select unique DeployementComponent from deploymentModelAccess  where (selected.name == parameters.nameComponent);
-   }
-
-   public void instantMessagingSecurityRule3() {
-      boolean checkConfidentialData = false;
-      List<BPMNFlowElements> flowElements = new ArrayList<BPMNFlowElements>(); 
-      flowElements = container.getFlowElementsOfPool(pool);
-      log flowElements.toString;
-      
-      
-   }
-
-	delete() {
-		delete pool;
-		delete component;
-	}
-
-   
-   
-   
- }
-
- public concept TaskOperationCorrespondence {
-   BPMNTask task with EMFObjectRole(container=bpmnModelAccess,type=BPMN_TASK);
-   DataOperation operation with EMFObjectRole(container=dataModelAccess,type= DATA_OPERATION);
-
-   create::_create(required String nameTask, required String nameOperation) {
-      task = select unique BPMNTask from bpmnModelAccess where (selected.name == parameters.nameTask);
-      operation = select unique DataOperation from dataModelAccess  where (selected.name == parameters.nameOperation);
-      
-   }
-
-   public void instantMessagingSecurityRule5() {
-       boolean checkTaskAnnotation = container.checkSecurityAnnotationTask(task);
-       boolean checkOperationAnnotation = container.checkOperationSecurityAnnotation(operation);
-       if (checkTaskAnnotation && checkOperationAnnotation) {
-         log "[InstantMessagingService - SecurityRule5] -> Security rule not violated"; 
-       }
-else {
-         log "[InstantMessagingService - SecurityRule5] -> Security rule violated";
-       }
-   }
-   
- }
- 
-
- public concept ClassDataObjectCorrespondence {
-    DataClass class with EMFObjectRole(container=dataModelAccess, type= DATA_CLASS);
-    BPMNDataObject dataObject with EMFObjectRole(container=bpmnModelAccess, type= BPMN_DATAOBJECT);
-
-       create::_create(required String dataName, required String className) {
-            BPMNDataObject = select unique BPMNDataObject from bpmnModelAccess where (selected.name == parameters.dataName);
-            class = select unique DataClass from dataModelAccess where (selected.name == parameters.className);
-         }
-
-     public void instantMessagingSecurityRule1() {
-       boolean checkClassAnnotation = container.checkClassSecurityAnnotation(class);
-       if (checkClassAnnotation) {
-         for (Object operation : class.getValues("ownedOperation")) { // get the DataOperation type
-           boolean checkExistingInstanceOperation = container.checkExistingInstance1(operation.toString.substring(10));
-           if (checkExistingInstanceOperation) {
-            BPMNTask task = container.getTask(operation.toString.substring(10));
-            boolean checklogInTask = container.checkLogInTaskPrecedence(task);
-            if (checklogInTask) {
-              log "[InstantMessagingService - SecurityRule 1] -> Security rule not violated"; 
+    public void instantMessagingSecurityRule3() {
+        boolean checkConfidentialData = false;
+        List<BPMNFlowElements> flowElements = new ArrayList<BPMNFlowElements>(); 
+        flowElements = container.getFlowElementsOfPool(pool);
+        DeployementNode containerNodeOfComponent = container.getNode(component);
+        checkConfidentialData = container.verifyDataObjectAnnotationFlow(flowElements);
+        
+        if (checkConfidentialData) {
+            for (DeployementCommunicationPath itemCommPath : select DeployementCommunicationPath from bpmnModelAccess) {
+                if (itemCommPath.getValues("redefinedElement").toString.contains(containerNodeOfComponent)) {
+                    boolean checkCommunicationPathAnotation = container.checkCommunicationPathSecurityAnnotation(itemCommPath);
+                    if (checkCommunicationPathAnotation) {
+                        log "[InstantMessagingService - SecurityRule 3] -> Security rule not violated"; 
+                    } else {
+                        log "[InstantMessagingService - SecurityRule 3] -> Security rule violated";
+                    }
+                }   
             }
-else {
-              log "[InstantMessagingService - SecurityRule 1] -> Security rule violated"; 
-            }
-            
-           }
-         }
-         
-       }
-     }
+        }
+    }
 
-	delete() {
-		delete class;
-		delete pool;
-	}
- }
+    delete() {
+        delete pool;
+        delete component;
+    }
+}
 
+public concept TaskOperationCorrespondence {
+    BPMNTask task with EMFObjectRole(container=bpmnModelAccess, type=BPMN_TASK);
+    DataOperation operation with EMFObjectRole(container=dataModelAccess, type=DATA_OPERATION);
+
+    create::_create(required String nameTask, required String nameOperation) {
+        task = select unique BPMNTask from bpmnModelAccess where (selected.name == parameters.nameTask);
+        operation = select unique DataOperation from dataModelAccess where (selected.name == parameters.nameOperation);
+    }
+
+    // --- InstantMessaging security Rule 5 ---
+    /* when the Operation in the data model (that corresponds to Task in the BPMN model), contains "abacRequire" annotation. 
+       The Task in the BPMN Pool must be annotated IntegrityACT. 
+       This SecurityRule is attached to the concept OperationTaskCorrespondences. */
+
+    public void instantMessagingSecurityRule5() {
+        boolean checkTaskAnnotation = container.checkSecurityAnnotationTask(task);
+        boolean checkOperationAnnotation = container.checkOperationSecurityAnnotation(operation);
+        if (checkTaskAnnotation && checkOperationAnnotation) {
+            log "[InstantMessagingService - SecurityRule5] -> Security rule not violated"; 
+        } else {
+            log "[InstantMessagingService - SecurityRule5] -> Security rule violated";
+        }
+    }
+}
+
+public concept ClassDataObjectCorrespondence {
+    DataClass class with EMFObjectRole(container=dataModelAccess, type=DATA_CLASS);
+    BPMNDataObject dataObject with EMFObjectRole(container=bpmnModelAccess, type=BPMN_DATAOBJECT);
+
+    create::_create(required String dataName, required String className) {
+        dataObject = select unique BPMNDataObject from bpmnModelAccess where (selected.name == parameters.dataName);
+        class = select unique DataClass from dataModelAccess where (selected.name == parameters.className);
+    }
+
+    // --- InstantMessaging security Rule 6 ---
+    /* when the Class in the data model (that corresponds to the Pool in the BPMN model), Contains a security annotation Critical. 
+       the pool must contain at one security annotation. This securityRule is attached to the concept PoolClassCorrespondece. */
+
+    public void instantMessagingSecurityRule6() {
+        boolean checkClassAnnotation = container.checkClassSecurityAnnotation(class);
+        boolean ckeckDataSecurity = container.verifyDataObjectAnnotation(dataObject);
+
+        if (checkClassAnnotation) {
+            log "[InstantMessagingService - SecurityRule 6] -> Security rule not violated"; 
+        } else {
+            log "[InstantMessagingService - SecurityRule 6] -> Security rule violated"; 
+        }
+    }
+
+    delete() {
+        delete class;
+        delete pool;
+    }
+}
    
 }

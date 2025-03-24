@@ -611,7 +611,7 @@ public model ITrustSecurityFederation {
 						for (BPMNMessageFlow dataflow : sharedMessageFlows) {
 							for (MessageFlowCommunicationPathCorrespondence item : container.container.listInstancesMessageComm) {
 								// Verify the security rule 2
-								if (dataflow == item.messageFlow && commPath.contains(item.communicationPath)) {
+								if (dataflow == item.messageFlow && commPath.contains(item.communicationPath)) {  
 									if (!item.verifySecureCommunication()) {
 										return false;
 									}

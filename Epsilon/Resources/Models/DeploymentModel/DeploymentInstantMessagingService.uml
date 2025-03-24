@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Package xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_O9jsAAPEEe-zx5jNEYN7-w" name="MessagingService">
+  <packagedElement xmi:type="uml:CommunicationPath" xmi:id="_ZE5GYAPaEe-zx5jNEYN7-w" name="commPathClientServer" redefinedClassifier="_mpDQ8APEEe-zx5jNEYN7-w _pjwHgAPEEe-zx5jNEYN7-w" memberEnd="_vKThgAPeEe-zx5jNEYN7-w">
+    <ownedEnd xmi:id="_vKThgAPeEe-zx5jNEYN7-w" name="internet" association="_ZE5GYAPaEe-zx5jNEYN7-w"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Model" xmi:id="_Wui8EAPEEe-zx5jNEYN7-w" name="InstantMessaging">
+    <packagedElement xmi:type="uml:Node" xmi:id="_mpDQ8APEEe-zx5jNEYN7-w" name="Pico Client">
+      <nestedClassifier xmi:type="uml:Component" xmi:id="_8f8u8APIEe-zx5jNEYN7-w" name="Message center"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Node" xmi:id="_pjwHgAPEEe-zx5jNEYN7-w" name="Pico Server">
+      <nestedClassifier xmi:type="uml:Component" xmi:id="_4-4b8APIEe-zx5jNEYN7-w" name="Fowarding center"/>
+      <nestedClassifier xmi:type="uml:Component" xmi:id="_I9b1MAb8Ee-yje8T_o6_dQ" name="Notification Service"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Node" xmi:id="_TXzXwAb7Ee-yje8T_o6_dQ" name="DataBase Server"/>
+    <profileApplication xmi:id="_prHrEAPVEe-zx5jNEYN7-w" appliedProfile="_lVtKAAPVEe-zx5jNEYN7-w" isStrict="true"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Profile" xmi:id="_lVtKAAPVEe-zx5jNEYN7-w" name="securityProfile">
+    <packagedElement xmi:type="uml:Stereotype" xmi:id="_cMgZkAPEEe-zx5jNEYN7-w" name="secure links"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:CommunicationPath" xmi:id="_aAgKEAb7Ee-yje8T_o6_dQ" name="CommPathDataBaseServer" redefinedClassifier="_TXzXwAb7Ee-yje8T_o6_dQ _pjwHgAPEEe-zx5jNEYN7-w" memberEnd="_OVSqsAb8Ee-yje8T_o6_dQ">
+    <ownedEnd xmi:id="_OVSqsAb8Ee-yje8T_o6_dQ" name="encrypted" association="_aAgKEAb7Ee-yje8T_o6_dQ"/>
+  </packagedElement>
+</uml:Package>

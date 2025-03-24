@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model name="iTrustDataModel" xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_j-5xsLYOEe6JM9aBK8QXKg">
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_HwSZoOC9Ee6Vgp91jiy-Ww" name="SecureLink"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_PDjjsLYPEe6JM9aBK8QXKg" name="User">
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_TeNxILYPEe6JM9aBK8QXKg" name="Doctor">
+      <nestedClassifier xmi:type="uml:Class" xmi:id="_ws3JoL4zEe6GGffmtGz0Ag" name="Stagiare"/>
+      <nestedClassifier xmi:type="uml:Class" xmi:id="_CH1ywL40Ee6GGffmtGz0Ag" name="Specialist"/>
+    </nestedClassifier>
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_V16oULYPEe6JM9aBK8QXKg" name="Patient"/>
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_aSrukLYPEe6JM9aBK8QXKg" name="Admin"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_gR2bsLYPEe6JM9aBK8QXKg" name="Prescription">
+    <ownedOperation xmi:id="_cW-TUODJEe6Vgp91jiy-Ww" name="editPrescription">
+      <elementImport xmi:id="_n4FJkODKEe6Vgp91jiy-Ww" alias="abacRequire" importedElement="_ZbpVMODKEe6Vgp91jiy-Ww">
+        <ownedComment xmi:id="_uuNT4ODKEe6Vgp91jiy-Ww" annotatedElement="_AoERYODLEe6Vgp91jiy-Ww">
+          <body>editPrescription</body>
+        </ownedComment>
+        <ownedComment xmi:id="_iuWaMODLEe6Vgp91jiy-Ww" annotatedElement="_9wiqoODKEe6Vgp91jiy-Ww">
+          <body>Doctor</body>
+        </ownedComment>
+      </elementImport>
+      <ownedParameter xmi:id="_o_YlUODJEe6Vgp91jiy-Ww" name="prescriptionFile" type="_gR2bsLYPEe6JM9aBK8QXKg" direction="inout"/>
+    </ownedOperation>
+    <nestedClassifier xmi:type="uml:Stereotype" xmi:id="_aqGosLYSEe6JM9aBK8QXKg" name="Critical"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:AssociationClass" xmi:id="_5bSTYLYREe6JM9aBK8QXKg" name="AssoUserPrescription" redefinedClassifier="_gR2bsLYPEe6JM9aBK8QXKg _PDjjsLYPEe6JM9aBK8QXKg">
+    <nestedClassifier xmi:type="uml:Stereotype" xmi:id="_QdBicODMEe6Vgp91jiy-Ww" name="Integrity"/>
+    <nestedClassifier xmi:type="uml:Stereotype" xmi:id="_VaMAAODMEe6Vgp91jiy-Ww" name="Secrecy"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_ZbpVMODKEe6Vgp91jiy-Ww" name="abacRequire">
+    <ownedAttribute xmi:id="_9wiqoODKEe6Vgp91jiy-Ww" name="role"/>
+    <ownedAttribute xmi:id="_AoERYODLEe6Vgp91jiy-Ww" name="right"/>
+  </packagedElement>
+</uml:Model>

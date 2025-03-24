@@ -3,12 +3,12 @@
 	<target name="loadModels">
 		
 		<epsilon.loadModel name="DataMessangingService" type="UML" impl="org.eclipse.epsilon.emc.uml.UmlModel">
-		<parameter name="modelFile" value="/HolidayBookingFederation/DataMessangingService.uml"/>
+		<parameter name="modelFile" value="/InstantMessagingFederation/DataMessangingService.uml"/>
 		<parameter name="readOnLoad" value="true"/>
 		</epsilon.loadModel>
 		
 		<epsilon.loadModel name="DeploymentMessangingService" type="UML" impl="org.eclipse.epsilon.emc.uml.UmlModel">
-					<parameter name="modelFile" value="/HolidayBookingFederation/DeploymentMessangingService.uml"/>
+					<parameter name="modelFile" value="/InstantMessagingFederation/DeploymentMessangingService.uml"/>
 					<parameter name="readOnLoad" value="true"/>
 					</epsilon.loadModel>
 			
@@ -17,7 +17,7 @@
 		</target>
 	
 	<target name="compare" depends = "loadModels">
-			<epsilon.ecl src="HolidayBookingMatching.ecl" 
+			<epsilon.ecl src="InstantMessagingMatching.ecl" 
 			exportmatchtrace="matchTrace">
 					<model ref="DataMessangingService" alias="Source"/>
 					<model ref="DeploymentMessangingService" alias="Source"/>
@@ -25,7 +25,7 @@
 		</target>
 	
 	<target name="merge" depends = "compare">
-			<epsilon.eml src="HolidayBookingMerge.eml"
+			<epsilon.eml src="InstantMessagingMerge.eml"
 				usematchtrace="matchTrace">
 				<model ref="DataMessangingService"/>
 				<model ref="DeploymentMessangingService" alias="Source"/>
@@ -34,7 +34,7 @@
 		</target>
 	
 	<target name="validate" depends="compare">
-				<epsilon.evl src="HolidayBookingSecurityRulesValidation.evl">
+				<epsilon.evl src="InstantMessagingSecurityRulesValidation.evl">
 					<model ref="DataMessangingService"/>
 					<model ref="DeploymentMessangingService"/>
 					<uses ref="matchTrace"/>

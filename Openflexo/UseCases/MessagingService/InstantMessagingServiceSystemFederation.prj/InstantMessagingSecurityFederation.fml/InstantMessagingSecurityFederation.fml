@@ -394,6 +394,38 @@ else {
 
  public concept ClassDataObjectCorrespondence {
     DataClass class with EMFObjectRole(container=dataModelAccess, type= DATA_CLASS);
+    BPMNDataObject dataObject with EMFObjectRole(container=bpmnModelAccess, type= BPMN_DATAOBJECT);
+
+       create::_create(required String dataName, required String className) {
+            BPMNDataObject = select unique BPMNDataObject from bpmnModelAccess where (selected.name == parameters.dataName);
+            class = select unique DataClass from dataModelAccess where (selected.name == parameters.className);
+         }
+
+     public void instantMessagingSecurityRule1() {
+       boolean checkClassAnnotation = container.checkClassSecurityAnnotation(class);
+       if (checkClassAnnotation) {
+         for (Object operation : class.getValues("ownedOperation")) { // get the DataOperation type
+           boolean checkExistingInstanceOperation = container.checkExistingInstance1(operation.toString.substring(10));
+           if (checkExistingInstanceOperation) {
+            BPMNTask task = container.getTask(operation.toString.substring(10));
+            boolean checklogInTask = container.checkLogInTaskPrecedence(task);
+            if (checklogInTask) {
+              log "[InstantMessagingService - SecurityRule 1] -> Security rule not violated"; 
+            }
+else {
+              log "[InstantMessagingService - SecurityRule 1] -> Security rule violated"; 
+            }
+            
+           }
+         }
+         
+       }
+     }
+
+	delete() {
+		delete class;
+		delete pool;
+	}
  }
 
    

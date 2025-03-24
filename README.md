@@ -2,23 +2,23 @@
 
 ## Overview
 
-This repository contains the source code and documentation for maintaining security consistency inter-model. Focusing on Model-Driven Engineering (MDE), the project addresses the challenges associated with managing model evolution, especially concerning security. By leveraging the model federation paradigm, it enables the reification of dependencies between heterogeneous models and equips them with security rules to maintain security consistency across heterogeneous models. Through this project, we aim to provide a robust solution for managing model evolution, particularly addressing its impact on security consistency across inter-models. To validate our proposal, we utilize the OpenFlexo and Epsilon frameworks to establish correspondences between meta-models and reify these correspondences into concrete links between heterogeneous models. This enables the implementation and enforcement of security rules across the integrated models. This Git repository contains the required models, metamodels, and evaluation resources to facilitate the seamless execution of the security rule.
+This repository contains the source code and documentation for maintaining security consistency inter-model. Focusing on Model-Driven Engineering (MDE), the project addresses the challenges associated with managing model evolution, especially concerning security. By leveraging the model federation paradigm, it enables the reification of dependencies between heterogeneous models and equips them with security rules to maintain security consistency across heterogeneous models. Through this project, we aim to provide a robust solution for managing model evolution, particularly addressing its impact on security consistency across inter-models. To validate our proposal, we utilize the Openflexo and Epsilon frameworks to establish correspondences between meta-models and reify these correspondences into concrete links between heterogeneous models. This enables the implementation and enforcement of security rules across the integrated models. This Git repository contains the required models, metamodels, and evaluation resources to facilitate the seamless execution of the security rule.
 
 ## Table of Contents
 
-- [OpenFlexo](#openflexo)
+- [Openflexo](#openflexo)
 - [Epsilon](#epsilon)
 - [Evaluation](#evaluation)
 - [Prerequisites](#prerequisites)
 - [Usage](#usage)
 
-## OpenFlexo
+## Openflexo
 
-The `OpenFlexo` folder contains the implementation of security rules using the OpenFlexo and all the necessary resources.
+The `Openflexo` folder contains the implementation of security rules using the Openflexo and all the necessary resources.
 
 ### Models
 
-The `OpenFlexo/Resources/Models` folder contains various models used in the project, including Deployment models (`DeploymentModel`), BPMN models (`BpmnModel`), SOAML models (`SoamlModel`), WSDL models (`WSDLModel`), AccessControl models (`AccessControlModel`), and Data Models (`DataModel`). These models are essential components for defining and visualizing the structure and behavior of the system.
+The `Openflexo/Resources/Models` folder contains various models used in the project, including Deployment models (`DeploymentModel`), BPMN models (`BpmnModel`), SOAML models (`SoamlModel`), WSDL models (`WSDLModel`), AccessControl models (`AccessControlModel`), and Data Models (`DataModel`). These models are essential components for defining and visualizing the structure and behavior of the system.
 
 - **Deployment Model**: Describes the deployment architecture of the system.
 - **BPMN Model**: Represents business processes using the BPMN standard.
@@ -29,7 +29,7 @@ The `OpenFlexo/Resources/Models` folder contains various models used in the proj
 
 ### Metamodels
 
-The `OpenFlexo/Resources/Metamodels` folder includes metamodels that define the structure and constraints for the models used in the project. Metamodels are crucial for ensuring consistency and adherence to specific modeling standards.
+The `Openflexo/Resources/Metamodels` folder includes metamodels that define the structure and constraints for the models used in the project. Metamodels are crucial for ensuring consistency and adherence to specific modeling standards.
 
 - **SOAML Metamodel**: Defines the metamodel for SOAML models.
 - **WSDL Metamodel**: Describes the metamodel for Web Services Description Language (WSDL) models.
@@ -38,7 +38,7 @@ The `OpenFlexo/Resources/Metamodels` folder includes metamodels that define the 
 
 ### Use Cases
 
-The `OpenFlexo/UseCases` folder encompasses the implementation of security rules using the OpenFlexo framework. Each use case is represented as an OpenFlexo project within its own folder.
+The `Openflexo/UseCases` folder encompasses the implementation of security rules using the Openflexo framework. Each use case is represented as an Openflexo project within its own folder.
 
 #### iTrust
 - **Virtual Model**: *ITrustSecurityFederation*
@@ -82,7 +82,7 @@ The `Epsilon` folder contains an alternative implementation of some security rul
 
 ### Use Cases
 
-The `Epsilon/UseCases` folder encompasses the implementation of security rules using the OpenFlexo framework. Each use case is represented as an OpenFlexo project within its own folder.
+The `Epsilon/UseCases` folder encompasses the implementation of security rules using the Openflexo framework. Each use case is represented as an Openflexo project within its own folder.
 
 ## Evaluation
 
@@ -96,7 +96,7 @@ The `Evaluation` folder contains a detailed PDF documents evaluating the methodo
 
 Before starting to use the project, ensure that you have the following prerequisites:
 
-1. **OpenFlexo Installation**: Make sure you have OpenFlexo installed on your system. You can download and install OpenFlexo from [OpenFlexo official website](https://www.openflexo.org/downloads).
+1. **Openflexo Installation**: Make sure you have Openflexo installed on your system. You can download and install Openflexo from [Openflexo official website](https://www.openflexo.org/downloads).
 2. **Epsilon Framework**: Install Epsilon to execute the alternative security rule implementation. See the [Epsilon website](https://www.eclipse.org/epsilon/) for setup instructions.
 3. **Git**: The project utilizes Git for version control. If Git is not already installed on your machine, you can download it from [Git Downloads](https://git-scm.com/downloads).
 
@@ -108,8 +108,8 @@ To get started with the project, follow these steps:
    ```
    git clone https://github.com/ChahrazedBoudj/SecurityFederationModelsValidation
    ```
-2. **For OpenFlexo:**
-   - Import the `OpenFlexo` folder in OpenFlexo as a Resource Center.
+2. **For Openflexo:**
+   - Import the `Openflexo` folder in Openflexo as a Resource Center.
    - Navigate to the `UseCases` folder, open each project individually, and execute security rules as Flexo behaviors.
    - View the output log in the console via: Tools -> FML Console.
 

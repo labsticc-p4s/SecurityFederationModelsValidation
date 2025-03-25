@@ -10,6 +10,8 @@ import ["http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"] as BPMN21;
 import ["http://www.eclipse.org/uml2/5.0.0/UML"] as UML2;
 
 import [UML2:"CommunicationPath"] as DEPLOYMENT_COMMUNICATION_PATH;
+import [UML2:"Artifact"] as DEPLOYMENT_ARTIFACT;
+import [UML2:"DeployementModel"] as DEPLOYMENT_DEPLOYEMENT_MODEL;
 import [UML2:"Association"] as UML_ASSOCIATION;
 import [BPMN21:"MessageFlow"] as BPMN_MESSAGE_FLOW;
 import [BPMN21:"Association"] as BPMN_ASSOCIATION;
@@ -20,6 +22,12 @@ import [BPMN21:"DataObject"] as BPMN_DATAOBJECT;
 import [BPMN21:"Participant"] as BPMN_PARTICIPANT;
 import [UML2:"Class"] as UML_CLASS;
 import [UML2:"ElementImport"] as UML_ELEMENT_IMPORT;
+import [UML2:"Model"] as DATA_MODEL;
+import [UML2:"Element"] as DATA_ELEMENT;
+import [UML2:"Operation"] as DATA_OPERATION;
+import [UML2:"Stereotype"] as DATA_STEREOTYPE;
+import [UML2:"Comment"] as DATA_COMMENT;
+
 import ["http://www.eclipse.org/uml2/5.0.0/UML"] as UML23;
 
 typedef EMFObjectIndividualType(eClass=DEPLOYMENT_COMMUNICATION_PATH) as DeploymentCommunicationPath;
@@ -33,6 +41,13 @@ typedef EMFObjectIndividualType(eClass=BPMN_DATAOBJECT) as BPMNDataObject;
 typedef EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) as BPMNParticipant;
 typedef EMFObjectIndividualType(eClass=BPMN_FLOW_ELEMENTS) as BPMNFlowElements;
 typedef EMFObjectIndividualType(eClass=BPMN_Task) as BPMNTask;
+typedef EMFObjectIndividualType(eClass=DATA_STEREOTYPE) as DataStereotype;
+typedef EMFObjectIndividualType(eClass=DATA_COMMENT) as DataComment;
+typedef EMFObjectIndividualType(eClass=BPMN_SEQUENCE_FLOW) as BPMNSequenceFlow;
+typedef EMFObjectIndividualType(eClass=DATA_MODEL) as DataModel;
+typedef EMFObjectIndividualType(eClass=DATA_OPERATION) as DataOperation;
+typedef EMFObjectIndividualType(eClass=DATA_ELEMENT) as DataElement;
+typedef EMFObjectIndividualType(eClass=DEPLOYMENT_DEPLOYEMENT_MODEL) as DeploymentModel;
 
 @URI("http://www.openflexo.org/projects/2024/1/FlightPlanNegociationFederation_1706652651621.prj/FlightPlanSecurityFederation.fml")
 @Author("chahr")
@@ -51,7 +66,7 @@ public model FlightPlanSecurityFederation {
     delete() {
     }
 
-    public concept Correspondences {
+     public concept Correspondences {
         String [0,*] annotationsCommPath;
         String [0,*] annotationsObject;
         String [0,*] annotationsClass;
@@ -67,18 +82,6 @@ public model FlightPlanSecurityFederation {
                 }
             }
             return annotationsCommPath;
-        }
-
-        private String getAnnotationCommunicationPath1Test(EMFObjectIndividual commPath) {
-            String elementImport = "";
-            for (DeploymentCommunicationPath itemPath : select DeploymentCommunicationPath from deployementModelAccess) {
-                if (itemPath == parameters.commPath) {
-                    for (Object itemElementImport : itemPath.getValues("elementImport")) {
-                        elementImport = itemElementImport.toString;
-                    }
-                }
-            }
-            return elementImport;
         }
 
         private List<String> getAnnotationsObjects(EMFObjectIndividual object) {
@@ -186,7 +189,132 @@ public model FlightPlanSecurityFederation {
 			}
 		   return false;
 		}
+
+	    private boolean checkSecurityAnnotationOnCommunicationPath(DeploymentArtifact artifact) {
+            boolean check = false;
+            for (DeploymentDeploy deploy : select DeploymentDeploy from deploymentModelAccess) {
+                if (deploy.getValues("artifact").toString.contains(parameters.artifact.nameArtifact)) {
+                    for (DeploymentCommunicationPath path : select DeploymentCommunicationPath from deploymentModelAccess) {
+                        if (path.getValues("node").toString.contains(deploy.node.nameNode) && path.getValues("encrypted") != null) {
+                            check = true;
+                        }
+                    }
+                }
+            }
+            return check;
+        }
+
+		// Get the FlowElements of a selected Pool
+		private List<BPMNFlowElements> getFlowElementsOfPool(BPMNParticipant pool) {
+			List<BPMNFlowElements> listFlowElements = new ArrayList<BPMNFlowElements>();
+			for (BPMNParticipant itemParticipant : select BPMNParticipant from bpmnModelAccess) {
+				if (itemParticipant == parameters.pool) {
+					for (BPMNFlowElements itemFlows : select BPMNFlowElements from bpmnModelAccess) {
+						if (itemParticipant.processRef.flowElements.contains(itemFlows) && itemFlows instanceof BPMNDataObject) {
+							listFlowElements.add(itemFlows);
+						}
+					}
+				}
+			}
+			return listFlowElements;
+		}
+		// Verify the security annotations of a DataObject included in the FlowElements 
+		private boolean verifyDataObjectAnnotation(List<BPMNFlowElements> listFlowElements) {
+			for (BPMNFlowElements itemFlowElements : parameters.listFlowElements) {
+				for (BPMNAssociation itemAsso : select BPMNAssociation from bpmnModelAccess) {
+					for (BPMNTextAnnotation itemAnnota : select BPMNTextAnnotation from bpmnModelAccess) {
+						if (itemFlowElements == itemAsso.sourceRef && itemAnnota == itemAsso.targetRef) {
+							if (itemAnnota.text.contains("IntegrityDo") || itemAnnota.text.contains("ConfidentialityDo") || itemAnnota.text.contains("PrivacyDo")) {
+								return true;
+							}
+						}
+					}
+				}
+			}
+			return false;
+		}
+
+    private boolean checkSecurityAnnotationsOnAssociation(DeploymentArtifact artifact) {
+        boolean check = false;
+        for (DeploymentAssociation association : select DeploymentAssociation from deploymentModelAccess) {
+            if (association.getValues("artifact").toString.contains(parameters.artifact.nameArtifact)) {
+                if (association.getValues("secrecy") != null || association.getValues("integrity") != null) {
+                    check = true;
+            	}
+            }
+        }
+         return check;
     }
+
+
+	private BPMNParticipant getAssociatedPool(BPMNMessageFlow messageFlow, BPMNParticipant pool ) {
+      List<BPMNFlowElements> listFlowElements = new ArrayList<BPMNFlowElements>();
+      List<BPMNMessageFlow> messageFlows = new ArrayList<BPMNMessageFlow>();
+      for (BPMNParticipant participant : select BPMNParticipant from bpmnModelAccess) {
+         if (participant != parameters.pool) {
+            messageFlows = this.getMessageFlows(participant);
+            if (messageFlows.contains(parameters.messageFlow)) {
+               return participant;
+            }
+            
+         }
+      }
+    }
+
+	// Verify the security annotation on the association relating two selected artifects
+   	private boolean checkSecurityAnnotaionsOnAssociation(DataClass class, DataClass class1 ) {
+       for (DataAssociationClass association : select DataAssociationClass from dataModelAccess) {
+        	if (association.getValues("redefinedClassifier").toString.contains(parameters.class.name) && association.getValues("redefinedClassifier").toString.contains(parameters.class1.name) && (association.getValues("ownedElement").toString.contains("Integrity") || association.getValues("ownedElement").toString.contains("Secrecy"))) {
+            	return true;
+        	}
+       }
+      return false;
+   }
+
+	private DataClass getAssociatedClass (BPMNParticipant pool) {
+      DataClass associatedClass;
+       for (PoolClassCorrespondence item : select PoolClassCorrespondence from this) {
+        if (item.pool == parameters.pool) {
+            associatedClass = item.class;
+     	}
+      }
+      return associatedClass;
+   }
+
+     private List<BPMNMessageFlow> getMessageFlowsWithFilter(List<BPMNMessageFlow> messageFlowsPool) {
+      List<BPMNMessageFlow> messageFlowsFilter = new ArrayList<BPMNMessageFlow>();
+      for (BPMNMessageFlow itemMessageFlow : parameters.messageFlowsPool) {
+         for (BPMNAssociation itemAssociation : select BPMNAssociation from bpmnModelAccess) {
+            if (itemAssociation.targetRef == itemMessageFlow && this.checkMessageFlowAnnotation(itemMessageFlow)) {
+               messageFlowsFilter.add(itemMessageFlow);    
+            }
+         }
+      }
+
+      
+     return messageFlowsFilter;
+  }
+
+	// Get MessageFlow for a selected Pool
+	private List<BPMNMessageFlow> getMessageFlows(EMFObjectIndividual pool) {
+		List<BPMNMessageFlow> messageFlows = new ArrayList<BPMNMessageFlow>();
+		for (BPMNParticipant parti : select BPMNParticipant from bpmnModelAccess) {
+			if (parti.id.toString == parameters.pool.name.toString) {
+				int n = parti.processRef.flowElements.size();
+				for (BPMNMessageFlow dataflow : select BPMNMessageFlow from bpmnModelAccess) {
+					for (int j=0 ; j < n ; j++) {
+						if (dataflow.sourceRef.toString == parti.processRef.flowElements.get(j).toString) {
+							messageFlows.add(dataflow);
+						}
+						if (dataflow.targetRef.toString == parti.processRef.flowElements.get(j).toString) {
+							messageFlows.add(dataflow);
+						}
+					}
+				}
+			}
+		}
+		return messageFlows;
+	} 
 
     public concept MessageFlowCommunicationPathCorrespondences extends Correspondences {
         EMFObjectIndividual messageFlow with EMFObjectRole(container=bpmnModelAccess);
@@ -197,7 +325,7 @@ public model FlightPlanSecurityFederation {
             communicationPath = select unique DeploymentCommunicationPath from deployementModelAccess where (selected.name == parameters.comPathName);
         }
 
-        public flightPlanSecurityRule1() {
+        public atmSecurityRule1() {
             boolean checkAnnotation = false;
             container.annotationsCommPath = container.getAnnotationsCommunicationPath(communicationPath);
             container.annotationsObject = container.getAnnotationsObjects(messageFlow);
@@ -220,7 +348,7 @@ public model FlightPlanSecurityFederation {
             class = select unique UMLClass from dataModelAccess where (selected.name == parameters.nameClass);
         }
 
-        public flightPlanSecurityRule2() {
+        public atmSecurityRule2() {
             boolean checkAnnotation = false;
             container.annotationsObject = container.getAnnotationsObjects(dataObject);
             container.annotationsClass = container.getAnnotationClass(class);
@@ -243,7 +371,7 @@ public model FlightPlanSecurityFederation {
             class = select unique UMLClass from dataModelAccess where (selected.name == parameters.nameClass);
         }
 
-        public flightPlanSecurityRule3() {
+        public atmSecurityRule3() {
            boolean checkPool= container.verifyPoolIncludeConfidentialData(pool); 
 		   bolean ckeckClass = container.checkClassSecurityAnnotation(class);
 
@@ -255,7 +383,61 @@ public model FlightPlanSecurityFederation {
 			}
 
         }
-    }
+
+        // --- ATM security Rule 8 ---
+        /*  when two Pools in the BPMN model(that correspond to Classes in the data model), contains a DataObject that is linked to the security annotations. 
+        The Association between the classes corresponding to two Pools must be annotated with  Integrity or Secrecy  */
+        public void atmSecurityRule8() {
+           List<BPMNFlowElements> listFlowElements = new ArrayList<BPMNFlowElements>();  
+           listFlowElements = container.container.getFlowElementsOfPool(pool);
+           boolean checkCofidentialDataObject = container.container.verifyDataObjectAnnotation(listFlowElements);
+           List<BPMNMessageFlow> messageFlowsPool = new ArrayList<BPMNMessageFlow>();
+           messageFlowsPool = container.container.getMessageFlows(pool);
+           for (BPMNMessageFlow itemMessageFlow : messageFlowsPool ) {
+              	BPMNParticipant associatedPool = container.container.getAssociatedPool(itemMessageFlow,pool);
+             	DataClass associatedClass = container.container.getAssociatedClass(associatedPool);
+              	if (associatedClass != null) {
+                  	boolean checkAssociationSecurityAnnotation = container.container.checkSecurityAnnotaionsOnAssociation(class,associatedClass);
+                  	if (checkAssociationSecurityAnnotation) {
+                     	log "[ATM - SecurityRule 8] -> Security rule verified";
+                  	} 
+				 	 else {
+                     	log "[ATM - SecurityRule 8] -> Security rule violated";
+                  	}
+            	} 
+				else{
+                     log "[ATM - SecurityRule 8] -> Security rule verified";
+                }
+           }
+           
+        }
+
+		        // --- iTrust security Rule9 --- 
+		/*  when two Pools in the BPMN model(that correspond to Classes in the data model), contains a MessageFlow that is linked to the security annotations. 
+				The Association between the classes corresponding to two Pools must be annotated with  Integrity or Secrecy  */
+			public void atmSecurityRule9() {
+				List<BPMNMessageFlow> messageFlowsPool = new ArrayList<BPMNMessageFlow>();
+				messageFlowsPool = container.container.getMessageFlows(pool);
+				List<BPMNMessageFlow> messageFlowsPoolWithFilter = new ArrayList<BPMNMessageFlow>();
+				messageFlowsPoolWithFilter = container.container.getMessageFlowsWithFilter(messageFlowsPool);
+				for (BPMNMessageFlow itemMessageFlow : messageFlowsPoolWithFilter ) {
+					BPMNParticipant associatedPool = container.container.getAssociatedPool(itemMessageFlow,pool);
+					DataClass associatedClass = container.container.getAssociatedClass(associatedPool);
+						if (associatedClass != null) {
+							boolean checkAssociationSecurityAnnotation = container.container.checkSecurityAnnotaionsOnAssociation(class,associatedClass);
+							if (checkAssociationSecurityAnnotation) {
+								log "[ATM - SecurityRule 9] -> Security rule verified";
+							} 
+							else {
+								log "[ATM - SecurityRule 9] -> Security rule violated";
+							}
+						} 
+						else{
+							log "[ATM - SecurityRule 9] -> Security rule verified";
+					}
+				}
+			}
+	}
 
     public concept ModelsCorrespondence extends Correspondences {
         DeploymentModel deploymentModel with EMFObjectRole(container=deployementModelAccess, type=DEPLOYMENT_DEPLOYEMENT_MODEL);
@@ -269,7 +451,7 @@ public model FlightPlanSecurityFederation {
         // --- ATM security Rule 4 ---
         /* when Deployment model annotated with “secure dependency”. The data model must contain at least one Class annotated “Critical”. */
         public void atmSecurityRule4() {
-            boolean checkAnnotation = container.container.checkSecurityAnnotationModels(deployementModel);
+            boolean checkAnnotation = container.checkSecurityAnnotationModels(deployementModel);
             if (checkAnnotation) {
                 log "[ATM - SecurityRule 4] -> Security rule verified";
             } else {
@@ -296,4 +478,49 @@ public model FlightPlanSecurityFederation {
             delete dataModel;
         }
     }
+
+    public concept ClassArtifactCorrespondence extends Correspondences {
+        DataClass class with EMFObjectRole(container=dataModelAccess,type=DATA_CLASS);
+        DeploymentArtifact artifact with EMFObjectRole(container=deploymentModelAccess,type=DEPLOYMENT_ARTIFACT);
+
+        create::_create(required String className, required String artifactName) {
+            class = select unique DataClass from dataModelAccess where (selected.name == parameters.className);
+            artifact = select unique DeploymentArtifact from deploymentModelAccess where (selected.name == parameters.artifactName);
+        }
+
+        // --- ATM security Rule 6 ---
+        /*   when a Class in the Data model (that corresponds to artifact in the deployment model deployed in device), contains security
+			annotation Critical. The communication Path between the corresponding device must be encrypted */
+
+        public void atmnSecurityRule6() {
+            boolean checkAnnotation = container.checkSecurityAnnotationOnCommunicationPath(artifact);
+            if (class.getValues("nestedClassifier").toString.contains("Critical") && checkAnnotation) {
+                log "[ATM - SecurityRule 6] -> Security rule verified";
+            }
+            else {
+                log "[ATM - SecurityRule 6] -> Security rule violated";
+            }
+        }
+
+        // --- ATM security Rule 7 ---
+        /* when a class in the data model (that correspond to artifact in the deployment model) annotated Critical. the associations relating 
+        this artifact with other must to be annotated Secrecy or Integrity */
+
+        public void atmSecurityRule7() {
+            boolean checkAnnotation = container.checkSecurityAnnotationsOnAssociation(artifact);
+            if (class.getValues("nestedClassifier").toString.contains("Critical") && checkAnnotation) {
+                log "[ATM - SecurityRule 7] -> Security rule verified";
+            }
+            else {
+                log "[ATM - SecurityRule 7] -> Security rule violated";
+            }
+        }
+
+        delete() {
+            delete class;
+            delete artifact;
+        }
+    }
+
+  }
 }

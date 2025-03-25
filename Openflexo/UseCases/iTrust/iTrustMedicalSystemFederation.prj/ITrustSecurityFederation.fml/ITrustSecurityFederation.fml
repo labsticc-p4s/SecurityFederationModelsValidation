@@ -824,6 +824,7 @@ public model ITrustSecurityFederation {
         /*  when two Pools in the BPMN model(that correspond to Classes in the data model), contains a DataObject that is linked to the security annotations. 
         The Association between the classes corresponding to two Pools must be annotated with  Integrity or Secrecy  */
         
+
         public void iTrustSecurityRule17() {
            List<BPMNFlowElements> listFlowElements = new ArrayList<BPMNFlowElements>();  
            listFlowElements = container.container.getFlowElementsOfPool(pool);
@@ -836,14 +837,14 @@ public model ITrustSecurityFederation {
               if (associatedClass != null) {
                   boolean checkAssociationSecurityAnnotation = container.container.checkSecurityAnnotaionsOnAssociation(class,associatedClass);
                   if (checkAssociationSecurityAnnotation) {
-                     log "[iTrust - SecurityRule 18] -> Security rule verified";
+                     log "[iTrust - SecurityRule 17] -> Security rule verified";
                   } 
 else {
-                     log "[iTrust - SecurityRule 18] -> Security rule violated";
+                     log "[iTrust - SecurityRule 17] -> Security rule violated";
                   }
                   } 
 else{
-                     log "[iTrust - SecurityRule 18] -> Security rule verified";
+                     log "[iTrust - SecurityRule 17] -> Security rule verified";
                  }
            }
            
